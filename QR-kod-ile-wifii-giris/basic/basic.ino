@@ -4,7 +4,8 @@ String ssid;
 String pass;
 #include "esp_camera.h"
 #include <WiFi.h>
-
+//#define CAMERA_MODEL_AI_THINKER1
+//#include "camera_pins.h"
 ESP32QRCodeReader reader(CAMERA_MODEL_AI_THINKER);
 String Payload;
 void onQrCodeTask(void *pvParameters)
@@ -59,7 +60,7 @@ void onQrCodeTask(void *pvParameters)
         Serial.println("");
         Serial.println("WiFi connected");
 
-      //  startCameraServer();
+//        startCameraServer();
 
         Serial.print("Camera Ready! Use 'http://");
         Serial.print(WiFi.localIP());
@@ -85,7 +86,7 @@ void setup()
   Serial.begin(115200);
   Serial.println();
 
-  reader.setup();
+ reader.setup();
 
   Serial.println("Setup QRCode Reader");
 
@@ -95,9 +96,13 @@ void setup()
 
   xTaskCreate(onQrCodeTask, "onQrCode", 4 * 1024, NULL, 4, NULL);
 
+ // startCameraServer();
 }
 
 void loop()
 {
+  
   delay(100);
+  
+ // startCameraServer();
 }
