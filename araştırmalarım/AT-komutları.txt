@@ -1,0 +1,86 @@
+"HTTP GET AT komutları(Tera Termde)";
+AT+QHTTPCFG="contextid",1
+AT+QHTTPCFG="responseheader",1
+AT+QICSGP=1,1,"internet","gprs","gprs",1
+AT+QIACT=1
+AT+QHTTPURL=24,80
+CONNECT
+http://89.19.23.98:9996/
+
+
+AT+QHTTPGET=80
+    AT+QHTTPCFG="contextid",1   
+    -OK
+
+    AT+QHTTPCFG="responseheader",1  
+    -OK
+
+    AT+QIACT?
+    -OK
+
+    AT+QICSGP=1,1,"internet","gprs","gprs",1
+    -OK
+
+    AT+QIACT=1
+    -OK
+    
+    AT+QIACT?
+    - +QIACT: 1,1,1,"10.231.15.44"  
+    -OK
+
+    AT+QHTTPURL=24,80 
+    -CONNECT
+
+    http://89.19.23.98:9999/  
+    -OK
+
+    AT+QHTTPGET=80 
+    -OK
+    -QHTTPGET: 0,200,17";
+
+    AT+QHTTPREAD=80 
+    -OK
+
+////7WEBSOCKET SEND AT komutları(Tera Termde)";
+
+AT+QIACT=1
+OK
+AT+QICSGP=1,1,"internet","","",1
+OK
+
+AT+QIOPEN=1,0,"TCP","89.19.23.98",9999,0,0
+OK
+
++QIOPEN: 0,0
+
++QIURC: "recv",0
+AT+QISTATE=1,0
++QISTATE: 0,"TCP","89.19.23.98",9966,9437,2,1,0,2,"uart1"
+
+OK
+AT+QISEND=0
+> zeynepten gelen veri
+SEND OK
+AT+QIRD=0,1500
++QIRD: 39
+zehradan gelen verizeynepten gelen veri
+
+OK
+
++QIURC: "closed",0
+
+
+
+
+////BİR NUMARAYI ARAMA
+AT+CFUN=0
+
+AT+COPS?
+
+AT+CFUN=1
+
+AT+CPIN?
+
+AT+COPS?
+
+ATD05445546255;

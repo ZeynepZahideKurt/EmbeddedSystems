@@ -13,11 +13,11 @@
 //#define CAMERA_MODEL_M5STACK_WIDE
 #define CAMERA_MODEL_AI_THINKER
 #include "camera_pins.h"
-const char* ssid = "Enelsis1_EXT";
-const char* password = "1vn6egph";
+const char* ssid = "Zehra";
+const char* password = "11223344";
 
  
-const char* websocket_server_host = "192.168.1.239";
+const char* websocket_server_host = "89.19.23.98";
 const uint16_t websocket_server_port = 8888;
 const uint16_t websocket_server_port1 = 8887;
 
