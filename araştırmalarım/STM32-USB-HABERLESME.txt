@@ -1,0 +1,90 @@
+USB HABERLEŞMESİ*******
+
+
+///////USB HOST MODUNDAYKEN
+https://www.youtube.com/watch?v=pC16Aon4crk&ab_channel=ControllersTech
+
+Mode: Host_Only +Active_VBUS
+
+Datasheetinden VBUS'IN nereye bağlı olduğuna bak. örneğin out'a bağlı. ENablr kısmı PC0'da ve yüksekte yani 3 v geliyor. Onu alçağa çek 
+
+Usb Host communication Host class olarak ayarla
+
+/* USER CODE BEGIN 0 */
+extern  extern USBH_HandleTypeDef hUsbHostFS;
+extern ApplicationTypeDef Appli_state;
+
+#define RX_BUFF_SIZE 1024 //(usbh_cdc.h'DEN bak ne kadar boyut tanımlayabilir maksimum)
+
+uint8_t CDC_RX_Buffer[RX_BUFF_SIZE];
+uint8_t CDC_TX_Buffer[RX_BUFF_SIZE];
+
+typedef enum{
+  CDC_STATE_IDLE=0,
+  CDC_SEND,
+  CDC_RECEIVE,
+}CDC_StateTypedef;
+
+CDC_StateType CDC_STATE= CDC_STATE_IDLE;
+
+uint8_t i=0;
+void CDC_HANDLE (void)
+{
+	switch (CDC_STATE)
+	{
+	case CDC_STATE_IDLE:
+	{
+		  USBH_CDC_Stop(&hUsbHostFS);
+		  int len = sprintf ((char *)CDC_TX_Buffer, "DATA = %d", i);
+		  if (USBH_CDC_Transmit (&hUsbHostFS, CDC_TX_Buffer, len) == USBH_OK)
+		  {
+			  CDC_STATE = CDC_RECEIVE;
+		  }
+		  i++;
+		  break;
+	}
+
+	case CDC_RECEIVE:
+	{
+		  USBH_CDC_Stop(&hUsbHostFS);
+		  usbresult = USBH_CDC_Receive(&hUsbHostFS, (uint8_t *) CDC_RX_Buffer, RX_BUFF_SIZE);
+		  HAL_Delay (1000);
+		  CDC_STATE = CDC_IDLE;
+	}
+
+	default:
+		  break;
+	}
+}
+/* USER CODE END 0*/
+
+
+/* Includes ------------------------------------------------------------------*/
+#include "main.h"
+#include "usb_host.h"
+/* Private includes ----------------------------------------------------------*/
+/* USER CODE BEGIN Includes */
+#include "usb_device.h"
+#include "stm32l4xx_hal.h"
+#include "usbh_cdc.h"
+#include <string.h>
+/* USER CODE END Includes */
+
+  while (1)
+  {
+    /* USER CODE END WHILE */
+    MX_USB_HOST_Process();
+
+    if (Appli_state == APPLICATION_READY)
+    {
+    	CDC_HANDLE();
+    }
+
+    /* USER CODE BEGIN 3 */
+  }
+
+
+
+///////USB DEVICE MODUNDAYKEN
+USB DEVİCE moduna ayarla
+Usb Device communication Host class olarak ayarla

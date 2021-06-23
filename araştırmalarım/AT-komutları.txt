@@ -52,15 +52,20 @@ AT+QIOPEN=1,0,"TCP","89.19.23.98",9999,0,0
 OK
 
 +QIOPEN: 0,0
-
 +QIURC: "recv",0
+
+
 AT+QISTATE=1,0
+
 +QISTATE: 0,"TCP","89.19.23.98",9966,9437,2,1,0,2,"uart1"
 
 OK
+
 AT+QISEND=0
 > zeynepten gelen veri
 SEND OK
+
+
 AT+QIRD=0,1500
 +QIRD: 39
 zehradan gelen verizeynepten gelen veri
@@ -84,3 +89,9 @@ AT+CPIN?
 AT+COPS?
 
 ATD05445546255;
+
+/////WEBSOCKET SEND AT komutları(ARDUINO)";
+
+Serial2.println("AT+QIOPEN=1,0,\"TCP\",\"89.19.23.98\",9999,0,2");
+  Serial2.println((char)26);
+  delay(2000);
