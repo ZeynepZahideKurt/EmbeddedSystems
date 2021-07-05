@@ -1,0 +1,13 @@
+/*
+ * sht2x_for_stm32_hal.h
+ *
+ *  Created on: Jul 1, 2021
+ *      Author: Enelsis
+ */
+
+#ifndef INC_SHT2X_FOR_STM32_HAL_H_
+#define INC_SHT2X_FOR_STM32_HAL_H_
+
+
+
+#endif /* INC_SHT2X_FOR_STM32_HAL_H_ */

@@ -42,8 +42,8 @@ USB_HID_Mouse.bin \
 all: USB_HID_Mouse.elf secondary-outputs
 
 # Tool invocations
-USB_HID_Mouse.elf: $(OBJS) $(USER_OBJS) E:\CubeMX5\USB_HID_Mouse\STM32F411VETX_FLASH.ld
-	arm-none-eabi-gcc -o "USB_HID_Mouse.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"E:\CubeMX5\USB_HID_Mouse\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="USB_HID_Mouse.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+USB_HID_Mouse.elf: $(OBJS) $(USER_OBJS) C:\Users\Enelsis\Desktop\enelsis\kendi\ githubım\kendi-kodlar-m\CubeMXCubeIDECourse_Code\USB_HID_Mouse\STM32F411VETX_FLASH.ld
+	arm-none-eabi-gcc -o "USB_HID_Mouse.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Enelsis\Desktop\enelsis\kendi githubım\kendi-kodlar-m\CubeMXCubeIDECourse_Code\USB_HID_Mouse\STM32F411VETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="USB_HID_Mouse.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

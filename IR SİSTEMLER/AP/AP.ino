@@ -1,3 +1,9 @@
+//https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json
+<<<<<<< Updated upstream
+//ESP Dev MODUL-1 MB APP-3MB SPIFFS 
+=======
+>>>>>>> Stashed changes
+
 #include <ArduinoWebsockets.h>
 #include "esp_http_server.h"
 #include "esp_timer.h"
@@ -10,6 +16,7 @@
 #include <ArduinoJson.h>
 #include <Wire.h>
 #include <ESPmDNS.h>
+#include <Adafruit_MLX90614.h>
 
 #include <EEPROM.h>
 #define EEPROM_SIZE 16
@@ -64,7 +71,7 @@ unsigned long l_yenizaman;
 unsigned long l_simdi;
 boolean l_tiklandi = false;
 
-
+int sensor_sure = 0;
 
 int o_calismasure;
 int o_calismabitis;
@@ -90,9 +97,9 @@ const int motor = 16; //15.pin
 const int h2o = 1; //10.pin //tx-mavi kablo
 
 int istenilen_nem;
-float ort_humidity;
+float ort_humidity = 1000;
 float istenilen_sicaklik;
-float ort_cTemp;
+float ort_cTemp = 1000;
 float girilen_min_sicaklik;
 float girilen_max_sicaklik;
 
@@ -106,16 +113,17 @@ const int IRChannel3 = 12;
 const int IRChannel4 = 11;
 // SHT31 I2C address is 0x44(68)
 #define Addr 0x44
-#define Addr2 0x45
+
 #define I2C_SDA 14
 #define I2C_SCL 15
- 
- const char* ssid = "ESP32-CAM Access Point";
-const char* password = "123456789";
- 
- /*   const char* ssid = "Enelsis1_EXT";
-  const char* password = "1vn6egph";
+Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
+
+const char* ssid = "ESP";
+const char* password = "123456789";
+
+/*   const char* ssid = "Enelsis1_EXT";
+  const char* password = "1vn6egph";
   const char* ssid = "Zehra";
   const char* password = "11223344";
   const char* ssid = "iPhone";
@@ -132,6 +140,7 @@ const char* password = "123456789";
 using namespace websockets;
 WebsocketsServer socket_server;
 camera_fb_t * fb = NULL;
+
 void app_httpserver_init();
 typedef struct
 {
@@ -165,12 +174,15 @@ typedef enum
   DELETE_ALL,
 } en_fsm_state;
 en_fsm_state g_state;
+
 void setup() {
 
   Wire.begin(I2C_SDA, I2C_SCL);
-  Serial.begin(115200);
-  EEPROM.begin(EEPROM_SIZE);
+  mlx.begin();
 
+  //Serial.begin(115200);
+  EEPROM.begin(EEPROM_SIZE);
+  //Wire.setClock(100000);
   ledcSetup(IRChannel1, PWMFrequency, PWMResolation);
   ledcAttachPin(IRPin1, IRChannel1);
   ledcSetup(IRChannel2, PWMFrequency, PWMResolation);
@@ -186,7 +198,7 @@ void setup() {
   pinMode(h2o, OUTPUT);
 
   LEDPWMValue_durum = EEPROM.read(0);
-  //Serial.println("LEDPWMValue_durum:");
+  ////Serial.printl("LEDPWMValue_durum:");
   //Serial.println(LEDPWMValue_durum);
   if (LEDPWMValue_durum <= 100 && LEDPWMValue_durum != 0) {
     LEDPWMValue = 2.55 * LEDPWMValue_durum;
@@ -217,7 +229,7 @@ void setup() {
   }
 
   IRPWMValue2_durum = EEPROM.read(2);
-  // Serial.println("IRPWMValue2_durum:");
+  //Serial.println("IRPWMValue2_durum:");
   //Serial.println(IRPWMValue2_durum);
   if (IRPWMValue2_durum <= 100 && IRPWMValue2_durum != 0) {
     int_IRPWMValue2 = IRPWMValue2_durum;
@@ -231,7 +243,7 @@ void setup() {
     ledcWrite(13, IRPWMValue2);
   }
   IRPWMValue3_durum = EEPROM.read(3);
-  // Serial.println("IRPWMValue3_durum:");
+  //Serial.println("IRPWMValue3_durum:");
   //Serial.println(IRPWMValue3_durum);
   if (IRPWMValue3_durum <= 100 && IRPWMValue3_durum != 0) {
     IRPWMValue3 = 2.55 * IRPWMValue3_durum;
@@ -261,8 +273,8 @@ void setup() {
     ledcWrite(11, IRPWMValue4);
   }
   istenilen_nem_durum = EEPROM.read(5);
-  // Serial.println("ilk an istenilen_nem_durum:");
-  // Serial.println(istenilen_nem_durum);
+  //Serial.println("ilk an istenilen_nem_durum:");
+  //Serial.println(istenilen_nem_durum);
   if (istenilen_nem_durum <= 100 && istenilen_nem_durum != 0) {
     istenilen_nem = istenilen_nem_durum;
   }
@@ -271,7 +283,7 @@ void setup() {
   }
 
   l_periotsure_durum = EEPROM.read(6);
-  // Serial.println("l_periotsure_durum:");
+  //Serial.println("l_periotsure_durum:");
   //Serial.println(l_periotsure_durum);
 
   l_calismasure_durum = EEPROM.read(7);
@@ -319,7 +331,7 @@ void setup() {
   girilen_min_sicaklik_durum = girilen_min_sicaklik_durum1 | girilen_min_sicaklik_durum2;
   girilen_min_sicaklik_durum = girilen_min_sicaklik_durum / 100;
 
-  // Serial.println("girilen_min_sicaklik_durum:");
+  //Serial.println("girilen_min_sicaklik_durum:");
   //Serial.println(girilen_min_sicaklik_durum);
 
   if (girilen_min_sicaklik_durum <= 100 && girilen_min_sicaklik_durum != 0) {
@@ -355,7 +367,7 @@ void setup() {
   //Serial.println("o_calismasure_durum:");
   //Serial.println(o_calismasure_durum);
   //Serial.println("o_periotsure_durum:");
-  // Serial.println(o_periotsure_durum);
+  //Serial.println(o_periotsure_durum);
   if (o_calismasure_durum != 0 && o_periotsure_durum != 0 && o_calismasure_durum <= 100 && o_periotsure_durum <= 100) {
     o_tiklandi = true;
     o_calisma = true;
@@ -411,7 +423,7 @@ void setup() {
   // camera init
   esp_err_t err = esp_camera_init(&config);
   if (err != ESP_OK) {
-    // Serial.printf("Camera init failed with error 0x%x", err);
+    // //Serial.printf("Camera init failed with error 0x%x", err);
     return;
   }
   sensor_t * s = esp_camera_sensor_get();
@@ -423,16 +435,14 @@ void setup() {
 
   WiFi.softAP(ssid, password);
   IPAddress IP = WiFi.softAPIP();
-  Serial.print("AP IP address: ");
-  Serial.println(IP);
-  //Serial.println("WiFi connected");
+  ////Serial.print("AP IP address: ");
+
   app_httpserver_init();
   socket_server.listen(82);
- //Serial.print("Camera Ready! Use 'http://");
-  Serial.print(WiFi.localIP());
-  //Serial.println("' to connect");
-  
-  
+  //Serial.print(WiFi.localIP());
+
+
+
 }
 static esp_err_t index_handler(httpd_req_t *req) {
   httpd_resp_set_type(req, "text/html");
@@ -449,7 +459,7 @@ void app_httpserver_init ()
 {
   httpd_config_t config = HTTPD_DEFAULT_CONFIG();
   if (httpd_start(&camera_httpd, &config) == ESP_OK)
-    // Serial.println("httpd_start");
+    // //Serial.println("httpd_start");
   {
     httpd_register_uri_handler(camera_httpd, &index_uri);
   }
@@ -466,6 +476,7 @@ void o_calismabitisbelirlef() {
 void o_calismasuref() {
 
   digitalWrite(h2o, HIGH);
+
   o_calisma = true;
   if (o_calisma_ilk == false) {
     o_calismabitisbelirlef();
@@ -487,6 +498,7 @@ void o_periotbitisbelirlef() {
 
 void o_periotsuref() {
   digitalWrite(h2o, LOW);
+
   o_periot = true;
   if (o_periot_ilk == false) {
     o_periotbitisbelirlef();
@@ -563,58 +575,58 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
     DeserializationError error = deserializeJson(doc, msg.data().substring(2));
 
     if (error) {
-      // Serial.print(F("deserializeJson() failed: "));
-      // Serial.println(error.f_str());
+      // //Serial.print(F("deserializeJson() failed: "));
+      //Serial.println(error.f_str());
       return;
     }
     else {
       girilen_min_sicaklik = doc["Kmin"];
-      //  Serial.println("ara yüzden gelen girilen_min_sicaklik");
-      // Serial.println(girilen_min_sicaklik);
+      //Serial.println("ara yüzden gelen girilen_min_sicaklik");
+      //Serial.println(girilen_min_sicaklik);
 
       girilen_max_sicaklik = doc["Kmax"];
-      // Serial.println(girilen_max_sicaklik);
+      //Serial.println(girilen_max_sicaklik);
       if (girilen_min_sicaklik != girilen_min_sicaklik_durum  || girilen_max_sicaklik != girilen_max_sicaklik_durum)
       {
         girilen_min_sicaklik_durum1 = 100 * girilen_min_sicaklik;
         girilen_min_sicaklik_durum1 = girilen_min_sicaklik_durum1 >> 8;
-        // Serial.println("girilen_min_sicaklik_durum1" );
-        // Serial.println(girilen_min_sicaklik_durum1 );
+        //Serial.println("girilen_min_sicaklik_durum1" );
+        //Serial.println(girilen_min_sicaklik_durum1 );
         //girilen_min_sicaklik=girilen_min_sicaklik_durum1;
         girilen_min_sicaklik_durum2 = 100 * girilen_min_sicaklik;
         girilen_min_sicaklik_durum2 = 255 & girilen_min_sicaklik_durum2 ; //.................................................................
-        // Serial.println("girilen_min_sicaklik_durum2");
-        // Serial.println(girilen_min_sicaklik_durum2);
+        //Serial.println("girilen_min_sicaklik_durum2");
+        //Serial.println(girilen_min_sicaklik_durum2);
         girilen_min_sicaklik_durum = girilen_min_sicaklik;
         EEPROM.write(10, girilen_min_sicaklik_durum1);
         EEPROM.commit();
         EEPROM.write(11, girilen_min_sicaklik_durum2);
         //girilen_min_sicaklik=girilen_min_sicaklik_durum1 |girilen_min_sicaklik_durum2;
         EEPROM.commit();
-        //  Serial.println("kaydedilen girilen_min_sicaklik: ");
-        //  Serial.println(girilen_min_sicaklik);
+        //Serial.println("kaydedilen girilen_min_sicaklik: ");
+        //Serial.println(girilen_min_sicaklik);
 
 
 
         girilen_max_sicaklik_durum1 = 100 * girilen_max_sicaklik;
         girilen_max_sicaklik_durum1 = girilen_max_sicaklik_durum1 >> 8;
-        //   Serial.println("girilen_max_sicaklik_durum1" );
-        //  Serial.println(girilen_max_sicaklik_durum1 );
+        //Serial.println("girilen_max_sicaklik_durum1" );
+        //Serial.println(girilen_max_sicaklik_durum1 );
         //girilen_min_sicaklik=girilen_min_sicaklik_durum1;
         girilen_max_sicaklik_durum2 = 100 * girilen_max_sicaklik;
         girilen_max_sicaklik_durum2 = 255 & girilen_max_sicaklik_durum2 ; //.................................................................
-        // Serial.println("girilen_max_sicaklik_durum2");
-        //  Serial.println(girilen_max_sicaklik_durum2);
+        //Serial.println("girilen_max_sicaklik_durum2");
+        //Serial.println(girilen_max_sicaklik_durum2);
         girilen_max_sicaklik_durum = girilen_max_sicaklik;
         EEPROM.write(12, girilen_max_sicaklik_durum1);
         EEPROM.commit();
         EEPROM.write(13, girilen_max_sicaklik_durum2);
         EEPROM.commit();
 
-        // Serial.println("girilen_max_sicaklik saved in flash memory");
+        //Serial.println("girilen_max_sicaklik saved in flash memory");
       }
       istenilen_sicaklik = doc["Ksicaklik"];
-      // Serial.println(istenilen_sicaklik);
+      //Serial.println(istenilen_sicaklik);
       if (istenilen_sicaklik != istenilen_sicaklik_durum)
       {
 
@@ -622,59 +634,71 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
         istenilen_sicaklik_durum1 = 100 * istenilen_sicaklik_durum;
         istenilen_sicaklik_durum1 = istenilen_sicaklik_durum1 >> 8;
         //Serial.println("istenilen_sicaklik_durum1" );
-        // Serial.println(istenilen_sicaklik_durum1 );
+        //Serial.println(istenilen_sicaklik_durum1 );
         //girilen_min_sicaklik=girilen_min_sicaklik_durum1;
         istenilen_sicaklik_durum2 = 100 * istenilen_sicaklik_durum;
         istenilen_sicaklik_durum2 = 255 & istenilen_sicaklik_durum2 ; //.................................................................
-        // Serial.println("istenilen_sicaklik_durum2");
-        // Serial.println(istenilen_sicaklik_durum2);
+        //Serial.println("istenilen_sicaklik_durum2");
+        //Serial.println(istenilen_sicaklik_durum2);
 
         EEPROM.write(8, istenilen_sicaklik_durum1);
         EEPROM.commit();
         EEPROM.write(9, istenilen_sicaklik_durum2);
         EEPROM.commit();
-        // Serial.println("istenilen_sicaklik saved in flash memory");
+        //Serial.println("istenilen_sicaklik saved in flash memory");
 
       }
       l_calismasure = doc["KLcalis"];
-      //  Serial.println(l_calismasure);
+      //Serial.println(l_calismasure);
       l_periotsure = doc["KLdur"];
-      // Serial.println(l_periotsure);
+      //Serial.println(l_periotsure);
       if (l_periotsure != l_periotsure_durum  || l_calismasure != l_calismasure_durum)
       {
         l_periotsure_durum = l_periotsure;
         EEPROM.write(6, l_periotsure);
         EEPROM.commit();
-        // Serial.println("IRPWMValue3 saved in flash memory");
+        //Serial.println(l_periotsure_durum);
 
         l_calismasure_durum = l_calismasure;
         EEPROM.write(7, l_calismasure);
         EEPROM.commit();
-        // Serial.println("IRPWMValue3 saved in flash memory");
+        //Serial.println("IRPWMValue3 saved in flash memory");
 
       }
       int_IRPWMValue1 = doc["Kled1"];
-      // Serial.println(int_IRPWMValue1);
+      //Serial.print("eeproma yazılmadan önce int_IRPWMValue1: ");
+
+      //Serial.println(int_IRPWMValue1);
       if (int_IRPWMValue1 != IRPWMValue1_durum)
       {
         ledcWrite(15, IRPWMValue1);
         IRPWMValue1_durum = int_IRPWMValue1;
         EEPROM.write(1, int_IRPWMValue1);
         EEPROM.commit();
-        //  Serial.print("IRPWMValue1:");
-        //  Serial.println(IRPWMValue1);
+        //Serial.print("eeproma yazılan IRPWMValue1:");
+
+        //Serial.println(IRPWMValue1);
       }
+      //Serial.print("eeproma yazıldıktan sonraki IRPWMValue1: ");
+      //Serial.println(IRPWMValue1);
+
       int_IRPWMValue2 = doc["Kled2"];
-      // Serial.println(int_IRPWMValue2);
+      //Serial.print("eeproma yazılmadan önce IRPWMValue2_durum: ");
+      //Serial.println(int_IRPWMValue2);
+
       if (int_IRPWMValue2 != IRPWMValue2_durum)
       {
         ledcWrite(13, IRPWMValue2);
         IRPWMValue2_durum = int_IRPWMValue2;
         EEPROM.write(2, int_IRPWMValue2);
         EEPROM.commit();
-        // Serial.print("IRPWMValue2:");
-        // Serial.println(IRPWMValue2);
+        //Serial.print("eeproma yazılan IRPWMValue2:");
+        //Serial.println(IRPWMValue2);
+
       }
+      //Serial.print("eeproma yazıldıktan sonraki IRPWMValue2: ");
+      //Serial.println(IRPWMValue2);
+
     }
   }
   if (msg.data().substring(0, 2) == "K2") {
@@ -682,12 +706,13 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
     DeserializationError error = deserializeJson(doc, msg.data().substring(2));
 
     if (error) {
-      //Serial.print(F("deserializeJson() failed: "));
-      //Serial.println(error.f_str());
+      ////Serial.print(F("deserializeJson() failed: "));
+      ////Serial.println(error.f_str());
       return;
     }
     else {
       int_IRPWMValue3 = doc["Kled3"];
+      //Serial.print("eeproma yazılmadan önce int_IRPWMValue3: ");
       //Serial.println(int_IRPWMValue3);
       if (int_IRPWMValue3 != IRPWMValue3_durum)
       {
@@ -695,30 +720,41 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
         IRPWMValue3_durum = int_IRPWMValue3;
         EEPROM.write(3, int_IRPWMValue3);
         EEPROM.commit();
-        // Serial.print("IRPWMValue3:");
-        // Serial.println(IRPWMValue3);
+        //Serial.print("eeproma yazılan IRPWMValue3:");
+        //Serial.println(IRPWMValue3);
       }
+      //Serial.print("eeproma yazıldıktan sonraki int_IRPWMValue3: ");
+      //Serial.println(int_IRPWMValue3);
+
+
+
       int_IRPWMValue4 = doc["Kled4"];
-      // Serial.println(int_IRPWMValue4);
+      //Serial.print("eeproma yazılmadan önce int_IRPWMValue4: ");
+      //Serial.println(int_IRPWMValue4);
       if (int_IRPWMValue4 != IRPWMValue4_durum)
       {
         ledcWrite(11, IRPWMValue4);
         IRPWMValue4_durum = int_IRPWMValue4;
         EEPROM.write(4, int_IRPWMValue4);
         EEPROM.commit();
-        //Serial.print("IRPWMValue4:");
-        // Serial.println(IRPWMValue4);
+        //Serial.print("eeproma yazılan IRPWMValue4:");
+        //Serial.println(IRPWMValue4);
       }
+      //Serial.print("eeproma yazıldıktan sonraki int_IRPWMValue4: ");
+      //Serial.println(int_IRPWMValue4);
+
+
+
       int_LEDPWMValue = doc["Kled5"];
-      //   Serial.println(int_LEDPWMValue);
+      //Serial.println(int_LEDPWMValue);
       if (int_LEDPWMValue != LEDPWMValue_durum)
       {
         ledcWrite(14, LEDPWMValue);
         LEDPWMValue_durum = int_LEDPWMValue;
         EEPROM.write(0, int_LEDPWMValue);
         EEPROM.commit();
-        //  Serial.print("LEDPWMValue:");
-        //  Serial.println(LEDPWMValue);
+        //  //Serial.print("LEDPWMValue:");
+        //Serial.println(LEDPWMValue);
       }
       istenilen_nem = doc["Kmotor"];
       //Serial.println(istenilen_nem);
@@ -727,26 +763,26 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
         istenilen_nem_durum = istenilen_nem;
         EEPROM.write(5, istenilen_nem);
         EEPROM.commit();
-        //Serial.print("istenilen_nem:");
+        ////Serial.print("istenilen_nem:");
         //Serial.println(istenilen_nem);
       }
       o_periotsure = doc["Kodur"];
-      // Serial.println(o_periotsure);
-      // Serial.println(o_periotsure_durum);
+      //Serial.println(o_periotsure);
+      //Serial.println(o_periotsure_durum);
       o_calismasure = doc["Kocalis"];
       //Serial.println(o_calismasure_durum);
-      // Serial.println(o_calismasure);
+      //Serial.println(o_calismasure);
       if (o_periotsure != o_periotsure_durum || o_calismasure != o_calismasure_durum)
       {
-        //  Serial.println("yolluyom");
+        //Serial.println("yolluyom");
         o_periotsure_durum = o_periotsure;
         EEPROM.write(14, o_periotsure);
         EEPROM.commit();
-        //  Serial.println("o_periotsure saved in flash memory");
+        //Serial.println("o_periotsure saved in flash memory");
         o_calismasure_durum = o_calismasure;
         EEPROM.write(15, o_calismasure);
         EEPROM.commit();
-        // Serial.println("o_calismasure saved in flash memory");
+        //Serial.println("o_calismasure saved in flash memory");
       }
 
       client.send("kaydet");
@@ -758,47 +794,48 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
     DeserializationError error = deserializeJson(doc, msg.data().substring(5));
 
     if (error) {
-      // Serial.print(F("deserializeJson() failed: "));
-      // Serial.println(error.f_str());
+      // //Serial.print(F("deserializeJson() failed: "));
+      ////Serial.println(error.f_str());
       return;
     }
     else {
       int_IRPWMValue1 = doc["led1"];
     }
     IRPWMValue1 = int_IRPWMValue1 * 2.55;
-    // Serial.println(int_IRPWMValue1);
-    // Serial.println(IRPWMValue1);
+    //Serial.println("gelen mesaj int_IRPWMValue1");
+    //Serial.println(int_IRPWMValue1);
+    //Serial.println(IRPWMValue1);
 
-      ledcWrite(15, IRPWMValue1);
-    
+    ledcWrite(15, IRPWMValue1);
+
   }
   if (msg.data().substring(0, 5) == "led2:") {
     StaticJsonDocument<200> doc;
     DeserializationError error = deserializeJson(doc, msg.data().substring(5));
 
     if (error) {
-      //  Serial.print(F("deserializeJson() failed: "));
-      //  Serial.println(error.f_str());
+      ////Serial.print(F("deserializeJson() failed: "));
+      ////Serial.println(error.f_str());
       return;
     }
     else {
       int_IRPWMValue2 = doc["led2"];
     }
     IRPWMValue2 = int_IRPWMValue2 * 2.55;
-    // Serial.println(int_IRPWMValue2);
+    //Serial.println(int_IRPWMValue2);
     //Serial.println(IRPWMValue2);
 
-   
-      ledcWrite(13, IRPWMValue2);
-    
+
+    ledcWrite(13, IRPWMValue2);
+
   }
   if (msg.data().substring(0, 5) == "led3:") {
     StaticJsonDocument<200> doc;
     DeserializationError error = deserializeJson(doc, msg.data().substring(5));
 
     if (error) {
-      //  Serial.print(F("deserializeJson() failed: "));
-      //  Serial.println(error.f_str());
+      //  //Serial.print(F("deserializeJson() failed: "));
+      ////Serial.println(error.f_str());
       return;
     }
     else {
@@ -808,33 +845,33 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
     //Serial.println(int_IRPWMValue3);
     //Serial.println(IRPWMValue3);
 
-   
-      ledcWrite(12, IRPWMValue3);
 
-    
+    ledcWrite(12, IRPWMValue3);
+
+
   }
   if (msg.data().substring(0, 5) == "led4:") {
     StaticJsonDocument<200> doc;
     DeserializationError error = deserializeJson(doc, msg.data().substring(5));
 
     if (error) {
-      // Serial.print(F("deserializeJson() failed: "));
-      //  Serial.println(error.f_str());
+      ////Serial.print(F("deserializeJson() failed: "));
+      ////Serial.println(error.f_str());
       return;
     }
     else {
       int_IRPWMValue4 = doc["led4"];
     }
     IRPWMValue4 = int_IRPWMValue4 * 2.55;
-    //Serial.println(int_IRPWMValue4);
-    // Serial.println(IRPWMValue4);
+    //Serial.print(int_IRPWMValue4);
+
 
 
     //Serial.print("IRLED4:");
     //Serial.println(IRPWMValue4);
-    
-      ledcWrite(11, IRPWMValue4);
-    
+
+    ledcWrite(11, IRPWMValue4);
+
 
   }
 
@@ -843,21 +880,21 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
     StaticJsonDocument<200> doc;
     DeserializationError error = deserializeJson(doc, msg.data().substring(5));
     if (error) {
-      //  Serial.print(F("deserializeJson() failed: "));
-      //  Serial.println(error.f_str());
+      //  //Serial.print(F("deserializeJson() failed: "));
+      ////Serial.println(error.f_str());
       return;
     }
     else {
       int_LEDPWMValue = doc["led5"];
-     
+
     }
     LEDPWMValue = int_LEDPWMValue * 2.55;
-    // Serial.print(int_LEDPWMValue);
-    // Serial.println(LEDPWMValue);
-    
-      ledcWrite(14, LEDPWMValue);
+    //Serial.print(int_LEDPWMValue);
+    //Serial.println(LEDPWMValue);
 
-    
+    ledcWrite(14, LEDPWMValue);
+
+
   }
 
 
@@ -867,8 +904,8 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
     DeserializationError error = deserializeJson(doc, msg.data().substring(6));
 
     if (error) {
-      //Serial.print(F("deserializeJson() failed: "));
-      //Serial.println(error.f_str());
+      ////Serial.print(F("deserializeJson() failed: "));
+      ////Serial.println(error.f_str());
       return;
     }
     else {
@@ -885,19 +922,37 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
     DeserializationError error = deserializeJson(doc, msg.data().substring(4));
 
     if (error) {
-      // Serial.print(F("deserializeJson() failed: "));
-      // Serial.println(error.f_str());
+      // //Serial.print(F("deserializeJson() failed: "));
+      ////Serial.println(error.f_str());
       return;
     }
     else {
       o_periotsure = doc["o_periotsure"];
       o_calismasure = doc["o_calismasure"];
-    }
-    // Serial.println(o_periotsure);
-    // Serial.println(o_calismasure);
+      if (o_periotsure == 0 || o_calismasure == 0) {
+        if (o_periotsure == 0 && o_calismasure != 0) {
 
-    o_tiklandi = true;
-    o_calisma = true;
+          o_tiklandi = false;
+          o_calisma = false;
+           digitalWrite(h2o, HIGH);
+        }
+        else{
+          o_tiklandi = false;
+          o_calisma = false;
+           digitalWrite(h2o, LOW);
+        }
+
+      }
+
+      else {
+        o_tiklandi = true;
+        o_calisma = true;
+      }
+    }
+    //Serial.println(o_periotsure);
+    //Serial.println(o_calismasure);
+
+
 
   }
 
@@ -906,22 +961,54 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
     DeserializationError error = deserializeJson(doc, msg.data().substring(4));
 
     if (error) {
-      //  Serial.print(F("deserializeJson() failed: "));
-      //  Serial.println(error.f_str());
+      ////Serial.print(F("deserializeJson() failed: "));
+      ////Serial.println(error.f_str());
       return;
     }
     else {
+      //Serial.println("led setup ayarlaya basıldı");
+      //Serial.print("l_calismasure: ");
+      //Serial.println(l_calismasure);
+
+      //Serial.print("l_periotsure: ");
+      //Serial.println(l_periotsure);
       l_periotsure = doc["l_periotsure"];
       l_calismasure = doc["l_calismasure"];
+      if (l_periotsure == 0 || l_calismasure == 0) {
+        if (l_periotsure == 0 && l_calismasure != 0) {
+          l_tiklandi = false;
+          l_calisma = false;
+
+        }
+        else {
+
+          //Serial.println("olacağımm");
+          l_tiklandi = false;
+          l_calisma = false;
+          int int_IRPWMValue1 = 0;
+          int int_IRPWMValue2 = 0;
+          int int_IRPWMValue3 = 0;
+          int int_IRPWMValue4 = 0;
+          ledcWrite(IRChannel1, 0);
+          ledcWrite(IRChannel2, 0);
+          ledcWrite(IRChannel3, 0);
+          ledcWrite(IRChannel4, 0);
+        }
+
+      }
+      else {
+        l_tiklandi = true;
+        l_calisma = true;
+      }
     }
-    // Serial.println(l_periotsure);
-    // Serial.println(l_calismasure);
+
+    //Serial.print("burada l_periotsure: ");
+    //Serial.println(l_periotsure);
+
+    //Serial.print("burada l_calismasure: ");
+    //Serial.println(l_calismasure);
 
 
-
-    l_tiklandi = true;
-    l_calisma = true;
-    //Serial.println(calis);
 
   }
 
@@ -930,8 +1017,8 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
     DeserializationError error = deserializeJson(doc, msg.data().substring(9));
 
     if (error) {
-      //   Serial.print(F("deserializeJson() failed: "));
-      //  Serial.println(error.f_str());
+      //   //Serial.print(F("deserializeJson() failed: "));
+      ////Serial.println(error.f_str());
       return;
     }
     else {
@@ -948,16 +1035,16 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg)
     DeserializationError error = deserializeJson(doc, msg.data().substring(6));
 
     if (error) {
-      //Serial.print(F("deserializeJson() failed: "));
-      //Serial.println(error.f_str());
+      ////Serial.print(F("deserializeJson() failed: "));
+      ////Serial.println(error.f_str());
       return;
     }
     else {
       girilen_min_sicaklik = doc["min"];
       girilen_max_sicaklik = doc["max"];
     }
-    //  Serial.println("arayüzden gelen girilen_min_sicaklik");
-    //  Serial.println(girilen_min_sicaklik);
+    //Serial.println("arayüzden gelen girilen_min_sicaklik");
+    //Serial.println(girilen_min_sicaklik);
 
   }
 
@@ -1001,303 +1088,106 @@ void loop() {
     Wire.requestFrom(Addr, 6);
     // Read 6 bytes of data
     // temp msb, temp lsb, temp crc, hum msb, hum lsb, hum crc
+
+    /* unsigned long simdiki_sensor_sure = millis();
+      //Serial.println(sensor_sure);
+      //Serial.println(simdiki_sensor_sure);*/
+    //if(sensor_sure <= simdiki_sensor_sure){
+
     if (Wire.available() == 6)
     {
+      /*if (sensor_sure == 0) {
+        sensor_sure = millis();
+        }*/
+      // sensor_sure = millis() + 5000;
       data[0] = Wire.read();
       data[1] = Wire.read();
       data[2] = Wire.read();
       data[3] = Wire.read();
       data[4] = Wire.read();
       data[5] = Wire.read();
-    }
-    //second write and read
-    {
-      unsigned int data2[6];
-      // Start I2C Transmission
-      Wire.beginTransmission(Addr2);
-      // Send 16-bit command byte
-      Wire.write(0x2C);
-      Wire.write(0x06);
-      // Stop I2C transmission
-      Wire.endTransmission();
-      //delay(300);
-      // Start I2C Transmission
-      Wire.beginTransmission(Addr2);
-      // Stop I2C Transmission
-      Wire.endTransmission();
-      // Request 6 bytes of data
-      Wire.requestFrom(Addr2, 6);
-      // Read 6 bytes of data
-      // temp msb, temp lsb, temp crc, hum msb, hum lsb, hum crc
-      if (Wire.available() == 6)
-      {
-        data2[0] = Wire.read();
-        data2[1] = Wire.read();
-        data2[2] = Wire.read();
-        data2[3] = Wire.read();
-        data2[4] = Wire.read();
-        data2[5] = Wire.read();
-      }
-      // Convert the data
-      int temp = (data[0] * 256) + data[1];
-      float cTemp = -45.0 + (175.0 * temp / 65535.0);
-      //float fTemp = (cTemp * 1.8) + 32.0;
-      float humidity = (100.0 * ((data[3] * 256.0) + data[4])) / 65535.0;
-      int temp2 = (data2[0] * 256) + data2[1];
-      float cTemp2 = -45.0 + (175.0 * temp2 / 65535.0);
-      // float fTemp2 = (cTemp2 * 1.8) + 32.0;
-      float humidity2 = (100.0 * ((data2[3] * 256.0) + data2[4])) / 65535.0;
-      String sicaklik1;
-      String nem1;
-      String sicaklik2;
-      String nem2;
-      sicaklik1 = String(cTemp2);
-      nem1 = String(humidity2);
-      sicaklik2 = String(cTemp);
-      nem2 = String(humidity);
-      String hepsi = sicaklik1 + "/" + nem1 + "/" + sicaklik2 + "/" + nem2;
-      if (cTemp2 > 100 || cTemp2 < 0) {
-        client.send("sol_sicaklik:Hata");
-      }
-      else {
-        client.send("sol_sicaklik:" + sicaklik1);
-      }
-      if (cTemp > 100 || cTemp < 0) {
-        client.send("sag_sicaklik:Hata");
-      }
-      else {
-        client.send("sag_sicaklik:" + sicaklik2);
-      }
-      if (humidity2 > 100 || humidity2 < 0) {
-        client.send("sol_nem:Hata");
-      }
-      else {
-        client.send("sol_nem:" + nem1);
-      }
-      if (humidity > 100 || humidity < 0) {
-        client.send("sag_nem:Hata");
-      }
-      else {
-
-        client.send("sag_nem:" + nem2);
-      }
-      if (ilk_acilma == false) {
-
-        String json = "{" ;
-        json = json + "\"girilen_min_sicaklik\":" + girilen_min_sicaklik +
-               ",\"girilen_max_sicaklik\":" + girilen_max_sicaklik +
-               ",\"istenilen_sicaklik\":" + istenilen_sicaklik +
-               ",\"l_periotsure\":" + l_periotsure +
-               ",\"l_calismasure\":" + l_calismasure +
-               ",\"IRPWMValue1\":" + int_IRPWMValue1 +
-               ",\"IRPWMValue2\":" + int_IRPWMValue2 +
-               ",\"IRPWMValue3\":" + int_IRPWMValue3 +
-               ",\"IRPWMValue4\":" + int_IRPWMValue4 +
-               ",\"LEDPWMValue\":" + int_LEDPWMValue +
-               ",\"istenilen_nem\":" + istenilen_nem +
-               ",\"o_periotsure\":" + o_periotsure +
-               ",\"o_calismasure\":" + o_calismasure +
-               "}";
-        client.send("veriler" + json);
-        ilk_acilma = true;
-      }
-      if (0.00 < humidity && humidity < 100.00) {
-
-        if (0.00 < humidity2 && humidity2 < 100.00) {
-          ort_humidity = ((humidity + humidity2) / 2);
-        }
-        else {
-          ort_humidity = humidity;
-        }
-      }
-
-      else {
-        if (0.00 < humidity2 && humidity2 < 100.00) {
-          ort_humidity = humidity2;
-        }
-        else {
-          //Serial.println("2 sensör de bozuk");
-        }
-      }
-      if (0.00 < cTemp && cTemp < 100.00) {
-
-        if (0.00 < cTemp2 && cTemp2 < 100.00) {
-          ort_cTemp = ((cTemp + cTemp2) / 2);
-        }
-        else {
-          ort_cTemp = cTemp;
-        }
-      }
-
-      else {
-        if (0.00 < cTemp2 && cTemp2 < 100.00) {
-          ort_cTemp = cTemp2;
-        }
-        else {
-          // Serial.println("2 sensör de bozuk");
-        }
-      }
-
-      //ledcWrite(IRChannel1,IRPWMValue1);
-      //ledcWrite(IRChannel2,IRPWMValue2);
-      // ledcWrite(IRChannel3,IRPWMValue3);
-      //ledcWrite(IRChannel4,IRPWMValue4);
-      // ledcWrite(LEDChannel,LEDPWMValue);
-      if (o_tiklandi == true) {
-
-        if (o_calisma == true) {
-
-          o_calismasuref();
-
-        } else {
-          o_periotsuref();
-
-        }
-      }
-
-      if (ort_humidity < istenilen_nem) {
-
-        digitalWrite(motor, HIGH);
-      } else {
-        digitalWrite(motor, LOW);
-      }
-
-
-      if (ort_cTemp < istenilen_sicaklik) {
-        if (kontrol == false) {
-          if (l_tiklandi == true) {
-            if (l_calisma == true) {
-
-              l_calismasuref();
-
-            } else {
-              l_periotsuref();
-
-            }
-          }
-        }
-        else if (kontrol == true) {
-          l_calisma = true;
-          l_calisma_ilk = false;
-          l_periot_ilk = false;
-          kontrol = false;
-          l_calismasuref();
-        }
-      }
-      else {
-        kontrol == true;
-        ledcWrite(IRChannel1, 0);
-        ledcWrite(IRChannel2, 0);
-        ledcWrite(IRChannel3, 0);
-        ledcWrite(IRChannel4, 0);
-      }
-
 
     }
-    // client.close();
-  }
-  ilk_acilma = false;
-  //return;
-  unsigned int data[6];
-  // ledcWrite(ledChannel, 50);
-  // Start I2C Transmission
-  Wire.beginTransmission(Addr);
-  // Send 16-bit command byte
-  Wire.write(0x2C);
-  Wire.write(0x06);
-  // Stop I2C transmission
-  Wire.endTransmission();
-  //delay(300);
-  // Start I2C Transmission
-  Wire.beginTransmission(Addr);
-  // Stop I2C Transmission
-  Wire.endTransmission();
-  // Request 6 bytes of data
-  Wire.requestFrom(Addr, 6);
-  // Read 6 bytes of data
-  // temp msb, temp lsb, temp crc, hum msb, hum lsb, hum crc
-  if (Wire.available() == 6)
-  {
-    data[0] = Wire.read();
-    data[1] = Wire.read();
-    data[2] = Wire.read();
-    data[3] = Wire.read();
-    data[4] = Wire.read();
-    data[5] = Wire.read();
-  }
-  //second write and read
-  {
-    unsigned int data2[6];
-    // Start I2C Transmission
-    Wire.beginTransmission(Addr2);
-    // Send 16-bit command byte
-    Wire.write(0x2C);
-    Wire.write(0x06);
-    // Stop I2C transmission
-    Wire.endTransmission();
-    //delay(300);
-    // Start I2C Transmission
-    Wire.beginTransmission(Addr2);
-    // Stop I2C Transmission
-    Wire.endTransmission();
-    // Request 6 bytes of data
-    Wire.requestFrom(Addr2, 6);
-    // Read 6 bytes of data
-    // temp msb, temp lsb, temp crc, hum msb, hum lsb, hum crc
-    if (Wire.available() == 6)
-    {
-      data2[0] = Wire.read();
-      data2[1] = Wire.read();
-      data2[2] = Wire.read();
-      data2[3] = Wire.read();
-      data2[4] = Wire.read();
-      data2[5] = Wire.read();
-    }
+    //}else{
+
+    // }
+    float cTemp = mlx.readObjectTempC();
+
+
+    ////Serial.print("Ambient = "); //Serial.print(mlx.readAmbientTempC());
+    ////Serial.print("*C\tObject = "); //Serial.print(mlx.readObjectTempC());//Serial.println("*C");
+
+
     // Convert the data
-    int temp = (data[0] * 256) + data[1];
-    float cTemp = -45.0 + (175.0 * temp / 65535.0);
+    int temp2 = (data[0] * 256) + data[1];
+    float cTemp2 = -45.0 + (175.0 * temp2 / 65535.0); //ortam sıcaklığı
     //float fTemp = (cTemp * 1.8) + 32.0;
-    float humidity = (100.0 * ((data[3] * 256.0) + data[4])) / 65535.0;
-    int temp2 = (data2[0] * 256) + data2[1];
-    float cTemp2 = -45.0 + (175.0 * temp2 / 65535.0);
-    // float fTemp2 = (cTemp2 * 1.8) + 32.0;
-    float humidity2 = (100.0 * ((data2[3] * 256.0) + data2[4])) / 65535.0;
-    if (0.00 < humidity && humidity < 100.00) {
+    float humidity2 = (100.0 * ((data[3] * 256.0) + data[4])) / 65535.0;
 
-      if (0.00 < humidity2 && humidity2 < 100.00) {
-        ort_humidity = ((humidity + humidity2) / 2);
-      }
-      else {
-        ort_humidity = humidity;
-      }
+
+
+    String sicaklik1; //YANİ SOL SICAKLIK ORTAM SICAKLIĞI
+    String nem1;
+
+    String sicaklik2; //YANİ SAĞ SICAKLIK VÜCUT SICAKLIĞI
+
+    sicaklik1 = String(cTemp2);
+    nem1 = String(humidity2);
+
+    sicaklik2 = String(cTemp);
+
+
+    //ORTAM SICAKLIĞI SENSÖRÜNDEN GELEN
+    if (cTemp2 > 100 || cTemp2 < 0) {
+
+      client.send("sol_sicaklik:Hata");
     }
-
     else {
-      if (0.00 < humidity2 && humidity2 < 100.00) {
-        ort_humidity = humidity2;
-      }
-      else {
-        //Serial.println("2 sensör de bozuk");
-      }
-    }
-    if (0.00 < cTemp && cTemp < 100.00) {
 
-      if (0.00 < cTemp2 && cTemp2 < 100.00) {
-        ort_cTemp = ((cTemp + cTemp2) / 2);
-      }
-      else {
-        ort_cTemp = cTemp;
-      }
+      client.send("sol_sicaklik:" + sicaklik1);
     }
 
+    if (humidity2 > 100 || humidity2 < 0) {
+      client.send("sol_nem:Hata");
+    }
     else {
-      if (0.00 < cTemp2 && cTemp2 < 100.00) {
-        ort_cTemp = cTemp2;
-      }
-      else {
-        // Serial.println("2 sensör de bozuk");
-      }
+      ort_humidity = humidity2;
+      client.send("sol_nem:" + nem1);
     }
+    //VÜCUT SICAKLIĞI SENSÖRÜNDEN GELEN
+    if (cTemp > 100 || cTemp < 0) {
+      client.send("sag_sicaklik:Hata");
+
+    }
+    else {
+      ort_cTemp = cTemp;
+      client.send("sag_sicaklik:" + sicaklik2);
+    }
+
+
+    if (ilk_acilma == false) {
+
+      String json = "{" ;
+      json = json + "\"girilen_min_sicaklik\":" + girilen_min_sicaklik +
+             ",\"girilen_max_sicaklik\":" + girilen_max_sicaklik +
+             ",\"istenilen_sicaklik\":" + istenilen_sicaklik +
+             ",\"l_periotsure\":" + l_periotsure +
+             ",\"l_calismasure\":" + l_calismasure +
+             ",\"IRPWMValue1\":" + int_IRPWMValue1 +
+             ",\"IRPWMValue2\":" + int_IRPWMValue2 +
+             ",\"IRPWMValue3\":" + int_IRPWMValue3 +
+             ",\"IRPWMValue4\":" + int_IRPWMValue4 +
+             ",\"LEDPWMValue\":" + int_LEDPWMValue +
+             ",\"istenilen_nem\":" + istenilen_nem +
+             ",\"o_periotsure\":" + o_periotsure +
+             ",\"o_calismasure\":" + o_calismasure +
+             "}";
+      client.send("veriler" + json);
+      ilk_acilma = true;
+    }
+
+
+
 
     //ledcWrite(IRChannel1,IRPWMValue1);
     //ledcWrite(IRChannel2,IRPWMValue2);
@@ -1354,6 +1244,140 @@ void loop() {
     }
 
 
+
+    // client.close();
   }
+  ilk_acilma = false;
+  //return;
+  unsigned int data[6];
+  // ledcWrite(ledChannel, 50);
+  // Start I2C Transmission
+  Wire.beginTransmission(Addr);
+  // Sesend 16-bit command byte
+  Wire.write(0x2C);
+  Wire.write(0x06);
+  // Stop I2C transmission
+  Wire.endTransmission();
+  //delay(300);
+  // Start I2C Transmission
+  Wire.beginTransmission(Addr);
+  // Stop I2C Transmission
+  Wire.endTransmission();
+  // Request 6 bytes of data
+  Wire.requestFrom(Addr, 6);
+  // Read 6 bytes of data
+  // temp msb, temp lsb, temp crc, hum msb, hum lsb, hum crc
+  if (Wire.available() == 6)
+  {
+    data[0] = Wire.read();
+    data[1] = Wire.read();
+    data[2] = Wire.read();
+    data[3] = Wire.read();
+    data[4] = Wire.read();
+    data[5] = Wire.read();
+  }
+  //second write and read
+  // Convert the data
+  int temp2 = (data[0] * 256) + data[1];
+  float cTemp2 = -45.0 + (175.0 * temp2 / 65535.0); //ortam sıcaklığı
+
+  float humidity2 = (100.0 * ((data[3] * 256.0) + data[4])) / 65535.0;
+
+  float cTemp = mlx.readObjectTempC();
+
+  String sicaklik1; //YANİ SOL SICAKLIK ORTAM SICAKLIĞI
+  String nem1;
+
+  String sicaklik2; //YANİ SAĞ SICAKLIK VÜCUT SICAKLIĞI
+
+  sicaklik1 = String(cTemp2);
+  nem1 = String(humidity2);
+
+  sicaklik2 = String(cTemp);
+
+  //ORTAM SICAKLIĞI SENSÖRÜNDEN GELEN
+  if (cTemp2 > 100 || cTemp2 < 0) {
+    client.send("sol_sicaklik:Hata");
+  }
+  else {
+    client.send("sol_sicaklik:" + sicaklik1);
+  }
+
+  if (humidity2 > 100 || humidity2 < 0) {
+
+    client.send("sol_nem:Hata");
+  }
+  else {
+    ort_humidity = humidity2;
+    client.send("sol_nem:" + nem1);
+  }
+  //VÜCUT SICAKLIĞI SENSÖRÜNDEN GELEN
+  if (cTemp > 100 || cTemp < 0) {
+    client.send("sag_sicaklik:Hata");
+  }
+  else {
+    ort_cTemp = cTemp;
+    client.send("sag_sicaklik:" + sicaklik2);
+  }
+
+  //ledcWrite(IRChannel1,IRPWMValue1);
+  //ledcWrite(IRChannel2,IRPWMValue2);
+  // ledcWrite(IRChannel3,IRPWMValue3);
+  //ledcWrite(IRChannel4,IRPWMValue4);
+  // ledcWrite(LEDChannel,LEDPWMValue);
+  if (o_tiklandi == true) {
+
+    if (o_calisma == true) {
+
+      o_calismasuref();
+
+    } else {
+      o_periotsuref();
+
+    }
+  }
+
+  if (ort_humidity < istenilen_nem) {
+    /*  //Serial.println(istenilen_nem);
+      //Serial.println(ort_humidity);
+       //Serial.println("nemçalıştım");*/
+    digitalWrite(motor, HIGH);
+  } else {
+    /*//Serial.println(istenilen_nem);
+      //Serial.println(ort_humidity);
+      //Serial.print+ln("nemdurdum");*/
+    digitalWrite(motor, LOW);
+  }
+
+
+  if (ort_cTemp < istenilen_sicaklik) {
+    if (kontrol == false) {
+      if (l_tiklandi == true) {
+        if (l_calisma == true) {
+
+          l_calismasuref();
+
+        } else {
+          l_periotsuref();
+
+        }
+      }
+    }
+    else if (kontrol == true) {
+      l_calisma = true;
+      l_calisma_ilk = false;
+      l_periot_ilk = false;
+      kontrol = false;
+      l_calismasuref();
+    }
+  }
+  else {
+    kontrol == true;
+    ledcWrite(IRChannel1, 0);
+    ledcWrite(IRChannel2, 0);
+    ledcWrite(IRChannel3, 0);
+    ledcWrite(IRChannel4, 0);
+  }
+
 
 }
