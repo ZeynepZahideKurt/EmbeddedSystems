@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>WebSocket Test</title>
+<script language="javascript" type="text/javascript">
+  var wsUri = "wss://echo.websocket.org/";
+  var output;
+
+  function init() {
+    output = document.getElementById("output");
+    testWebSocket();
+  }
+
+  function testWebSocket() {
+   // const WS_URL = "ws:///192.168.1.239:9977";
+    const WS_URL= "ws:///89.19.23.98:9977";
+    ws = new WebSocket(WS_URL);
+    ws.onopen = () => {
+      console.log(`Connected to ${WS_URL}`);
+      ws.send("çalıştım");
+    };
+    ws.onmessage = message => {
+      console.log(message.data);
+    };
+  }
+
+  function onOpen(evt) {
+    writeToScreen("CONNECTED");
+    doSend("WebSocket rocks");
+  }
+
+  function onClose(evt) {
+    writeToScreen("DISCONNECTED");
+  }
+
+  function onMessage(evt) {
+    writeToScreen(
+      '<span style="color: blue;">RESPONSE: ' + evt.data + "</span>"
+    );
+    websocket.close();
+  }
+
+  function onError(evt) {
+    writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+  }
+
+  function doSend(message) {
+    writeToScreen("SENT: " + message);
+    websocket.send("sckjsvsbdks");
+  }
+
+  function writeToScreen(message) {
+    var pre = document.createElement("p");
+    pre.style.wordWrap = "break-word";
+    pre.innerHTML = message;
+    output.appendChild(pre);
+  }
+
+  window.addEventListener("load", init, false);
+</script>
+
+<h2>WebSocket Test</h2>
+
+<div id="output"></div>

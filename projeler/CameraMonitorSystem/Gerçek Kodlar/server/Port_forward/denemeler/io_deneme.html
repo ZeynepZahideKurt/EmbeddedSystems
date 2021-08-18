@@ -1,0 +1,186 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <style>
+    body {
+      margin: 0;
+
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    ul li {
+      background: #cce5ff;
+      margin: 10px;
+      padding: 3px;
+      width: 80%;
+    }
+
+    .column {
+      float: left;
+      width: 50%;
+      min-width: 600;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    .topnav {
+      margin: 0;
+      overflow: hidden;
+      background-color: #4d009a;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .2);
+    }
+
+    #isim {
+      margin: 0;
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 20px 25px;
+      text-decoration: none;
+      font-size: 25px;
+    }
+
+    #sag {
+      margin: 0;
+      float: right;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 20px 25px;
+      text-decoration: none;
+      font-size: 25px;
+    }
+
+    #cikis {
+      margin: 0;
+      float: right;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 20px 25px;
+      text-decoration: none;
+      font-size: 25px;
+    }
+
+    .topnav a:hover {
+      background-color: rgb(48, 135, 146);
+      color: black;
+    }
+  </style>
+  <title>Enelsis Kamera</title>
+</head>
+
+<body id="dene">
+  <div class="topnav">
+    <a id="isim" class="active"></a>
+
+    <a id="cikis">Çıkış Yap</a>
+    <a id="sag" href="http://192.168.1.239">Canlı Yayın</a>
+  </div>
+  <class class="row">
+    <div id="video" class="column">
+      <button style="margin-left: 10px; margin-top: 15px;padding: 10px;" id="reset" onclick="resetleme()">Kamera
+        Resetle</button>
+      <h2 style="margin-left: 10px;">Video</h2>
+
+    </div>
+    <div class="column">
+      <h2>Video Listesi</h2>
+      <ul id="add-message"></ul>
+    </div>
+  </class>
+  </div>
+  <div id="ilk">
+    <form></form>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.0/socket.io.js"></script>
+  <script>
+    var kişi_adı = "Enelsis"
+
+    var x = document.createElement("VIDEO");
+    const img = document.querySelector("source");
+    const {token} = sessionStorage;
+    const soket = io("/io",{
+  query: {token}
+});
+    
+    soket.on("deneme", (data) => {
+      video_load("http://192.168.1.239/video" + data.sonuc);
+    });
+    soket.on("liste", (data) => {
+      document.getElementById("isim").innerHTML = kişi_adı
+      list(data);
+      //document.getElementById("ilk").appendChild(list(data));
+    });
+
+    function video_load(gelen) {
+      x.setAttribute("src", gelen);
+      //x.onloadstart = function () {};
+      x.setAttribute("width", "600");
+      x.setAttribute("height", "400");
+      x.setAttribute("controls", "controls");
+      document.querySelector("#video").append(x);
+    }
+
+    function list(json) {
+      var list = document.createElement("ul");
+
+      for (var i = 0; i < json.length; i++) {
+        var item = document.createElement("li");
+        item.innerHTML = json[i];
+        document.querySelector("#add-message").append(item);
+      }
+      return list;
+    }
+
+    document
+      .querySelector("#add-message")
+      .addEventListener("click", function (e) {
+        soket.emit("tiklandi", e.target.innerHTML);
+        console.log(e.target.innerHTML);
+      });
+    function resetleme(e) {
+      soket.emit("reset");
+    }
+    document
+      .querySelector("#cikis")
+      .addEventListener("click", function (e) {
+        var deneme = {
+     istek:"cık"
+        };
+        try {
+          const body = deneme;
+          fetch("http://192.168.1.239/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          })
+            .then((response) => response.json())
+            .then((json) => {
+             if(json.sonuc="basarılı"){
+               window.location="http://192.168.1.239/login"
+             }
+            });
+        } catch (error) {
+          console.log(error);
+        }
+
+      });
+    function resetleme(e) {
+      soket.emit("reset");
+    }
+
+
+  </script>
+</body>
+
+</html>

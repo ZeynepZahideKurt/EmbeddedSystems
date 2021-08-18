@@ -1,8 +1,6 @@
 //https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_dev_index.json
-<<<<<<< Updated upstream
+
 //ESP Dev MODUL-1 MB APP-3MB SPIFFS 
-=======
->>>>>>> Stashed changes
 
 #include <ArduinoWebsockets.h>
 #include "esp_http_server.h"
