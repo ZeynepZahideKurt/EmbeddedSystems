@@ -45,7 +45,7 @@ int Krish_min;
 int Krish_sec;
 char inByte;
 int c;
-int kontrolcircle=0;
+int kontrolcircle = 0;
 int kontrolsayi;
 int kontrol1 = 0;
 
@@ -55,27 +55,27 @@ char arr[20];
 char displayArr[40];
 
 typedef enum {
-  LEFT = 0, CENTER = 1, RIGHT = 2, RIGHT_UP = 3, CENTER_UP = 4, CENTER_LEFT = 5, BIR_PIKSEL = 6 , IKI_PIKSEL = 7, UC_PIKSEL = 8, DORT_PIKSEL = 9,  SAAT=10
+  LEFT = 0, CENTER = 1, RIGHT = 2, RIGHT_UP = 3, CENTER_UP = 4, CENTER_LEFT = 5, BIR_PIKSEL = 6 , IKI_PIKSEL = 7, UC_PIKSEL = 8, DORT_PIKSEL = 9,  SAAT = 10
 } LOCATION;
 typedef enum {
   INSTRUCTION = 0, DATA = 1
 } TRANSMODE;
 /*typedef enum {
-  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0xDF, 0xC3, 0xDB, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 1, 
-  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0xA3, 0xAB, 0x8B, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 2, 
-  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x83, 0xAB, 0xAB, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 3, 
-  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x83, 0xDF, 0xE3, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 4, 
-  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x8B, 0xAB, 0xA3, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 5, 
+  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0xDF, 0xC3, 0xDB, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 1,
+  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0xA3, 0xAB, 0x8B, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 2,
+  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x83, 0xAB, 0xAB, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 3,
+  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x83, 0xDF, 0xE3, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 4,
+  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x8B, 0xAB, 0xA3, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 5,
   0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x8B, 0xAB, 0x83, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 6
-} KOYUSAYI;
-typedef enum {
-  0x18, 0x24, 0x42, 0x42, 0x81, 0x81, 0xA1, 0xBD, 0xA5, 0x81, 0x42, 0x42 , 0x24 , 0x18 = 1, 
-  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0xA3, 0xAB, 0x8B, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 2, 
-  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x83, 0xAB, 0xAB, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 3, 
-  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x83, 0xDF, 0xE3, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 4, 
-  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x8B, 0xAB, 0xA3, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 5, 
+  } KOYUSAYI;
+  typedef enum {
+  0x18, 0x24, 0x42, 0x42, 0x81, 0x81, 0xA1, 0xBD, 0xA5, 0x81, 0x42, 0x42 , 0x24 , 0x18 = 1,
+  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0xA3, 0xAB, 0x8B, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 2,
+  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x83, 0xAB, 0xAB, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 3,
+  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x83, 0xDF, 0xE3, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 4,
+  0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x8B, 0xAB, 0xA3, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 5,
   0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0x8B, 0xAB, 0x83, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28 = 6
-} ACIKSAYI;*/
+  } ACIKSAYI;*/
 
 #ifndef LED_BUILTIN
 #define LED_BUILTIN 2 // ESP32 DOES NOT DEFINE LED_BUILTIN
@@ -87,12 +87,12 @@ int LED = LED_BUILTIN;
 
 float cTemp;
 float humidity;
-const uint8_t KOYUBIR[16] = {0x18, 0x24, 0x42, 0x42, 0x81, 0x81,    0xA1,  0xBD,0xA5,   0x81,0x42, 0x42, 0x24,0x18, 0x00, 0x00 };
-const uint8_t KOYUIKI[16] = {0x18, 0x24, 0x42, 0x42, 0x81, 0x81,    0xDD,  0xD5,0xF5,    0x81,0x42, 0x42, 0x24,0x18, 0x00, 0x00 };
-const uint8_t KOYUUC[16] = {0x18, 0x24, 0x42, 0x42, 0x81, 0x81,     0xFD,  0xD5,0xD5,   0x81,0x42, 0x42, 0x24,0x18 , 0x00, 0x00};
-const uint8_t KOYUDORT[16] = {0x18, 0x24, 0x42, 0x42, 0x81, 0x81,     0xFD,  0x91,0x8D,    0x81,0x42, 0x42, 0x24,0x18, 0x00, 0x00 };
-const uint8_t KOYUBES[16] = {0x18, 0x24, 0x42, 0x42, 0x81, 0x81,    0xF5, 0xD5,0xDD,     0x81,0x42, 0x42, 0x24,0x18, 0x00, 0x00 };
-const uint8_t KOYUALTI[16] = {0x18, 0x24, 0x42, 0x42, 0x81, 0x81,       0xF5, 0xD5,0xFD,    0x81,0x42, 0x42, 0x24,0x18, 0x00, 0x00 };
+const uint8_t KOYUBIR[16] = {0x18, 0x24, 0x42, 0x42, 0x81, 0x81,    0xA1,  0xBD, 0xA5,   0x81, 0x42, 0x42, 0x24, 0x18, 0x00, 0x00 };
+const uint8_t KOYUIKI[16] = {0x18, 0x24, 0x42, 0x42, 0x81, 0x81,    0xDD,  0xD5, 0xF5,    0x81, 0x42, 0x42, 0x24, 0x18, 0x00, 0x00 };
+const uint8_t KOYUUC[16] = {0x18, 0x24, 0x42, 0x42, 0x81, 0x81,     0xFD,  0xD5, 0xD5,   0x81, 0x42, 0x42, 0x24, 0x18 , 0x00, 0x00};
+const uint8_t KOYUDORT[16] = {0x18, 0x24, 0x42, 0x42, 0x81, 0x81,     0xFD,  0x91, 0x8D,    0x81, 0x42, 0x42, 0x24, 0x18, 0x00, 0x00 };
+const uint8_t KOYUBES[16] = {0x18, 0x24, 0x42, 0x42, 0x81, 0x81,    0xF5, 0xD5, 0xDD,     0x81, 0x42, 0x42, 0x24, 0x18, 0x00, 0x00 };
+const uint8_t KOYUALTI[16] = {0x18, 0x24, 0x42, 0x42, 0x81, 0x81,       0xF5, 0xD5, 0xFD,    0x81, 0x42, 0x42, 0x24, 0x18, 0x00, 0x00 };
 
 
 const uint8_t ACIKBIR[16] = {0x18, 0x3C, 0x7E, 0x7E, 0xFF, 0xDF, 0xC3, 0xDB, 0xFF, 0xFF, 0x7E, 0x7E , 0x3C , 0x28, 0x00, 0x00 };
@@ -565,10 +565,10 @@ const uint8_t cl[1024] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,//2.satır
 
-  
+
   0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -583,10 +583,10 @@ const uint8_t cl[1024] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,//3.satır
 
-  
+
   0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -601,10 +601,10 @@ const uint8_t cl[1024] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,//4. satır
 
-  
+
   0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -621,7 +621,7 @@ const uint8_t cl[1024] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, //5.satır
-  
+
   0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -638,7 +638,7 @@ const uint8_t cl[1024] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, //6.satır
-  
+
   0xFF, 0xFF, 0xFF, 0xFF, 0xF0, 0xF0, 0xF0, 0xF0,
   0xF0,  0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0,
   0xF0,  0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0,
@@ -656,7 +656,7 @@ const uint8_t cl[1024] = {
   0xF0,  0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0, 0xF0,
   0xF0, 0xF0, 0xF0, 0xF0,  0xFF, 0xFF, 0xFF, 0xFF //7.satır
 };
-const uint8_t clcl[128]={
+const uint8_t clcl[128] = {
   0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -671,9 +671,9 @@ const uint8_t clcl[128]={
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF,//2.satır
-  };
+};
 
 
 
@@ -801,9 +801,9 @@ const uint8_t circle_ikinokta_alt[] = {
 
 const uint8_t SATIRBIR[] = {
   //yukarıdan aşağıya
-  0xFF, 0xFF ,0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00, 
+  0xFF, 0xFF , 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  
+
   0x00, 0x00, 0x00, 0x6C, 0x6C, 0x00, 0x00, 0x00, // dkk ile saat arasındaki noktra
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -813,12 +813,12 @@ const uint8_t SATIRBIR[] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-  
+
   0x00, 0x00, 0x00,   0x00,  0x18, 0x18, 0x00, 0x00,    //ay ile yıl arasındaki nokta
-  
+
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0x00,      0x18, 0x18,         0x00, 0x00, //gün ile ay arasındaki nokta
-  
+
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
   0x00, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF //1.satır
 };
@@ -870,7 +870,7 @@ void tick() {
   Serial.println(Krish_year);
   int j =sizeof(Krish_year);
   Serial.println(j);
-  
+
   char hour[2];
   itoa (Krish_hour, hour, 10);
   Serial.println(hour);
@@ -880,19 +880,19 @@ void tick() {
   Serial.println(min1);
 
   //satirbir();
-  
+
    //display(1, "13", SAAT, 0);
   //display(1, hour, SAAT, 0);
-    
+
   display(1, min1, RIGHT, 0);
-  
+
   //  display(1, "2001",IKI_PIKSEL , 0);
   //display(1, year,IKI_PIKSEL , 0);
 
   if (Krish_day < 10){
     display(1, "0", LEFT, 0);
     display(1, day, UC_PIKSEL, 0);
-    }else 
+    }else
     display(1, day, LEFT, 0);
   if (Krish_month < 10) {
     display(1, "0", BIR_PIKSEL, 0);
@@ -904,13 +904,13 @@ void tick() {
   const char *firstyil = ".";
   strcpy(bufyil, firstyil);
   strcpy(bufyil, year);
-  
-  
+
+
   display(1, bufyil,IKI_PIKSEL , 0);
   Serial.println(year);
   Serial.println("bufyil: ");
   Serial.println(bufyil);
-}*/
+  }*/
 
 
 void printLocalTime() {
@@ -920,19 +920,19 @@ void printLocalTime() {
     return;
   }
   Krish_hour = timeinfo.tm_hour + 1;
- Krish_min = timeinfo.tm_min;
- Krish_sec = timeinfo.tm_sec;
+  Krish_min = timeinfo.tm_min;
+  Krish_sec = timeinfo.tm_sec;
   Krish_day = timeinfo.tm_mday;
-Krish_month = timeinfo.tm_mon + 1;
-Krish_year = timeinfo.tm_year + 1900;
-    setPage(0);
-    setColumn(98);
-    char dateTime[20];
-    sprintf(dateTime, "%02u-%02u-%02u %02u:%02u", Krish_day  ,
-            Krish_month, Krish_year, Krish_hour,
-            Krish_min);
-            
-    display(1, dateTime, RIGHT, false);
+  Krish_month = timeinfo.tm_mon + 1;
+  Krish_year = timeinfo.tm_year + 1900;
+  setPage(0);
+  setColumn(98);
+  char dateTime[20];
+  sprintf(dateTime, "%02u-%02u-%02u %02u:%02u", Krish_day  ,
+          Krish_month, Krish_year, Krish_hour,
+          Krish_min);
+
+  display(1, dateTime, RIGHT, false);
 }
 
 
@@ -1036,53 +1036,204 @@ void displaycl() {
 void circle1() {
   //clearPage(2);
   setPage(2);
-  
+
   //Serial.print("circleye girdi ");Serial.print("c: ");Serial.println(c);
-  int a=(65 - (8 * c));
-  int b=(65 + (8 * c)) ;
-  int d=(b-a)/16;
+  int a = (65 - (8 * c));
+  int b = (65 + (8 * c)) ;
+  int d = (b - a) / 16;
   setColumn(a);
   //Serial.print("a: "); Serial.println(a);Serial.print("b: ");Serial.println(b);Serial.print("d: ");Serial.println(d);
-    
-  
-    for (int i = d; i >0 ; i--) {
-     // Serial.print("i: "); Serial.println(i);
-      if(i==1){
-        for(int l=a; l<a+16;l++){
-       //   Serial.print("l: "); Serial.println(l);
-          trans(DATA, KOYUBIR[l-a]);
-        } 
-      }else if(i==2){
-        for(int l=a+16; l<a+32;l++){
-          Serial.print("l: "); Serial.println(l);
-          trans(DATA, KOYUIKI[l-a-16]);
-        } 
-      }else if(i==3){
-        for(int l=a+32; l<a+48;l++){
-          Serial.print("l: "); Serial.println(l);
-          trans(DATA, KOYUUC[l-a-32]);
-        } 
-      }else if(i==4){
-        for(int l=a+48; l<a+64;l++){
-          Serial.print("l: "); Serial.println(l);
-          trans(DATA, KOYUDORT[l-a-48]);
-        } 
-      }else if(i==5){
-        for(int l=a+64; l<a+80;l++){
-          Serial.print("l: "); Serial.println(l);
-          trans(DATA, KOYUBES[l-a-64]);
-        } 
-      }else if(i==6){
-        for(int l=a+80; l<a+96;l++){
-          Serial.print("l: "); Serial.println(l);
-          trans(DATA, KOYUALTI[l-a-80]);
-        } 
-      }    
 
+  if (kontrolsayi == 0  ) {
+    for (int i = d; i > 0 ; i--) {
+      // Serial.print("i: "); Serial.println(i);
+      if (i == 1) {
+        for (int l = a; l < a + 16; l++) {
+          //   Serial.print("l: "); Serial.println(l);
+          trans(DATA, KOYUBIR[l - a]);
+        }
+      } else if (i == 2) {
+        for (int l = a + 16; l < a + 32; l++) {
+          trans(DATA, ACIKIKI[l - a - 16]);
+        }
+      } else if (i == 3) {
+        for (int l = a + 32; l < a + 48; l++) {
+          trans(DATA, ACIKUC[l - a - 32]);
+        }
+      } else if (i == 4) {
+        for (int l = a + 48; l < a + 64; l++) {
+          trans(DATA, ACIKDORT[l - a - 48]);
+        }
+      } else if (i == 5) {
+        for (int l = a + 64; l < a + 80; l++) {
+          trans(DATA, ACIKBES[l - a - 64]);
+        }
+      } else if (i == 6) {
+        for (int l = a + 80; l < a + 96; l++) {
+          trans(DATA, ACIKALTI[l - a - 80]);
+        }
+      }
+
+    }
+  } else if (kontrolsayi == 1) {
+    for (int i = d; i > 0 ; i--) {
+      // Serial.print("i: "); Serial.println(i);
+      if (i == 1) {
+        for (int l = a; l < a + 16; l++) {
+          //   Serial.print("l: "); Serial.println(l);
+          trans(DATA, ACIKBIR[l - a]);
+        }
+      } else if (i == 2) {
+        for (int l = a + 16; l < a + 32; l++) {
+          trans(DATA, KOYUIKI[l - a - 16]);
+        }
+      } else if (i == 3) {
+        for (int l = a + 32; l < a + 48; l++) {
+          trans(DATA, ACIKUC[l - a - 32]);
+        }
+      } else if (i == 4) {
+        for (int l = a + 48; l < a + 64; l++) {
+          trans(DATA, ACIKDORT[l - a - 48]);
+        }
+      } else if (i == 5) {
+        for (int l = a + 64; l < a + 80; l++) {
+          trans(DATA, ACIKBES[l - a - 64]);
+        }
+      } else if (i == 6) {
+        for (int l = a + 80; l < a + 96; l++) {
+          trans(DATA, ACIKALTI[l - a - 80]);
+        }
+      }
+
+    }
+  } else if (kontrolsayi == 2) {
+    for (int i = d; i > 0 ; i--) {
+      // Serial.print("i: "); Serial.println(i);
+      if (i == 1) {
+        for (int l = a; l < a + 16; l++) {
+          //   Serial.print("l: "); Serial.println(l);
+          trans(DATA, ACIKBIR[l - a]);
+        }
+      } else if (i == 2) {
+        for (int l = a + 16; l < a + 32; l++) {
+          trans(DATA, ACIKIKI[l - a - 16]);
+        }
+      } else if (i == 3) {
+        for (int l = a + 32; l < a + 48; l++) {
+          trans(DATA, KOYUUC[l - a - 32]);
+        }
+      } else if (i == 4) {
+        for (int l = a + 48; l < a + 64; l++) {
+          trans(DATA, ACIKDORT[l - a - 48]);
+        }
+      } else if (i == 5) {
+        for (int l = a + 64; l < a + 80; l++) {
+          trans(DATA, ACIKBES[l - a - 64]);
+        }
+      } else if (i == 6) {
+        for (int l = a + 80; l < a + 96; l++) {
+          trans(DATA, ACIKALTI[l - a - 80]);
+        }
+      }
+
+    }
+  } else if (kontrolsayi == 3) {
+    for (int i = d; i > 0 ; i--) {
+      // Serial.print("i: "); Serial.println(i);
+      if (i == 1) {
+        for (int l = a; l < a + 16; l++) {
+          //   Serial.print("l: "); Serial.println(l);
+          trans(DATA, ACIKBIR[l - a]);
+        }
+      } else if (i == 2) {
+        for (int l = a + 16; l < a + 32; l++) {
+          trans(DATA, ACIKIKI[l - a - 16]);
+        }
+      } else if (i == 3) {
+        for (int l = a + 32; l < a + 48; l++) {
+          trans(DATA, ACIKUC[l - a - 32]);
+        }
+      } else if (i == 4) {
+        for (int l = a + 48; l < a + 64; l++) {
+          trans(DATA, KOYUDORT[l - a - 48]);
+        }
+      } else if (i == 5) {
+        for (int l = a + 64; l < a + 80; l++) {
+          trans(DATA, ACIKBES[l - a - 64]);
+        }
+      } else if (i == 6) {
+        for (int l = a + 80; l < a + 96; l++) {
+          trans(DATA, ACIKALTI[l - a - 80]);
+        }
+      }
+
+    }
+  } else if (kontrolsayi == 4) {
+    for (int i = d; i > 0 ; i--) {
+      // Serial.print("i: "); Serial.println(i);
+      if (i == 1) {
+        for (int l = a; l < a + 16; l++) {
+          //   Serial.print("l: "); Serial.println(l);
+          trans(DATA, ACIKBIR[l - a]);
+        }
+      } else if (i == 2) {
+        for (int l = a + 16; l < a + 32; l++) {
+          trans(DATA, ACIKIKI[l - a - 16]);
+        }
+      } else if (i == 3) {
+        for (int l = a + 32; l < a + 48; l++) {
+          trans(DATA, ACIKUC[l - a - 32]);
+        }
+      } else if (i == 4) {
+        for (int l = a + 48; l < a + 64; l++) {
+          trans(DATA, ACIKDORT[l - a - 48]);
+        }
+      } else if (i == 5) {
+        for (int l = a + 64; l < a + 80; l++) {
+          trans(DATA, KOYUBES[l - a - 64]);
+        }
+      } else if (i == 6) {
+        for (int l = a + 80; l < a + 96; l++) {
+          trans(DATA, ACIKALTI[l - a - 80]);
+        }
+      }
+
+    }
+  } else if (kontrolsayi == 5) {
+    for (int i = d; i > 0 ; i--) {
+      if (i == 1) {
+        for (int l = a; l < a + 16; l++) {
+          trans(DATA, ACIKBIR[l - a]);
+        }
+      } else if (i == 2) {
+        for (int l = a + 16; l < a + 32; l++) {
+          trans(DATA, ACIKIKI[l - a - 16]);
+        }
+      } else if (i == 3) {
+        for (int l = a + 32; l < a + 48; l++) {
+          trans(DATA, ACIKUC[l - a - 32]);
+        }
+      } else if (i == 4) {
+        for (int l = a + 48; l < a + 64; l++) {
+          trans(DATA, ACIKDORT[l - a - 48]);
+        }
+      } else if (i == 5) {
+        for (int l = a + 64; l < a + 80; l++) {
+          trans(DATA, ACIKBES[l - a - 64]);
+        }
+      } else if (i == 6) {
+        for (int l = a + 80; l < a + 96; l++) {
+          trans(DATA, KOYUALTI[l - a - 80]);
+        }
+      }
+
+    }
   }
-  a=0;
-  b=0;
-  d=0;
+
+
+  a = 0;
+  b = 0;
+  d = 0;
 }
 
 void circleust() {
@@ -1211,7 +1362,7 @@ void display(uint8_t page, char sentence[], LOCATION location, bool isClearRow) 
       setColumn(9);
       break;
 
-      
+
     case BIR_PIKSEL:
       setColumn(107 - total_column); //ay çift haneliyse
       break;
@@ -1227,53 +1378,53 @@ void display(uint8_t page, char sentence[], LOCATION location, bool isClearRow) 
     case SAAT:
       setColumn(25);
       break;
-  
+
     default:
       setColumn(location);
       break;
 
-    }
+  }
   /*if (location == LEFT) {
     setColumn(123 - total_column); //gün çift haneliyse
     //  kontrol=0;
 
-  }
-  if (location == CENTER) {
+    }
+    if (location == CENTER) {
     setColumn(64 - (total_column / 2));
-  }
-  if (location == CENTER_UP) {
+    }
+    if (location == CENTER_UP) {
     setColumn(78 - total_column);
-  }
-  if (location == RIGHT) {
+    }
+    if (location == RIGHT) {
     setColumn(9);
-  }
-  if (location == RIGHT_UP) {
+    }
+    if (location == RIGHT_UP) {
     setColumn(32 - (total_column / 2));
-  }
+    }
 
 
 
-  if (location == BIR_PIKSEL) {
+    if (location == BIR_PIKSEL) {
     setColumn(107 - total_column); //ay çift haneliyse
     //  kontrol=0;
 
-  }
-  if (location == IKI_PIKSEL) {
+    }
+    if (location == IKI_PIKSEL) {
     setColumn(89 - total_column);
-  }
-  
-  if (location == UC_PIKSEL) {
+    }
+
+    if (location == UC_PIKSEL) {
     setColumn(117 - total_column); // gün tek haneliyse
-  }
-  if (location == DORT_PIKSEL) {
+    }
+    if (location == DORT_PIKSEL) {
     setColumn(101 - total_column);  // ay tek haneliyse
-  }
-  
-  if (location == SAAT) {
+    }
+
+    if (location == SAAT) {
     setColumn(25);
-  }*/
-  
-  
+    }*/
+
+
   for (i = sentence_size - 1; i >= 0; i--) {
     letter = sentence[i];
     memcpy(temp2, charArray[letter - 32], charArray[letter - 32][0] + 1);
@@ -1284,7 +1435,7 @@ void circle() {
 
 
   setPage(2);
-//  setColumn(65 - (8*i));
+  //  setColumn(65 - (8*i));
   for (int i = 5; i < 123; i++) {
     trans(DATA, circle_yuzde_ust[i]);
   }
@@ -1460,52 +1611,62 @@ void loop() {
     printLocalTime();
     eskizaman = simdikizaman;
   }
-  
-  
+
+
   if (Serial.available() > 0) {
     clclearPage(2);
     inByte = Serial.read();
     Serial.print("I received: ");
     Serial.println(inByte);
-  if (inByte == '1') {
-    c = 1;
-    Serial.print("c: ");
-    Serial.println(c);
-  } if (inByte == '2') {
-    c = 2;
-    Serial.print("c: ");
-    Serial.println(c);
-  } if (inByte == '3') {
-    c = 3;
-    Serial.print("c: ");
-    Serial.println(c);
-  } if (inByte == '4') {
-    c = 4;
-    Serial.print("c: ");
-    Serial.println(c);
-  } if (inByte == '5') {
-    c = 5;
-    Serial.print("c: ");
-    Serial.println(c);
-  } if (inByte == '6') {
-    c = 6;
-    Serial.print("c: ");
-    Serial.println(c);
-  }
+    if (inByte == '1') {
+      c = 1;
+      Serial.print("c: ");
+      Serial.println(c);
+    } if (inByte == '2') {
+      c = 2;
+      Serial.print("c: ");
+      Serial.println(c);
+    } if (inByte == '3') {
+      c = 3;
+      Serial.print("c: ");
+      Serial.println(c);
+    } if (inByte == '4') {
+      c = 4;
+      Serial.print("c: ");
+      Serial.println(c);
+    } if (inByte == '5') {
+      c = 5;
+      Serial.print("c: ");
+      Serial.println(c);
+    } if (inByte == '6') {
+      c = 6;
+      Serial.print("c: ");
+      Serial.println(c);
+    }
 
-    
-    
+
+
   }
   if (simdikizaman - eskizaman >= 2000)
   {
-    kontrolcircle = kontrolcircle+1;
+    kontrolcircle = kontrolcircle + 1;
     eskizaman = simdikizaman;
     Serial.println(kontrolcircle);
-    kontrolsayi= kontrolcircle%6;
+    kontrolsayi = kontrolcircle % 6;
     Serial.println(kontrolsayi);
-    
-  }circle1();
-  
+
+
+  }
+  circle1();
+  /* kontrolsayi 0 iken 1.cihazdaki veriler
+     kontrolsayi 1 iken 2.cihazdaki veriler
+     kontrolsayi 2 iken 3.cihazdaki veriler
+     kontrolsayi 3 iken 4.cihazdaki veriler
+     kontrolsayi 4 iken 5.cihazdaki veriler
+     kontrolsayi 5 iken 6.cihazdaki veriler gönderilecek
+  */
+
+
 }
 
 void postDataToServer() {
@@ -1609,14 +1770,14 @@ void postDataToServer() {
   //display(6, "ENELSIS", RIGHT, 0);
   displaycl();
 
-  
-  
-  
-  
- 
-  
-  
-  
+
+
+
+
+
+
+
+
 
   circleust();
   circlealt();
