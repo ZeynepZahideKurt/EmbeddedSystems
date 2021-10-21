@@ -55,7 +55,7 @@ char arr[20];
 char displayArr[40];
 
 typedef enum {
-  LEFT = 0, CENTER = 1, RIGHT = 2, RIGHT_UP = 3, CENTER_UP = 4, CENTER_LEFT = 5, BIR_PIKSEL = 6 , IKI_PIKSEL = 7, UC_PIKSEL = 8, DORT_PIKSEL = 9,  SAAT = 10
+  LEFT = 0, CENTER = 1, RIGHT = 2, RIGHT_UP = 3, CENTER_UP = 4, CENTER_LEFT = 5
 } LOCATION;
 typedef enum {
   INSTRUCTION = 0, DATA = 1
@@ -66,7 +66,7 @@ typedef enum {
 #define LED_BUILTIN 2 // ESP32 DOES NOT DEFINE LED_BUILTIN
 #endif
 
-unsigned long simdikizaman, eskizaman;
+unsigned long simdikizaman, eskizaman, simdikizaman2, eskizaman2, simdikizaman3, eskizaman3;
 
 int LED = LED_BUILTIN;
 
@@ -916,7 +916,7 @@ void printLocalTime() {
   sprintf(dateTime, "%02u-%02u-%02u %02u:%02u", Krish_day  ,
           Krish_month, Krish_year, Krish_hour,
           Krish_min);
-
+  Serial.println("giriyor");
   display(1, dateTime, RIGHT, false);
 }
 
@@ -1348,21 +1348,6 @@ void display(uint8_t page, char sentence[], LOCATION location, bool isClearRow) 
       break;
 
 
-    case BIR_PIKSEL:
-      setColumn(107 - total_column); //ay çift haneliyse
-      break;
-    case IKI_PIKSEL:
-      setColumn(89 - total_column);
-      break;
-    case UC_PIKSEL:
-      setColumn(117 - total_column); // gün tek haneliyse
-      break;
-    case DORT_PIKSEL:
-      setColumn(101 - total_column);  // ay tek haneliyse
-      break;
-    case SAAT:
-      setColumn(25);
-      break;
 
     default:
       setColumn(location);
@@ -1514,6 +1499,181 @@ void displayMainScreen2() {
   displayBig(6, displayArr, CENTER, 1);
 }
 
+void getBatteryValues(){
+  //BATARYAYI DENERKEN : https://forum.arduino.cc/t/measuring-the-battery-voltage-using-the-adc-on-mini-3v3-8mhz/422944   /   https://forum.arduino.cc/t/battery-level-check-using-arduino/424054  /  https://www.arduino.cc/reference/en/language/functions/analog-io/analogreference/
+
+ /* const long InternalReferenceVoltage = 1062;  // Adjust this value to your board's specific internal BG voltage
+
+// Code courtesy of "Coding Badly" and "Retrolefty" from the Arduino forum
+// results are Vcc * 100
+// So for example, 5V would be 500.
+int getBandgap () 
+  {
+  // REFS0 : Selects AVcc external reference
+  // MUX3 MUX2 MUX1 : Selects 1.1V (VBG)  
+   ADMUX = bit (REFS0) | bit (MUX3) | bit (MUX2) | bit (MUX1);
+   ADCSRA |= bit( ADSC );  // start conversion
+   while (ADCSRA & bit (ADSC))
+     { }  // wait for conversion to complete (toss this measurement)
+   ADCSRA |= bit( ADSC );  // start conversion
+   while (ADCSRA & bit (ADSC))
+     { }  // wait for conversion to complete
+   int results = (((InternalReferenceVoltage * 1024) / ADC) + 5) / 10; 
+   return results;
+  } // end of getBandgap */
+
+//OR
+/*
+int value = 0;
+float voltage;
+float perc;
+
+void setup(){
+  Serial.begin(9600);
+}
+
+void loop(){
+  value = analogRead(A0);
+  voltage = value * 5.0/1023;
+  perc = map(voltage, 3.6, 4.2, 0, 100);
+  Serial.print("Voltage= ");
+  Serial.println(voltage);
+  Serial.print("Battery level= ");
+  Serial.print(perc);
+  Serial.println(" %");
+  delay(500);
+} 
+ */
+
+ 
+
+  
+}
+
+void displayBattery() {
+ // getBatteryValues();
+char DEVICEbattery1;
+  DEVICEbattery1= '80';
+  setPage(1);
+  setColumn(95);
+  sprintf(arr, "%02u", DEVICEbattery1);
+ // displayChar(charArray[arr[1] - 32]);
+ // displayChar(charArray[arr[0] - 32]);
+  //displayChar(charArray['%' - 32]);
+  trans(DATA, 0b00011100);
+  trans(DATA, 0b00011100);
+  trans(DATA, 0b01111111);
+  trans(DATA, 0b01000001);
+  if ( DEVICEbattery1 >= 83) {
+    trans(DATA, 0b01011101);
+  } else {
+    trans(DATA, 0b01000001);
+  }
+  if ( DEVICEbattery1 >= 67) {
+    trans(DATA, 0b01011101);
+  } else {
+    trans(DATA, 0b01000001);
+  }
+  if ( DEVICEbattery1 >= 50) {
+    trans(DATA, 0b01011101);
+  } else {
+    trans(DATA, 0b01000001);
+  }
+  if ( DEVICEbattery1 >= 33) {
+    trans(DATA, 0b01011101);
+  } else {
+    trans(DATA, 0b01000001);
+  }
+  if ( DEVICEbattery1 >= 17) {
+    trans(DATA, 0b01011101);
+  } else {
+    trans(DATA, 0b01000001);
+  }
+  trans(DATA, 0b01011101);
+  trans(DATA, 0b01000001);
+  trans(DATA, 0b01111111);
+}
+void printWifiStatus() {
+  // print the SSID of the network you're attached to:
+  Serial.print("SSID: ");
+  Serial.println(WiFi.SSID());
+
+  // print your board's IP address:
+  IPAddress ip = WiFi.localIP();
+  Serial.print("IP Address: ");
+  Serial.println(ip);
+
+  // print the received signal strength:
+ // long rssi = WiFi.RSSI();
+  long rssi= -40;
+  Serial.print("signal strength (RSSI):");
+  Serial.print(rssi);
+  Serial.println(" dBm");
+  setPage(1);
+  setColumn(110);
+
+  
+  if (rssi > -50 &  rssi < 0 ){ //çok iyi
+    trans(DATA, 0b00001000);
+    trans(DATA, 0b00010100);
+    trans(DATA, 0b00101010);
+    trans(DATA, 0b00010101);
+  
+    trans(DATA, 0b11010101);
+    trans(DATA, 0b11010101);
+  
+    trans(DATA, 0b00010101);
+    trans(DATA, 0b00101010);
+    trans(DATA, 0b00010100);
+    trans(DATA, 0b00001000);
+
+
+  
+  } else if (rssi > -70 &  rssi < -50) {
+  
+    trans(DATA, 0b00000000);
+    trans(DATA, 0b00010000);
+    trans(DATA, 0b00101000);
+    trans(DATA, 0b00010100);
+  
+    trans(DATA, 0b11010100);
+    trans(DATA, 0b11010100);
+  
+    trans(DATA, 0b00010100);
+    trans(DATA, 0b00101000);
+    trans(DATA, 0b00010000);
+    trans(DATA, 0b00000000);
+  } else if (rssi > -80 &  rssi < -70) {
+    trans(DATA, 0b00000000);
+    trans(DATA, 0b00000000);
+    trans(DATA, 0b00100000);
+    trans(DATA, 0b00010000);
+  
+    trans(DATA, 0b11010000);
+    trans(DATA, 0b11010000);
+  
+    trans(DATA, 0b00010000);
+    trans(DATA, 0b00100000);
+    trans(DATA, 0b00000000);
+    trans(DATA, 0b00000000);
+    
+  }else if (rssi > -90 &  rssi < -80) { //çok kötü
+    trans(DATA, 0b00000000);
+    trans(DATA, 0b00000000);
+    trans(DATA, 0b00000000);
+    trans(DATA, 0b00000000);
+  
+    trans(DATA, 0b11000000);
+    trans(DATA, 0b11000000);
+  
+    trans(DATA, 0b00000000);
+    trans(DATA, 0b00000000);
+    trans(DATA, 0b00000000);
+    trans(DATA, 0b00000000);
+  }
+  
+  
+}
 void setup() {
   Wire.begin(I2C_SDA, I2C_SCL);
   WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
@@ -1573,6 +1733,8 @@ void setup() {
   //keep LED on
   digitalWrite(LED, LOW);
   eskizaman = millis();
+  eskizaman2 = millis();
+  eskizaman3 = millis();
   configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
 
 }
@@ -1581,32 +1743,51 @@ void loop() {
 
   if (kontrol1 == 0) {
     postDataToServer();
+    displayBattery();
     printLocalTime();
+    printWifiStatus();
     kontrol1 = 1;
   }
 
   simdikizaman = millis();
-  if (simdikizaman - eskizaman >= 600000)
+  simdikizaman2 = millis();
+  simdikizaman3 = millis();
+  if (simdikizaman - eskizaman >= 60000)
   {
+    Serial.print("displaye girdi ");
     postDataToServer();
+    displayBattery();
+    printWifiStatus();
     eskizaman = simdikizaman;
   }
-  if (simdikizaman - eskizaman >= 20000)
+  if (simdikizaman2 - eskizaman2 >= 20000)
   {
+    eskizaman2 = simdikizaman2;
+    Serial.print("print locale girdi ");
     printLocalTime();
-    eskizaman = simdikizaman;
+    eskizaman2 = simdikizaman2;
+    
+  }
+  if (simdikizaman3 - eskizaman3 >= 2000)
+  {
+    kontrolcircle = kontrolcircle + 1;
+    eskizaman3 = simdikizaman3;
+    
+   // Serial.println(kontrolcircle);
+    kontrolsayi = kontrolcircle % c;
+    //Serial.println(kontrolsayi);
+
+
   }
 
 
   if (Serial.available() > 0) {
     clclearPage(2);
     inByte = Serial.read();
-    Serial.print("I received: ");
-    Serial.println(inByte);
+    Serial.print("I received: ");  Serial.println(inByte);
     if (inByte == '1') {
       c = 1;
-      Serial.print("c: ");
-      Serial.println(c);
+      //Serial.print("c: "); Serial.println(c);
     } if (inByte == '2') {
       c = 2;
       Serial.print("c: ");
@@ -1632,17 +1813,19 @@ void loop() {
 
 
   }
-  if (simdikizaman - eskizaman >= 2000)
+  /*if (simdikizaman - eskizaman >= 2000)
   {
     kontrolcircle = kontrolcircle + 1;
     eskizaman = simdikizaman;
-    Serial.println(kontrolcircle);
+    
+   // Serial.println(kontrolcircle);
     kontrolsayi = kontrolcircle % c;
-    Serial.println(kontrolsayi);
+    //Serial.println(kontrolsayi);
 
 
-  }
+  }*/
   circle1();
+  
   /* kontrolsayi 0 iken 1.cihazdaki veriler
      kontrolsayi 1 iken 2.cihazdaki veriler
      kontrolsayi 2 iken 3.cihazdaki veriler
@@ -1703,7 +1886,7 @@ void postDataToServer() {
     //
     doc["temperature"] = cTemp;
     doc["humidity"] = humidity;
-    doc["mac"] = "123b";
+    doc["mac"] = "123kk";
 
     // Add an array.
     //
