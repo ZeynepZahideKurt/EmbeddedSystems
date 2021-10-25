@@ -27,6 +27,7 @@ uint16_t screenTempI, screenTempI2;
 char arr[20];
 char displayArr[40];
 
+
 typedef enum {
   LEFT = 0, CENTER = 1, RIGHT = 2
 } LOCATION;
@@ -578,6 +579,100 @@ void displayMainScreen2() {
   displayBig(6, displayArr, CENTER);
 }
 
+void getBatteryValues(){
+  //BATARYAYI DENERKEN : https://forum.arduino.cc/t/measuring-the-battery-voltage-using-the-adc-on-mini-3v3-8mhz/422944   /   https://forum.arduino.cc/t/battery-level-check-using-arduino/424054  /  https://www.arduino.cc/reference/en/language/functions/analog-io/analogreference/
+
+ /* const long InternalReferenceVoltage = 1062;  // Adjust this value to your board's specific internal BG voltage
+
+// Code courtesy of "Coding Badly" and "Retrolefty" from the Arduino forum
+// results are Vcc * 100
+// So for example, 5V would be 500.
+int getBandgap () 
+  {
+  // REFS0 : Selects AVcc external reference
+  // MUX3 MUX2 MUX1 : Selects 1.1V (VBG)  
+   ADMUX = bit (REFS0) | bit (MUX3) | bit (MUX2) | bit (MUX1);
+   ADCSRA |= bit( ADSC );  // start conversion
+   while (ADCSRA & bit (ADSC))
+     { }  // wait for conversion to complete (toss this measurement)
+   ADCSRA |= bit( ADSC );  // start conversion
+   while (ADCSRA & bit (ADSC))
+     { }  // wait for conversion to complete
+   int results = (((InternalReferenceVoltage * 1024) / ADC) + 5) / 10; 
+   return results;
+  } // end of getBandgap */
+
+//OR
+/*
+int value = 0;
+float voltage;
+float perc;
+
+void setup(){
+  Serial.begin(9600);
+}
+
+void loop(){
+  value = analogRead(A0);
+  voltage = value * 5.0/1023;
+  perc = map(voltage, 3.6, 4.2, 0, 100);
+  Serial.print("Voltage= ");
+  Serial.println(voltage);
+  Serial.print("Battery level= ");
+  Serial.print(perc);
+  Serial.println(" %");
+  delay(500);
+} 
+ */
+
+ 
+
+  
+}
+
+void displayBattery() {
+ // getBatteryValues();
+char DEVICEbattery1;
+  DEVICEbattery1= '80';
+  setPage(1);
+  setColumn(98);
+  sprintf(arr, "%02u", DEVICEbattery1);
+ // displayChar(charArray[arr[1] - 32]);
+ // displayChar(charArray[arr[0] - 32]);
+  //displayChar(charArray['%' - 32]);
+  trans(DATA, 0b00011100);
+  trans(DATA, 0b00011100);
+  trans(DATA, 0b01111111);
+  trans(DATA, 0b01000001);
+  if ( DEVICEbattery1 >= 83) {
+    trans(DATA, 0b01011101);
+  } else {
+    trans(DATA, 0b01000001);
+  }
+  if ( DEVICEbattery1 >= 67) {
+    trans(DATA, 0b01011101);
+  } else {
+    trans(DATA, 0b01000001);
+  }
+  if ( DEVICEbattery1 >= 50) {
+    trans(DATA, 0b01011101);
+  } else {
+    trans(DATA, 0b01000001);
+  }
+  if ( DEVICEbattery1 >= 33) {
+    trans(DATA, 0b01011101);
+  } else {
+    trans(DATA, 0b01000001);
+  }
+  if ( DEVICEbattery1 >= 17) {
+    trans(DATA, 0b01011101);
+  } else {
+    trans(DATA, 0b01000001);
+  }
+  trans(DATA, 0b01011101);
+  trans(DATA, 0b01000001);
+  trans(DATA, 0b01111111);
+}
 
 void setup() {
   pinMode(SCREEN_CS_Pin, OUTPUT);
@@ -586,7 +681,7 @@ void setup() {
   pinMode(SCREEN_SCL_Pin, OUTPUT);
   pinMode(SCREEN_SDA_Pin, OUTPUT);
   initScreen();
- 
+ displayBattery();
 
 
 }
