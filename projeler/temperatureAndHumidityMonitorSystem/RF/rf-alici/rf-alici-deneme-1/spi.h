@@ -11,6 +11,7 @@
   //#define   InputSDIO()   //GPIO_Init(GPIO_PORT_C,GPIO_PINS_SDIO,GPIO_MODE_IN_FL_NO_IT)
  // #define OutputSDIO()  //GPIO_Init(GPIO_PORT_C,GPIO_PINS_SDIO,GPIO_MODE_OUT_PP_LOW_FAST)
   #define SDIO_H()  */
+  
    #define SPI3_SPEED 1
 /**********************************************************
 **Name:   vSpi3Init
@@ -36,15 +37,15 @@ void vSpi3WriteByte(uint8_t dat)
   uint8_t bitcnt;
   digitalWrite(fcsb, 1);        //FCSB = 1;
   pinMode(SDIO, OUTPUT);
-  pinMode(SDIO, OUTPUT);
+  //pinMode(SDIO, OUTPUT);
   digitalWrite(SDIO, 1);        //    output 1
   digitalWrite(SCLK, 0);
   digitalWrite(csb, 0);
   for(bitcnt=8; bitcnt!=0; bitcnt--)
     {
     digitalWrite(SCLK, 0);
+    delayMicroseconds(SPI3_SPEED);//delay(SPI3_SPEED);
     
-    //delay(SPI3_SPEED);
     if(dat&0x80){
       digitalWrite(SDIO, 1);
     }
@@ -52,7 +53,7 @@ void vSpi3WriteByte(uint8_t dat)
       digitalWrite(SDIO, 0);
     digitalWrite(SCLK, 1);
     dat <<= 1;
-    //delay(SPI3_SPEED);
+    delayMicroseconds(SPI3_SPEED); //delay(SPI3_SPEED);  
     }
   digitalWrite(SCLK, 0);
   digitalWrite(SDIO, 1);
@@ -69,15 +70,15 @@ uint8_t bSpi3ReadByte()
   uint8_t bitcnt;
   digitalWrite(csb, 0);
   pinMode(SDIO, INPUT);
-  pinMode(SDIO, INPUT);
+  //pinMode(SDIO, INPUT);
   for(bitcnt=8; bitcnt!=0; bitcnt--)
     {
     digitalWrite(SCLK, 0);
     
     RdPara <<= 1;
-    //delay(SPI3_SPEED);
+    delayMicroseconds(SPI3_SPEED); //delay(SPI3_SPEED);
     digitalWrite(SCLK, 1);
-    //delay(SPI3_SPEED);
+    delayMicroseconds(SPI3_SPEED); //delay(SPI3_SPEED);
     if(digitalRead(SDIO)){
       RdPara |= 0x01;
     }
@@ -89,7 +90,7 @@ uint8_t bSpi3ReadByte()
   digitalWrite(SCLK, 0);
   
   pinMode(SDIO, OUTPUT);
-  pinMode(SDIO, OUTPUT);
+  //pinMode(SDIO, OUTPUT);
   digitalWrite(SDIO, 1);
   digitalWrite(csb, 1);
   return(RdPara);
@@ -137,18 +138,18 @@ void spi3Class_vSpi3WriteFIFO(uint8_t dat)
       digitalWrite(SDIO, 1);
     else
       digitalWrite(SDIO, 0);
-    delay(1);
+    delayMicroseconds(SPI3_SPEED); //delay(1);
     digitalWrite(SCLK, 1);
-    delay(1);
+    delayMicroseconds(SPI3_SPEED); //delay(1);
     dat <<= 1;
     }
   digitalWrite(SCLK, 0);
-  delay(1);   //Time-Critical
-  delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED); //delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED); //delay(1);   //Time-Critical
   digitalWrite(fcsb, 1);
   digitalWrite(SDIO, 1);
-  delay(1);   //Time-Critical
-  delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED); //delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED); //delay(1);   //Time-Critical
 }
 /**********************************************************
 **Name:   bSpi3ReadFIFO
@@ -168,23 +169,22 @@ uint8_t spi3Class_bSpi3ReadFIFO()
     {
     digitalWrite(SCLK, 0);
     RdPara <<= 1;
-    delay(1);
+    delayMicroseconds(SPI3_SPEED); //delay(1);
     digitalWrite(SCLK, 1);
     delay(1);
    if(digitalRead(SDIO))
       RdPara |= 0x01;   //NRZ MSB
     else
       RdPara |= 0x00;   //NRZ MSB
-    
     }
   digitalWrite(SCLK, 0);
-  delay(1);   //Time-Critical
-  delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED);  //delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED);  //delay(1);   //Time-Critical
   digitalWrite(fcsb, 1);
   pinMode(SDIO, OUTPUT);
   digitalWrite(SDIO, 1);
-  delay(1);   //Time-Critical
-  delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED); //delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED); //delay(1);   //Time-Critical
   return(RdPara);
 }
 /**********************************************************

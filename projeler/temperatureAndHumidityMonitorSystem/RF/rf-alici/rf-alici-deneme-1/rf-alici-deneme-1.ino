@@ -15,7 +15,8 @@
 #define csb 5 //RTC 11 NUMARA CSB
 #define SDIO 19 //rtc 10 numara SDIO
 #define SCLK 18 //rtc 9 numara SCLK yeni
-//#define GPIO3  27 // Transmitter ile esp
+
+#define GPIO3  27 // Transmitter ile esp burada kullanılmıyor
 #define GPIO1  14 // Receiver ile esp
 
 /* RF entegre                                                                                     işlemci uçları
@@ -37,10 +38,11 @@
 
 
 static unsigned char statetx = false;  //  false为RX  true为TX
-#define LEN 21
+#define LEN 6
 
-unsigned char str[LEN+1] =  {"feng rf test!!!!feng!"};
-unsigned char getstr[LEN + 2];
+unsigned char str[LEN] =  {"TES"};
+unsigned char getstr[LEN];
+volatile int buttonState = 0;  
 cmt2300aEasy radio;
 void setup() {
   // put your setup code here, to run once:
@@ -50,8 +52,12 @@ void setup() {
   pinMode(SDIO, OUTPUT);
   pinMode(SCLK, OUTPUT);
  // pinMode(GPIO3, INPUT);
+ pinMode(GPIO1, OUTPUT);
+  digitalWrite(GPIO1, 0);
+  
   pinMode(GPIO1, INPUT);
   printf("start0!\r\n");
+  attachInterrupt(0, pin_ISR, CHANGE);
   /*P3M1&=~(1<1);
        P3M0|=(1<<1);
        P3M1&=~(1<5);
@@ -62,10 +68,10 @@ void setup() {
   {
     CMT2219B_RxInit();
     setup_Rx();
-   // while (1)
-  //  {
-     // loop_Rx();
-    //}
+    while (1)
+    {
+      loop_Rx();
+    }
   }
   else
   {
@@ -79,7 +85,9 @@ void setup() {
 
   Serial.println("4");
 }
-
+void pin_ISR() {
+  buttonState = digitalRead(GPIO1);
+}
 void CMT2119B_TxInit()
 {
 
@@ -175,16 +183,14 @@ void loop_Tx()
 unsigned char tmp;
 void loop_Rx()
 {
-  pinMode(GPIO1, INPUT);
-  int c=digitalRead(GPIO1);
-  Serial.print("c:");
-  Serial.println(c);
+  //pinMode(GPIO1, INPUT);
+  //int c=digitalRead(GPIO1);
   
-  if(digitalRead(GPIO1)== 1) //if(GPO1_H())
+  pin_ISR(); //Serial.print("buttonState:"); Serial.println(buttonState);
+  if(buttonState== 1) //if(GPO1_H())
   {
   cmt2300aEasy_bGoStandby();
-  tmp = cmt2300aEasy_bGetMessage(getstr); //Simülasyonun bu noktasında getstr tarafından alınan veri paketlerini görebilirsiniz.
-  //Serial.println("getstr");
+  tmp = cmt2300aEasy_bGetMessage(getstr); //Simülasyonun bu noktasında getstr tarafından alınan veri paketlerini görebilirsiniz.;
   printf("recv=%s\r\n", getstr);
   cmt2300aEasy_bIntSrcFlagClr();
   cmt2300aEasy_vClearFIFO();
@@ -198,5 +204,5 @@ void loop_Rx()
 }
 void loop() {
   // put your main code here, to run repeatedly:
-loop_Rx();
+//loop_Rx();
 }

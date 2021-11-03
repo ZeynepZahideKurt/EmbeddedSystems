@@ -17,7 +17,9 @@
 #define SDIO 19 //rtc 10 numara SDIO
 #define SCLK 18 //rtc 9 numara SCLK yeni
 #define GPIO3  14 // Transmitter için buton
-//#define GPIO1  27 // Receiver için buton
+
+
+#define GPIO1  27 // Receiver için buton burada kullanılmıyor
 
 /* RF entegre                                                                                     işlemci uçları
   sclk  spi  clock  (burada input işlemcide output)                                                 9      14  e   6
@@ -38,10 +40,10 @@
 
 
 static unsigned char statetx = true;  //  false为RX  true为TX
-#define LEN 21
+#define LEN 6
 
-unsigned char str[LEN+1] =  {"feng rf test!!!!feng!"};
-unsigned char getstr[LEN + 2];
+unsigned char str[LEN] =  {" ABCD"};
+unsigned char getstr[LEN];
 cmt2300aEasy radio;
 void setup() {
   // put your setup code here, to run once:
@@ -50,6 +52,9 @@ void setup() {
   pinMode(csb, OUTPUT);
   pinMode(SDIO, OUTPUT);
   pinMode(SCLK, OUTPUT);
+  
+  pinMode(GPIO3, OUTPUT);
+  digitalWrite(GPIO3, 0);
   pinMode(GPIO3, INPUT);
  // pinMode(GPIO1, INPUT);
   /*P3M1&=~(1<1);
@@ -72,10 +77,11 @@ void setup() {
   {
     CMT2119B_TxInit();
     setup_Tx();
-   // while (1)
-   // {
-      //loop_Tx();
-  //  }
+    while (1)
+    {
+      delay(1000);
+      loop_Tx();
+    }
   }
 
   Serial.println("4");
@@ -198,7 +204,8 @@ void loop_Rx()
   //}
 }
 void loop() {
+
   // put your main code here, to run repeatedly:
-loop_Tx();
+//loop_Tx();
 
 }
