@@ -1,30 +1,18 @@
-
-/**********************************************************
-3-wire spi
-**********************************************************/
-
 /*
-
   #define digitalWrite(csb, 1)  digitalWrite(csb, 1)
   #define digitalWrite(csb, 0)  digitalWrite(csb, 0)
-
   #define digitalWrite(fcsb, 1) digitalWrite(fcsb, 1)
   #define digitalWrite(fcsb, 0) digitalWrite(fcsb, 0)
-
   #define digitalWrite(SCLK, 1) digitalWrite(SCLK, 1)
   #define digitalWrite(SCLK, 0) digitalWrite(SCLK, 0)
   
   #define digitalWrite(SDIO, 1) digitalWrite(SDIO, 1)
   #define digitalWrite(SDIO, 0) digitalWrite(SDIO, 0)
-
   //#define   InputSDIO()   //GPIO_Init(GPIO_PORT_C,GPIO_PINS_SDIO,GPIO_MODE_IN_FL_NO_IT)
  // #define OutputSDIO()  //GPIO_Init(GPIO_PORT_C,GPIO_PINS_SDIO,GPIO_MODE_OUT_PP_LOW_FAST)
-
   #define SDIO_H()  */
+  
    #define SPI3_SPEED 1
-int  sdi = digitalRead(SDIO);
-
-
 /**********************************************************
 **Name:   vSpi3Init
 **Func:   Init Spi-3 Config
@@ -38,7 +26,6 @@ void spi3Class_vSpi3Init()
   digitalWrite(SDIO, 1);
   digitalWrite(SCLK, 0);
 }
-
 /**********************************************************
 **Name:   vSpi3WriteByte
 **Func:   SPI-3 send one byte
@@ -47,38 +34,30 @@ void spi3Class_vSpi3Init()
 **********************************************************/
 void vSpi3WriteByte(uint8_t dat)
 {
-
   uint8_t bitcnt;
-
   digitalWrite(fcsb, 1);        //FCSB = 1;
-
-  //OutputSDIO();     //SDA output mode
-  //OutputSDIO();     //SDA output mode
+  pinMode(SDIO, OUTPUT);
+  //pinMode(SDIO, OUTPUT);
   digitalWrite(SDIO, 1);        //    output 1
-
   digitalWrite(SCLK, 0);
   digitalWrite(csb, 0);
-
   for(bitcnt=8; bitcnt!=0; bitcnt--)
     {
     digitalWrite(SCLK, 0);
+    delayMicroseconds(SPI3_SPEED);//delay(SPI3_SPEED);
     
-    delay(SPI3_SPEED);
     if(dat&0x80){
       digitalWrite(SDIO, 1);
-      delay(SPI3_SPEED);
     }
-      
     else
       digitalWrite(SDIO, 0);
     digitalWrite(SCLK, 1);
     dat <<= 1;
-    delay(SPI3_SPEED);
+    delayMicroseconds(SPI3_SPEED); //delay(SPI3_SPEED);  
     }
   digitalWrite(SCLK, 0);
   digitalWrite(SDIO, 1);
 }
-
 /**********************************************************
 **Name:   bSpi3ReadByte
 **Func:   SPI-3 read one byte
@@ -89,24 +68,18 @@ uint8_t bSpi3ReadByte()
 {
   uint8_t RdPara = 0;
   uint8_t bitcnt;
-
   digitalWrite(csb, 0);
-  //InputSDIO();
-    //InputSDIO();
+  pinMode(SDIO, INPUT);
+  //pinMode(SDIO, INPUT);
   for(bitcnt=8; bitcnt!=0; bitcnt--)
     {
     digitalWrite(SCLK, 0);
     
     RdPara <<= 1;
-    delay(SPI3_SPEED);
+    delayMicroseconds(SPI3_SPEED); //delay(SPI3_SPEED);
     digitalWrite(SCLK, 1);
-    delay(SPI3_SPEED);
-    
-    sdi = digitalRead(SDIO);
-    
-    //Serial.print("sdi:");
-   // Serial.println(sdi);
-    if(sdi){
+    delayMicroseconds(SPI3_SPEED); //delay(SPI3_SPEED);
+    if(digitalRead(SDIO)){
       RdPara |= 0x01;
     }
     else{
@@ -116,12 +89,11 @@ uint8_t bSpi3ReadByte()
     }
   digitalWrite(SCLK, 0);
   
-  //OutputSDIO();
-  //OutputSDIO();
+  pinMode(SDIO, OUTPUT);
+  //pinMode(SDIO, OUTPUT);
   digitalWrite(SDIO, 1);
   digitalWrite(csb, 1);
   return(RdPara);
-
 }
 /**********************************************************
 **Name:   vSpi3Write
@@ -135,7 +107,6 @@ void spi3Class_vSpi3Write(uint16_t dat)
   vSpi3WriteByte((uint8_t)dat);
   digitalWrite(csb, 1);
 }
-
 /**********************************************************
 **Name:   bSpi3Read
 **Func:   SPI-3 Read One byte
@@ -147,7 +118,6 @@ uint8_t spi3Class_bSpi3Read(uint8_t addr)
     vSpi3WriteByte(addr|0x80);
   return(bSpi3ReadByte());
 }
-
 /**********************************************************
 **Name:   vSpi3WriteFIFO
 **Func:   SPI-3 send one byte to FIFO
@@ -157,33 +127,30 @@ uint8_t spi3Class_bSpi3Read(uint8_t addr)
 void spi3Class_vSpi3WriteFIFO(uint8_t dat)
 {
   uint8_t bitcnt;
-
   digitalWrite(csb, 1);
-  //OutputSDIO();
+  pinMode(SDIO, OUTPUT);
   digitalWrite(SCLK, 0);
   digitalWrite(fcsb, 0);      //FCSB = 0
   for(bitcnt=8; bitcnt!=0; bitcnt--)
     {
     digitalWrite(SCLK, 0);
-
     if(dat&0x80)
       digitalWrite(SDIO, 1);
     else
       digitalWrite(SDIO, 0);
-    delay(1);
+    delayMicroseconds(SPI3_SPEED); //delay(1);
     digitalWrite(SCLK, 1);
-    delay(1);
+    delayMicroseconds(SPI3_SPEED); //delay(1);
     dat <<= 1;
     }
   digitalWrite(SCLK, 0);
-  delay(1);   //Time-Critical
-  delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED); //delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED); //delay(1);   //Time-Critical
   digitalWrite(fcsb, 1);
   digitalWrite(SDIO, 1);
-  delay(1);   //Time-Critical
-  delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED); //delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED); //delay(1);   //Time-Critical
 }
-
 /**********************************************************
 **Name:   bSpi3ReadFIFO
 **Func:   SPI-3 read one byte to FIFO
@@ -194,37 +161,32 @@ uint8_t spi3Class_bSpi3ReadFIFO()
 {
   uint8_t RdPara;
   uint8_t bitcnt;
-
   digitalWrite(csb, 1);
-  //InputSDIO();
+  pinMode(SDIO, INPUT);
   digitalWrite(SCLK, 0);
   digitalWrite(fcsb, 0);
-
   for(bitcnt=8; bitcnt!=0; bitcnt--)
     {
     digitalWrite(SCLK, 0);
     RdPara <<= 1;
-    delay(1);
+    delayMicroseconds(SPI3_SPEED); //delay(1);
     digitalWrite(SCLK, 1);
     delay(1);
-   if(sdi)
+   if(digitalRead(SDIO))
       RdPara |= 0x01;   //NRZ MSB
     else
       RdPara |= 0x00;   //NRZ MSB
-    
     }
   digitalWrite(SCLK, 0);
-  delay(1);   //Time-Critical
-  delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED);  //delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED);  //delay(1);   //Time-Critical
   digitalWrite(fcsb, 1);
-  //OutputSDIO();
+  pinMode(SDIO, OUTPUT);
   digitalWrite(SDIO, 1);
-  delay(1);   //Time-Critical
-
-  delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED); //delay(1);   //Time-Critical
+  delayMicroseconds(SPI3_SPEED); //delay(1);   //Time-Critical
   return(RdPara);
 }
-
 /**********************************************************
 **Name:   vSpi3BurstWriteFIFO
 **Func:   burst wirte N byte to FIFO
@@ -241,7 +203,6 @@ void spi3Class_vSpi3BurstWriteFIFO(uint8_t ptr[], uint8_t length)
     }
   return;
 }
-
 /**********************************************************
 **Name:   vSpiBurstRead
 **Func:   burst wirte N byte to FIFO

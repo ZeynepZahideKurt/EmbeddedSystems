@@ -5,10 +5,19 @@
   #define SDIO  15//rtc 10 numara SDIO
   #define SCLK 14 //rtc 9 numara SCLK
 */
+/*
 #define fcsb 34 //RTC 12 NUMARA FCSB
 #define csb 35 //RTC 11 NUMARA CSB
 #define SDIO 15 //rtc 10 numara SDIO
-#define SCLK 14 //rtc 9 numara SCLK yeni
+#define SCLK 14 //rtc 9 numara SCLK yeni*/
+
+#define fcsb  15//RTC 12 NUMARA FCSB
+#define csb 5 //RTC 11 NUMARA CSB
+#define SDIO 19 //rtc 10 numara SDIO
+#define SCLK 18 //rtc 9 numara SCLK yeni
+
+#define GPIO3  27 // Transmitter ile esp burada kullanılmıyor
+//#define GPIO1  14 // Receiver ile esp
 
 /* RF entegre                                                                                     işlemci uçları
   sclk  spi  clock  (burada input işlemcide output)                                                 9      14  e   6
@@ -20,19 +29,20 @@
   fcsb  spi chip selection bar for fifo access active low  (burada  input işlemcide output)         12     12 e    34
 */
 
-
-#include "type.h"
+ #include "type.h"
 #include "spi.h"
 #include "CMT2300drive.h"
 #include "stdio.h"
 #include "TxConfig.h"
 #include "RxConfig.h"
 
+int rx_kontrol=0;
 static unsigned char statetx = false;  //  false为RX  true为TX
-#define LEN 21
+#define LEN 6
 
-unsigned char str[LEN + 1] =  {"feng rf test!!!!feng!"};
-unsigned char getstr[LEN + 1];
+unsigned char str[LEN] =  {"TES"};
+unsigned char getstr[LEN];
+volatile int buttonState = 0;  
 cmt2300aEasy radio;
 void setup() {
   // put your setup code here, to run once:
@@ -41,6 +51,10 @@ void setup() {
   pinMode(csb, OUTPUT);
   pinMode(SDIO, OUTPUT);
   pinMode(SCLK, OUTPUT);
+ // pinMode(GPIO3, INPUT);
+
+  printf("start0!\r\n");
+  //attachInterrupt(0, pin_ISR, CHANGE);
   /*P3M1&=~(1<1);
        P3M0|=(1<<1);
        P3M1&=~(1<5);
@@ -65,6 +79,8 @@ void setup() {
       loop_Tx();
     }
   }
+
+  Serial.println("4");
 }
 
 void CMT2119B_TxInit()
@@ -82,7 +98,7 @@ void CMT2119B_TxInit()
   cmt2300aEasy_vCfgBank(TXBank, 11);
 
   cmt2300aEasy_vEnablePLLcheck();
-  cmt2300aEasy_bGoSleep();          //让配置生效
+  cmt2300aEasy_bGoSleep();          //Yapılandırmanın etkili olmasına izin verin
 
 }
 
@@ -104,25 +120,26 @@ void CMT2219B_RxInit()
   cmt2300aEasy_vCfgBank(LBD_Bank, sizeof(LBD_Bank) / sizeof(unsigned short int));
 
   cmt2300aEasy_vEnablePLLcheck();
-  cmt2300aEasy_bGoSleep();          //让配置生效
+  cmt2300aEasy_bGoSleep();          //Yapılandırmanın etkili olmasına izin verin
 
 }
 
 
 void setup_Tx(void)
 {
-
-  if (cmt2300aEasy_bGoStandby()) //;   //进入配置模式
+cmt2300aEasy_bGoStandby();
+  if (cmt2300aEasy_bGoStandby()) //;   //Yapılandırma moduna girin
   {
     printf("bGoStandby ok!\r\n");
   }
-  cmt2300aEasy_vEnableAntSwitch(0);  //设置天线切换_IO口切换
-  cmt2300aEasy_vGpioFuncCfg(GPIO1_INT2 + GPIO2_INT2 + GPIO3_INT2); //IO口的映射
-  cmt2300aEasy_vIntSrcCfg(INT_FIFO_NMTY_TX, INT_TX_DONE);    //IO口中断的映射
-  cmt2300aEasy_vIntSrcEnable(TX_DONE_EN);           //中断使能
+  cmt2300aEasy_vEnableAntSwitch(0);  //Anten switch_IO bağlantı noktası anahtarını ayarla
+  cmt2300aEasy_vGpioFuncCfg(GPIO1_INT2 + GPIO2_INT2 + GPIO3_INT2); //
+  
+  cmt2300aEasy_vIntSrcCfg(INT_FIFO_NMTY_TX, INT_TX_DONE);    //IO bağlantı noktası eşlemesi
+  cmt2300aEasy_vIntSrcEnable(TX_DONE_EN);           //Kesinti etkinleştir
 
-  cmt2300aEasy_vClearFIFO();  //清除FIFO
-  if (cmt2300aEasy_bGoSleep()) //;    //进入睡眠，让配置生效
+  cmt2300aEasy_vClearFIFO();  //FIFO'yu temizle
+  if (cmt2300aEasy_bGoSleep()) //;    //Uyku moduna geçin ve yapılandırmanın etkili olmasına izin verin
   {
     printf("bGoSleep ok!\r\n");;
   }
@@ -131,16 +148,16 @@ void setup_Tx(void)
 
 void setup_Rx(void)
 {
-  cmt2300aEasy_bGoStandby();   //进入配置模式
-  cmt2300aEasy_vEnableAntSwitch(0); //为 1 时 GPIO1 和 GPIO2 不可用
-  //cmt2300aEasy_vGpioFuncCfg(GPIO1_INT1+GPIO2_Dout+GPIO3_DCLK);  //IO口的功能映射
+  cmt2300aEasy_bGoStandby();   //Yapılandırma moduna girin
+  cmt2300aEasy_vEnableAntSwitch(0); //1 olduğunda, GPIO1 ve GPIO2 kullanılamaz
+  cmt2300aEasy_vGpioFuncCfg(GPIO1_INT1+GPIO2_Dout+GPIO3_DCLK);  //IOİşlev eşleme
 
-  //cmt2300aEasy_vIntSrcCfg(INT_RSSI_VALID, INT_CRC_PASS);   //GPO3映射成CRC_pass中断，此处如果要用该中断，RFPDK需要配置CRC
-  cmt2300aEasy_vIntSrcCfg(INT_PKT_DONE, INT_PKT_DONE);  //GPO3映射成PKT_DONE中断 //IO口中断的映射
+  //cmt2300aEasy_vIntSrcCfg(INT_RSSI_VALID, INT_CRC_PASS);   //GPO3, CRC_pass kesmesiyle eşlenmiştir, bu kesmeyi burada kullanmak istiyorsanız, RFPDK'nin CRC'yi yapılandırması gerekir
+  cmt2300aEasy_vIntSrcCfg(INT_PKT_DONE, INT_PKT_DONE);  //GPO3, PKT_DONE kesmesiyle eşleştirildi //IO bağlantı noktası kesintisinin eşlenmesi
   cmt2300aEasy_vIntSrcEnable(PKT_DONE_EN );          //(PKT_DONE_EN + CRC_PASS_EN);
 
   cmt2300aEasy_vClearFIFO();
-  cmt2300aEasy_bGoSleep();           //让配置生效
+  cmt2300aEasy_bGoSleep();           //Yapılandırmanın etkili olmasına izin verin
   cmt2300aEasy_bGoRx();              //for Rx
 }
 
@@ -150,7 +167,9 @@ void loop_Tx()
 {
   printf("send!\r\n");
   cmt2300aEasy_bSendMessage(str, LEN);
-  //while(GPO3_L());   // 判断GPIO中断 为低等 为高运行下面代码
+  //int c= digitalRead(GPIO3);
+   //pinMode(GPIO3, INPUT);
+ // while(digitalRead(GPIO3)== 0);//while(GPO3_L());   // GPIO kesintisinin düşük olup olmadığını belirleyin ve yüksek için aşağıdaki kodu çalıştırın.
   cmt2300aEasy_bIntSrcFlagClr();
   cmt2300aEasy_vClearFIFO();
   delay(20);
@@ -159,23 +178,26 @@ void loop_Tx()
 unsigned char tmp;
 void loop_Rx()
 {
-
-  //if(GPO1_H())
-  //{
+  
+  rx_kontrol=0;
+  delay(100);
+  rx_kontrol=1;
+  if(rx_kontrol== 1) //if(GPO1_H())
+  {
   cmt2300aEasy_bGoStandby();
-  tmp = cmt2300aEasy_bGetMessage(getstr);
+  tmp = cmt2300aEasy_bGetMessage(getstr); //Simülasyonun bu noktasında getstr tarafından alınan veri paketlerini görebilirsiniz.;
   printf("recv=%s\r\n", getstr);
   cmt2300aEasy_bIntSrcFlagClr();
   cmt2300aEasy_vClearFIFO();
   cmt2300aEasy_bGoRx();
-  //}else
-  //{
+  }else
+  {
   printf("nothing!\r\n");
   delay(1000);
 
-  //}
+  }
 }
 void loop() {
   // put your main code here, to run repeatedly:
-
+//loop_Rx();
 }
