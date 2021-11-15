@@ -171,7 +171,7 @@ uint8_t spi3Class_bSpi3ReadFIFO()
     RdPara <<= 1;
     delayMicroseconds(SPI3_SPEED); //delay(1);
     digitalWrite(SCLK, 1);
-    delay(1);
+    delayMicroseconds(SPI3_SPEED);
    if(digitalRead(SDIO))
       RdPara |= 0x01;   //NRZ MSB
     else

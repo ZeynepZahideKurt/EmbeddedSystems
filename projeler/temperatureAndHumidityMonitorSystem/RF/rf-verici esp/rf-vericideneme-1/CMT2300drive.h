@@ -662,6 +662,8 @@ void cmt2300aEasy_vInit(void)
   //unsigned short int len;
   spi3Class_vSpi3Init();
   //GPO3In();
+   pinMode(GPIO1, INPUT);
+    pinMode(GPIO3, INPUT);
   pinMode(GPIO3, INPUT);
   pinMode(GPIO1, INPUT);
   cmt2300aEasy_vSoftReset();
@@ -809,8 +811,8 @@ void cmt2300aEasy_vSetTxPayloadLength(unsigned short int length)
 
 unsigned char cmt2300aEasy_bSendMessage(unsigned char msg[], unsigned char length)
 {
-  /*//mode1
-   cmt2300aEasy_vSetTxPayloadLength(length);
+  //mode1
+  /* cmt2300aEasy_vSetTxPayloadLength(length);
     cmt2300aEasy_bGoStandby();
     cmt2300aEasy_vEnableWrFifo();
     spi3Class_vSpi3BurstWriteFIFO(msg, length);

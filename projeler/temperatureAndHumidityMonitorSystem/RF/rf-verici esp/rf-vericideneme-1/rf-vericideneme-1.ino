@@ -42,7 +42,7 @@
 static unsigned char statetx = true;  //  false为RX  true为TX
 #define LEN 6
 
-unsigned char str[LEN] =  {" ABCD"};
+unsigned char str[LEN] =  {" TEST"};
 unsigned char getstr[LEN];
 cmt2300aEasy radio;
 void setup() {

@@ -95,8 +95,8 @@ unsigned short int CMT_Bank[]={
 };
 unsigned short int System_Bank[]={
 0x0CAE,
-0x0DE0,
-0x0E70, //burası değişti 0x0E71
+0x0DFA,
+0x0E71, //burası değişti 0x0E71
 0x0F00,
 0x1000,
 0x11F4,
@@ -104,7 +104,7 @@ unsigned short int System_Bank[]={
 0x13E2,
 0x1442,
 0x1520,
-0x1600,
+0x1640,
 0x1781
 };
 
