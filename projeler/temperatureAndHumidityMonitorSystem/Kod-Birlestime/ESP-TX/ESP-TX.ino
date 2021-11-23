@@ -40,13 +40,10 @@
 
 
 static unsigned char statetx = true;  //  false为RX  true为TX
-#define LEN 7
+#define LEN 6
 
-unsigned char str[LEN] =  {" TEST "};
-unsigned char str2[LEN] =  {" ABCD "};
+unsigned char str[LEN] =  {" TEST"};
 unsigned char getstr[LEN];
-
-int txkontrol=0;
 cmt2300aEasy radio;
 void setup() {
   // put your setup code here, to run once:
@@ -82,16 +79,8 @@ void setup() {
     setup_Tx();
     while (1)
     {
-      if(txkontrol==0){
       delay(1000);
       loop_Tx();
-      txkontrol=1;
-      }else if(txkontrol==1){
-        delay(1000);
-      loop_Tx2();
-      txkontrol=0;
-      }
-      
     }
   }
 
@@ -189,17 +178,6 @@ void loop_Tx()
   cmt2300aEasy_vClearFIFO();
   delay(20);
 }
-void loop_Tx2()
-{
-  printf("send2!\r\n");
-  cmt2300aEasy_bSendMessage(str2, LEN);
-  int c= digitalRead(GPIO3);
-   pinMode(GPIO3, INPUT);
-  while(digitalRead(GPIO3)== 0);//while(GPO3_L());   // GPIO kesintisinin düşük olup olmadığını belirleyin ve yüksek için aşağıdaki kodu çalıştırın.
-  cmt2300aEasy_bIntSrcFlagClr();
-  cmt2300aEasy_vClearFIFO();
-  delay(20);
-}
 
 unsigned char tmp;
 void loop_Rx()
@@ -231,3 +209,5 @@ void loop() {
 //loop_Tx();
 
 }
+
+ 

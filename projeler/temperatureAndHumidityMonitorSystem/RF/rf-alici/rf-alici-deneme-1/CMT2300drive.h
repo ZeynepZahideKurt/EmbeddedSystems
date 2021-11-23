@@ -5,7 +5,6 @@
 #include "stdio.h"
 /*
   #define GPO1_H() P30
-
   #define GPO3In()    //GPIO_Init(GPIO_PORT_C, (GPIO_Pin_TypeDef)GPIO1, GPIO_MODE_IN_FL_NO_IT)
   #define GPO3_H()   P30//(GPIO_ReadInputPin(GPIO_PORT_C,GPIO1) ? 1 : 0)
   #define GPO3_L()  (!P30)  //(GPIO_ReadInputPin(GPIO_PORT_C,GPIO1) ? 0 : 1 )*/
@@ -662,8 +661,6 @@ void cmt2300aEasy_vInit(void)
   //unsigned short int len;
   spi3Class_vSpi3Init();
   //GPO3In();
-   pinMode(GPIO1, INPUT);
-    pinMode(GPIO3, INPUT);
   pinMode(GPIO3, INPUT);
   pinMode(GPIO1, INPUT);
   cmt2300aEasy_vSoftReset();
@@ -811,8 +808,8 @@ void cmt2300aEasy_vSetTxPayloadLength(unsigned short int length)
 
 unsigned char cmt2300aEasy_bSendMessage(unsigned char msg[], unsigned char length)
 {
-  //mode1
-  /* cmt2300aEasy_vSetTxPayloadLength(length);
+  /*//mode1
+   cmt2300aEasy_vSetTxPayloadLength(length);
     cmt2300aEasy_bGoStandby();
     cmt2300aEasy_vEnableWrFifo();
     spi3Class_vSpi3BurstWriteFIFO(msg, length);

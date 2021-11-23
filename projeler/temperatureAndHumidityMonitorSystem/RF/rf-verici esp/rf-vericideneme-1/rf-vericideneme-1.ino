@@ -1,5 +1,3 @@
- 
-
 /*
   #define fcsb  32//RTC 12 NUMARA FCSB
   #define csb 13 //RTC 11 NUMARA CSB
@@ -23,11 +21,8 @@
 
 /* RF entegre                                                                                     işlemci uçları
   sclk  spi  clock  (burada input işlemcide output)                                                 9      14  e   6
-
   sdio   spi data input and output  (I/O)                                                           10     13  e   15,
-
   csb   spi chip selection bar for register access active low  (burada input  işlemcide output)     11     11 ye   35
-
   fcsb  spi chip selection bar for fifo access active low  (burada  input işlemcide output)         12     12 e    34
 */
 
@@ -40,10 +35,13 @@
 
 
 static unsigned char statetx = true;  //  false为RX  true为TX
-#define LEN 6
+#define LEN 7
 
-unsigned char str[LEN] =  {" TEST"};
+unsigned char str[LEN] =  {" TEST "};
+unsigned char str2[LEN] =  {" ABCD "};
 unsigned char getstr[LEN];
+
+int txkontrol=0;
 cmt2300aEasy radio;
 void setup() {
   // put your setup code here, to run once:
@@ -79,8 +77,16 @@ void setup() {
     setup_Tx();
     while (1)
     {
+      if(txkontrol==0){
       delay(1000);
       loop_Tx();
+      txkontrol=1;
+      }else if(txkontrol==1){
+        delay(1000);
+      loop_Tx2();
+      txkontrol=0;
+      }
+      
     }
   }
 
@@ -176,7 +182,18 @@ void loop_Tx()
   while(digitalRead(GPIO3)== 0);//while(GPO3_L());   // GPIO kesintisinin düşük olup olmadığını belirleyin ve yüksek için aşağıdaki kodu çalıştırın.
   cmt2300aEasy_bIntSrcFlagClr();
   cmt2300aEasy_vClearFIFO();
-  delay(20);
+  delay(21);
+}
+void loop_Tx2()
+{
+  printf("send2!\r\n");
+  cmt2300aEasy_bSendMessage(str2, LEN);
+  int c= digitalRead(GPIO3);
+   pinMode(GPIO3, INPUT);
+  while(digitalRead(GPIO3)== 0);//while(GPO3_L());   // GPIO kesintisinin düşük olup olmadığını belirleyin ve yüksek için aşağıdaki kodu çalıştırın.
+  cmt2300aEasy_bIntSrcFlagClr();
+  cmt2300aEasy_vClearFIFO();
+  delay(21);
 }
 
 unsigned char tmp;

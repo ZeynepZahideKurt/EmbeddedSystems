@@ -21,11 +21,8 @@
 
 /* RF entegre                                                                                     işlemci uçları
   sclk  spi  clock  (burada input işlemcide output)                                                 9      14  e   6
-
   sdio   spi data input and output  (I/O)                                                           10     13  e   15,
-
   csb   spi chip selection bar for register access active low  (burada input  işlemcide output)     11     11 ye   35
-
   fcsb  spi chip selection bar for fifo access active low  (burada  input işlemcide output)         12     12 e    34
 */
 
@@ -38,7 +35,7 @@
 
 
 static unsigned char statetx = false;  //  false为RX  true为TX
-#define LEN 6
+#define LEN 7
 
 unsigned char str[LEN] =  {"TES"};
 unsigned char getstr[LEN];
@@ -183,24 +180,26 @@ void loop_Tx()
 unsigned char tmp;
 void loop_Rx()
 {
-  //pinMode(GPIO1, INPUT);
+  pinMode(GPIO1, INPUT);
   //int c=digitalRead(GPIO1);
   
   pin_ISR(); //Serial.print("buttonState:"); Serial.println(buttonState);
-  if(buttonState== 1) //if(GPO1_H())
-  {
+  //if(buttonState== 1) //if(GPO1_H())
+  //{
   cmt2300aEasy_bGoStandby();
   tmp = cmt2300aEasy_bGetMessage(getstr); //Simülasyonun bu noktasında getstr tarafından alınan veri paketlerini görebilirsiniz.;
   printf("recv=%s\r\n", getstr);
   cmt2300aEasy_bIntSrcFlagClr();
   cmt2300aEasy_vClearFIFO();
   cmt2300aEasy_bGoRx();
-  }else
+  while(digitalRead(GPIO1)== 0);
+  //delay(1);
+ /* }else
   {
   printf("nothing!\r\n");
   delay(1000);
 
-  }
+  }*/
 }
 void loop() {
   // put your main code here, to run repeatedly:

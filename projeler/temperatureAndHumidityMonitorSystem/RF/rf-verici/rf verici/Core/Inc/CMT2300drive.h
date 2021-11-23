@@ -9,6 +9,11 @@
 #define GPO3_L()  (!P30)  //(GPIO_ReadInputPin(GPIO_PORT_C,GPIO1) ? 0 : 1 )*/
 //
 #define CMT23_DUTY_CTL			0x0D
+
+	#define	LFOSC_RECAL_EN			(1<<7)
+	#define	LFOSC_CAL1_EN			(1<<6)
+	#define	LFOSC_CAL2_EN			(1<<5)
+
 		#define	DUTY_MASK			0xE0
 
 		#define	TIMER_RX_EN			(1<<4)

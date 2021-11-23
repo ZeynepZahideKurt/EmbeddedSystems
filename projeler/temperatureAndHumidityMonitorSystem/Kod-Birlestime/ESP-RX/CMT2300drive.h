@@ -662,8 +662,10 @@ void cmt2300aEasy_vInit(void)
   //unsigned short int len;
   spi3Class_vSpi3Init();
   //GPO3In();
+   pinMode(GPIO1, INPUT);
+    pinMode(GPIO3, INPUT);
   pinMode(GPIO3, INPUT);
-  //pinMode(GPIO1, INPUT);
+  pinMode(GPIO1, INPUT);
   cmt2300aEasy_vSoftReset();
   delay(20);
   tmp1 = cmt2300aEasy_bGoStandby();
