@@ -35,7 +35,7 @@
 
 
 static unsigned char statetx = false;  //  false为RX  true为TX
-#define LEN 7
+#define LEN 6
 
 unsigned char str[LEN] =  {"TES"};
 unsigned char getstr[LEN];
@@ -180,26 +180,27 @@ void loop_Tx()
 unsigned char tmp;
 void loop_Rx()
 {
-  pinMode(GPIO1, INPUT);
+ // pinMode(GPIO1, INPUT);
   //int c=digitalRead(GPIO1);
-  
   pin_ISR(); //Serial.print("buttonState:"); Serial.println(buttonState);
-  //if(buttonState== 1) //if(GPO1_H())
-  //{
+  if(buttonState== 1) //if(GPO1_H())
+ {
   cmt2300aEasy_bGoStandby();
   tmp = cmt2300aEasy_bGetMessage(getstr); //Simülasyonun bu noktasında getstr tarafından alınan veri paketlerini görebilirsiniz.;
+  
   printf("recv=%s\r\n", getstr);
   cmt2300aEasy_bIntSrcFlagClr();
   cmt2300aEasy_vClearFIFO();
   cmt2300aEasy_bGoRx();
-  while(digitalRead(GPIO1)== 0);
+ 
+  //while(digitalRead(GPIO1)== 0);
   //delay(1);
- /* }else
+  }else
   {
   printf("nothing!\r\n");
   delay(1000);
 
-  }*/
+  }
 }
 void loop() {
   // put your main code here, to run repeatedly:

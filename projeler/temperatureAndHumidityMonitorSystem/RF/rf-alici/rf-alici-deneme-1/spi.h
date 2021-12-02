@@ -13,6 +13,7 @@
   #define SDIO_H()  */
   
    #define SPI3_SPEED 1
+   int c;
 /**********************************************************
 **Name:   vSpi3Init
 **Func:   Init Spi-3 Config
@@ -79,7 +80,11 @@ uint8_t bSpi3ReadByte()
     delayMicroseconds(SPI3_SPEED); //delay(SPI3_SPEED);
     digitalWrite(SCLK, 1);
     delayMicroseconds(SPI3_SPEED); //delay(SPI3_SPEED);
-    if(digitalRead(SDIO)){
+
+   // Serial.print("SDIO: "); Serial.println(SDIO);
+    // Serial.print("bSpi3ReadByte:"); 
+     c= digitalRead(SDIO); //Serial.println(c);
+    if(c==1){
       RdPara |= 0x01;
     }
     else{
@@ -171,8 +176,12 @@ uint8_t spi3Class_bSpi3ReadFIFO()
     RdPara <<= 1;
     delayMicroseconds(SPI3_SPEED); //delay(1);
     digitalWrite(SCLK, 1);
-    delay(1);
-   if(digitalRead(SDIO))
+    delayMicroseconds(SPI3_SPEED); 
+    //Serial.print("SDIO: "); Serial.println(SDIO);
+    
+  //  Serial.print("spi3Class_bSpi3ReadFIFO:"); 
+  c= digitalRead(SDIO); //Serial.println(c);
+   if(c==1)
       RdPara |= 0x01;   //NRZ MSB
     else
       RdPara |= 0x00;   //NRZ MSB
