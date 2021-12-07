@@ -55,10 +55,10 @@ void loop(void)
   byte tmp;
 
 
-  if (GPO3_H())
-  {
-    delay (200);
-    //Serial.print("RSSI: ");
+  //if (GPO3_H())
+  //{
+    //delay (200);
+   // Serial.print("RSSI: ");
     //Serial.println(bReadRssi(1) - 128);
     tmp = bGetMessage(rx_buf);
     bIntSrcFlagClr();
@@ -69,6 +69,6 @@ void loop(void)
       Serial.write(rx_buf, tmp);
       Serial.print("\r\n");
     }
-    }
+    //}
 
 }

@@ -54,8 +54,8 @@ void loop(void)
   byte tmp;
       bSendMessage(tx_buf, TX_NUM);
       while(GPO3_L());
-      bIntSrcFlagClr();
-      vClearFIFO(); 
+      //bIntSrcFlagClr();
+      //vClearFIFO(); 
       bGoSleep();
  
       Serial.print("Tx: ");

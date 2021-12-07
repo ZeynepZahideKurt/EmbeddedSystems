@@ -1,0 +1,33 @@
+void vCfgBank(word cfg[], byte length)
+{
+  byte i;
+
+  if(length!=0){  
+    for(i=0; i<length; i++) 
+      vSpi3Write(cfg[i]);
+  } 
+}
+
+void vSpi3Write(word dat)
+{
+  vSpi3WriteByte((byte)(dat>>8)&0x7F);
+  vSpi3WriteByte((byte)dat);
+  SetCSB();
+}
+
+  vCfgBank(CMTBank, 12);
+  vCfgBank(SystemBank, 12);
+  vCfgBank(FrequencyBank, 8);
+  vCfgBank(DataRateBank, 24);
+  vCfgBank(BasebandBank, 29);
+  vCfgBank(TXBank, 11);
+
+tmp = bSpi3Read(CMT23_INT_FLG);
+rev = bSpi3ReadFIFO();	
+				vSpi3BurstReadFIFO(msg, rev);
+
+word node;
+node = bSpi3Read(CMT23_NODE_ADDR_3);	
+
+byte tmp;
+tmp = bSpi3Read(CMT23_INT1_CTL);

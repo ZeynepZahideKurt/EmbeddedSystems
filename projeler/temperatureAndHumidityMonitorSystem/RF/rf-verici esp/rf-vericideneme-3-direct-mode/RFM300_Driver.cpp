@@ -281,9 +281,9 @@ void vSetClockDiv(byte div, byte enable)
 {
   byte tmp;
   tmp = bSpi3Read(CMT23_CLK_CTL);
- // Serial.println(tmp,HEX);  //print old value
+  Serial.println(tmp,HEX);  //print old value
   vSpi3Write(((word)CMT23_CLK_CTL<<8)+(tmp&0xC0|(enable<<5)|div)); 
-  //Serial.println(((word)CMT23_CLK_CTL<<8)+(tmp&0xC0|enable<<5|div),HEX);
+  Serial.println(((word)CMT23_CLK_CTL<<8)+(tmp&0xC0|enable<<5|div),HEX);
 }
 
 
@@ -436,9 +436,9 @@ void vInit(void)
 {
   byte tmp;
   vSpi3Init();
-//  GPO1In();
+  GPO1In();
   //GPO2In();
-  GPO3In();
+  //GPO3In();
   
 //  TX_ANTOut();
   //RX_ANTOut();

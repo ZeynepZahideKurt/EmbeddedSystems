@@ -187,7 +187,8 @@ byte bSpi3ReadFIFO(void)
     }else if(digitalRead(SDIO)==0){
       c=0;
     }
-   
+   // Serial.print("bSpi3ReadFIFO: ");
+   // Serial.println(c);
     
     if(c==1)
       RdPara |= 0x01;   //NRZ MSB
@@ -215,18 +216,18 @@ byte bSpi3ReadFIFO(void)
 void vSpi3BurstWriteFIFO(byte ptr[], byte length)
 {
   byte i;
-  //printf("length: %x\r\n", length);
-  //Serial.print(length);
+  printf("length: %x\r\n", length);
+  Serial.print(length);
   if(length!=0x00)
     {
     for(i=0;i<length;i++)
       vSpi3WriteFIFO(ptr[i]);
       
-      //printf("i: %x\r\n", i);
+      printf("i: %x\r\n", i);
       
       byte vSpi3WriteFIFO1;
   vSpi3WriteFIFO1 = bSpi3Read(i);
-  //printf("vSpi3WriteFIFO: %x\r\n", vSpi3WriteFIFO1);
+  printf("vSpi3WriteFIFO: %x\r\n", vSpi3WriteFIFO1);
     }
   return;
 }
