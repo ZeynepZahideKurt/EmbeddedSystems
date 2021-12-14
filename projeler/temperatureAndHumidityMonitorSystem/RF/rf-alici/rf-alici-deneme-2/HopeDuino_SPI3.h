@@ -25,10 +25,12 @@ typedef unsigned int  word;
 
 //#define GPO1      14
 
+//2-4-5-16-17-18-21-22
+
 #define FCSB      15
-#define SDIO      19 
-#define SCLK        18
-#define CSB         5
+#define SDIO      25 
+#define SCLK        27 // 18
+#define CSB         13// 5
 
 //#define NC0         9
 

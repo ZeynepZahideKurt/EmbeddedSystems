@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="GO_STBY"/>
+		<item key="selection" value="HAL_Delay("/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="hal_delay("/>
+			<item value="mikro"/>
+			<item value="HAL_Delay_us"/>
+			<item value="buradaa7"/>
+			<item value=" HAL_UART_Transmit( &amp;hlpuart1, &quot;buradaa7\r\n&quot;,10, 100);"/>
+			<item value="vSpi3Init"/>
+			<item value="CMTBank"/>
+			<item value="delay("/>
+			<item value="delayMicroseconds("/>
+			<item value="DWT_Delay_ms("/>
+			<item value="delay_us(SPI3_SPEED);"/>
+			<item value="delayMicroseconds"/>
+			<item value="DELAY("/>
+			<item value="delayMicroseconds(SPI3_SPEED);"/>
 			<item value="GO_STBY"/>
-			<item value="Read"/>
-			<item value="ReadReg"/>
-			<item value="CMT2219B_ReadReg"/>
-			<item value="Init"/>
-			<item value="* @name CMT2219B_ReadFifo"/>
-			<item value="0x09"/>
-			<item value="CUS_CMT10"/>
-			<item value="US_CMT10"/>
-			<item value="CMT23_DUTY_CTL"/>
-			<item value="cmt2300aEasy_bIntSrcFlagClr"/>
-			<item value="LBD_CLR"/>
-			<item value="fosc"/>
-			<item value="Lfosc"/>
-			<item value="EnableLfosc"/>
 		</list>
 		<list key="replacehistory">
+			<item value="HAL_Delay"/>
+			<item value="HAL_Delay("/>
+			<item value="HAL_Delay_us("/>
+			<item value="DWT_Delay_ms(SPI3_SPEED);"/>
+			<item value="DWT_Delay_ms(volatile uint32_t au32_milliseconds)"/>
+			<item value="delay_us(SPI3_SPEED);"/>
+			<item value="HAL_Delay(SPI3_SPEED);"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="1090"/>
-		<item key="DIALOG_Y_ORIGIN" value="8"/>
+		<item key="DIALOG_X_ORIGIN" value="1280"/>
+		<item key="DIALOG_Y_ORIGIN" value="243"/>
 		<item key="DIALOG_WIDTH" value="284"/>
-		<item key="DIALOG_HEIGHT" value="310"/>
+		<item key="DIALOG_HEIGHT" value="366"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
 	</section>
 </section>

@@ -2,7 +2,7 @@
 /**********************************************************
 3-wire spi
 **********************************************************/
-
+#include <main.h>
 
 
   #define	SetCSB()	HAL_GPIO_WritePin(csb_GPIO_Port, csb_Pin, 1)
@@ -17,8 +17,9 @@
   #define	SetSDIO()	HAL_GPIO_WritePin(SDIO_GPIO_Port, SDIO_Pin, 1)
   #define	ClrSDIO()	HAL_GPIO_WritePin(SDIO_GPIO_Port, SDIO_Pin, 0)
 
-  //#define   InputSDIO()		//GPIO_Init(GPIO_PORT_C,GPIO_PINS_SDIO,GPIO_MODE_IN_FL_NO_IT)
- // #define	OutputSDIO()	//GPIO_Init(GPIO_PORT_C,GPIO_PINS_SDIO,GPIO_MODE_OUT_PP_LOW_FAST)
+ // #define   InputSDIO()
+//GPIO_Init(GPIO_PORT_C,GPIO_PINS_SDIO,GPIO_MODE_IN_FL_NO_IT)
+  //#define	OutputSDIO()	//GPIO_Init(GPIO_PORT_C,GPIO_PINS_SDIO,GPIO_MODE_OUT_PP_LOW_FAST)
 
   #define	SDIO_H()	HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin)
   #define	SDIO_L()	HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin)
@@ -28,6 +29,8 @@
 **Func: 	Init Spi-3 Config
 **Note:
 **********************************************************/
+
+
 void spi3Class_vSpi3Init()
 {
 //	GPIO_Init(GPIO_PORT_C, (GPIO_Pin_TypeDef)GPIO_PINS, GPIO_MODE_OUT_PP_LOW_FAST);;	//SPI-3 for output

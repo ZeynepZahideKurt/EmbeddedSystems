@@ -63,12 +63,13 @@ void loop(void)
     tmp = bGetMessage(rx_buf);
     bIntSrcFlagClr();
     vClearFIFO();
+   // Serial.println(tmp);
     if (tmp) {
       Serial.print(tmp);
       Serial.print(" bytes: ");
       Serial.write(rx_buf, tmp);
       Serial.print("\r\n");
     }
-    }
+   }
 
 }
