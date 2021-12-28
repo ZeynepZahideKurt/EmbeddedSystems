@@ -57,7 +57,11 @@ static void MX_LPUART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+/*void delay_us (uint16_t us)
+{
+	__HAL_TIM_SET_COUNTER(&htim2,0);  // set the counter value a 0
+	while (__HAL_TIM_GET_COUNTER(&htim2) < us);  // wait for the counter to reach the us input in the parameter
+}*/
 /* USER CODE END 0 */
 
 /**
@@ -90,7 +94,7 @@ int main(void)
   MX_GPIO_Init();
   MX_LPUART1_UART_Init();
   /* USER CODE BEGIN 2 */
-
+ // HAL_TIM_Base_Start( & htim2);
 #define TX_NUM  21
 
   byte tx_buf[32] = {'H','o','p','e','R','F',' ','R','F','M',' ','C','O','B','R','F','M','3','0','0','A'};
@@ -98,28 +102,21 @@ int main(void)
   byte mode = 1;   // 0: receive , 1: transmitter
 
 //radio configure
-
+  HAL_UART_Transmit( &hlpuart1, "BA......\r\n",12, 100);
   FixedPktLength    = false;
     PayloadLength     = 21;
-    HAL_UART_Transmit( &hlpuart1, "buradaa1\r\n",10, 100);
 
     vInit();
-    HAL_UART_Transmit( &hlpuart1, "buradaa2\r\n",10, 100);
     vCfgBank(CMTBank, 12);
-
     vCfgBank(SystemBank, 12);
     vCfgBank(FrequencyBank, 8);
     vCfgBank(DataRateBank, 24);
     vCfgBank(BasebandBank, 29);
     vCfgBank(TXBank, 11);
     vEnableAntSwitch(0);
-HAL_UART_Transmit( &hlpuart1, "buradaaa\r\n",10, 100);
-HAL_Delay(500);
     vGpioFuncCfg(GPIO1_DCLK+GPIO2_DCLK+GPIO3_INT2);   //GPIO Maping
 
-HAL_UART_Transmit( &hlpuart1, "geliyor",7, 100);
-HAL_Delay(500);
-
+    HAL_Delay(1);//delay_us(10);
 
       mode = 1;
       vIntSrcCfg(INT_FIFO_NMTY_TX, INT_TX_DONE);    //IRQ maping
@@ -127,15 +124,10 @@ HAL_Delay(500);
 
 
       vIntSrcEnable(TX_DONE_EN);
-
       vClearFIFO();
 
       bGoSleep();
-      HAL_GPIO_WritePin(BUZZER_GPIO_Port, BUZZER_Pin, 1);
-
-          	        HAL_Delay(10000);
-          	        HAL_GPIO_WritePin(BUZZER_GPIO_Port, BUZZER_Pin, 0);
-      printf("Tx...");
+      HAL_UART_Transmit( &hlpuart1, "TX......\r\n",12, 100);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -146,18 +138,15 @@ HAL_Delay(500);
 
     /* USER CODE BEGIN 3 */
 	  static uint16_t tx_cnt=0;
-	//    byte tmp;
+	   byte tmp;
 	        bSendMessage(tx_buf, TX_NUM);
-	        while(GPO3_L());
+	        while(HAL_GPIO_ReadPin(GPO3_GPIO_Port, GPO3_Pin) == 0);
 	        bIntSrcFlagClr();
 	        vClearFIFO();
 	        bGoSleep();
-	        HAL_GPIO_WritePin(BUZZER_GPIO_Port, BUZZER_Pin, 1);
-	        //printf("Tx: ");
-	       // printf(++tx_cnt);
+	        HAL_UART_Transmit( &hlpuart1, "gonderildi\r\n",12, 100);
+
 	        HAL_Delay(1000);
-	        HAL_GPIO_WritePin(BUZZER_GPIO_Port, BUZZER_Pin, 0);
-	        //delay(1000);
 
   }
   /* USER CODE END 3 */

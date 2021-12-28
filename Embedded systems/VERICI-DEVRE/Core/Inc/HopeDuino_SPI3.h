@@ -72,45 +72,7 @@ UART_HandleTypeDef hlpuart1;
 
   #define	SDIO_H()	HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin) == 1
   #define	SDIO_L()	HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin) == 0
-/*volatile unsigned int *DWT_CYCCNT = (volatile unsigned int *)0xE0001004; //address of the register
 
-volatile unsigned int *DWT_CONTROL = (volatile unsigned int *)0xE0001000; //address of the register
-
-volatile unsigned int *SCB_DEMCR = (volatile unsigned int *)0xE000EDFC; //address of the register
-
-void EnableTiming(void)
-
-{
-
-*SCB_DEMCR = *SCB_DEMCR | 0x01000000;
-
-*DWT_CYCCNT = 0; // reset the counter
-
-*DWT_CONTROL = *DWT_CONTROL | 1 ; // enable the counter
-
-}
-
-
-
-//******************************************************************************
-
-void HAL_Delay_us(uint32_t tick)
-
-{
-
-unsigned int start, current;
-
-start = *DWT_CYCCNT;
-
-do
-
-{
-
-current = *DWT_CYCCNT;
-
-} while((current - start) < tick);
-
-}*/
 
 
 
@@ -251,23 +213,16 @@ void vSpi3WriteByte(byte dat)
   ClrCSB();
   for(bitcnt=8; bitcnt!=0; bitcnt--)
     {
-	  HAL_UART_Transmit( &hlpuart1, "buradaa18\r\n",11, 100);
 	  ClrSDCK();
-
-	  if(dat&0x80){
+	  HAL_Delay(1);//delay_us(SPI3_SPEED);
+	  if(dat&0x80)
 		  SetSDIO();
-		  HAL_UART_Transmit( &hlpuart1, "buradaa19\r\n",11, 100);}
-	  else{
+	  else
 		  ClrSDIO();
-		  HAL_UART_Transmit( &hlpuart1, "buradaa20\r\n",11, 100);
-	  }
-	  HAL_UART_Transmit( &hlpuart1, "buradaa21\r\n",11, 100);
+
 	  SetSDCK();
-	  HAL_UART_Transmit( &hlpuart1, "buradaa22\r\n",11, 100);
 	  dat <<= 1;
-	  HAL_UART_Transmit( &hlpuart1, "buradaa23\r\n",11, 100);
-	  HAL_Delay_us(SPI3_SPEED);
-	  HAL_UART_Transmit( &hlpuart1, "buradaa2\r\n",11, 100);
+	  HAL_Delay(1);//delay_us(SPI3_SPEED);
 
     }
 
@@ -293,9 +248,9 @@ byte bSpi3ReadByte(void)
     {
     ClrSDCK();
     RdPara <<= 1;
-    HAL_Delay_us(SPI3_SPEED);
+    HAL_Delay(1);//delay_us(SPI3_SPEED);
     SetSDCK();
-    HAL_Delay_us(SPI3_SPEED);
+    HAL_Delay(1);//delay_us(SPI3_SPEED);
 
     if(HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin) == 1){
       c=1;
@@ -325,14 +280,9 @@ byte bSpi3ReadByte(void)
 **********************************************************/
 void vSpi3Write(word dat)
 {
-  //Serial.print("dat: ");   Serial.println(dat);
-	HAL_UART_Transmit( &hlpuart1, "buradaa10\r\n",11, 100);
   vSpi3WriteByte((byte)(dat>>8)&0x7F);
-  HAL_UART_Transmit( &hlpuart1, "buradaa11\r\n",11, 100);
   vSpi3WriteByte((byte)dat);
-  HAL_UART_Transmit( &hlpuart1, "buradaa12\r\n",11, 100);
   SetCSB();
-  HAL_UART_Transmit( &hlpuart1, "buradaa13\r\n",11, 100);
 }
 
 /**********************************************************
@@ -369,18 +319,18 @@ void vSpi3WriteFIFO(byte dat)
       SetSDIO();
     else
       ClrSDIO();
-    HAL_Delay_us(SPI3_SPEED);
+    HAL_Delay(1);//delay_us(SPI3_SPEED);
     SetSDCK();
-    HAL_Delay_us(SPI3_SPEED);
+    HAL_Delay(1);//delay_us(SPI3_SPEED);
     dat <<= 1;
     }
   ClrSDCK();
-  HAL_Delay_us(SPI3_SPEED);    //Time-Critical
-  HAL_Delay_us(SPI3_SPEED);    //Time-Critical
+  HAL_Delay(1);//delay_us(SPI3_SPEED);    //Time-Critical
+ // HAL_Delay(1);//delay_us(SPI3_SPEED);    //Time-Critical
   SetFCSB();
   SetSDIO();
-  HAL_Delay_us(SPI3_SPEED);    //Time-Critical
-  HAL_Delay_us(SPI3_SPEED);    //Time-Critical
+  HAL_Delay(1);//delay_us(SPI3_SPEED);    //Time-Critical
+ // HAL_Delay(1);//delay_us(SPI3_SPEED);    //Time-Critical
 }
 
 /**********************************************************
@@ -403,9 +353,9 @@ byte bSpi3ReadFIFO(void)
     {
     ClrSDCK();
     RdPara <<= 1;
-    HAL_Delay_us(SPI3_SPEED);
+    HAL_Delay(1);//delay_us(SPI3_SPEED);
     SetSDCK();
-    HAL_Delay_us(SPI3_SPEED);
+    HAL_Delay(1);//delay_us(SPI3_SPEED);
 
     if(HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin) == 1){
       c=1;
@@ -421,13 +371,13 @@ byte bSpi3ReadFIFO(void)
     }
 
   ClrSDCK();
-  HAL_Delay_us(SPI3_SPEED);    //Time-Critical
-  HAL_Delay_us(SPI3_SPEED);    //Time-Critical
+  HAL_Delay(1);//delay_us(SPI3_SPEED);    //Time-Critical
+ // HAL_Delay(1);//delay_us(SPI3_SPEED);    //Time-Critical
   SetFCSB();
   OutputSDIO();
   SetSDIO();
-  HAL_Delay_us(SPI3_SPEED);    //Time-Critical
-  HAL_Delay_us(SPI3_SPEED);    //Time-Critical
+  HAL_Delay(1);//delay_us(SPI3_SPEED);    //Time-Critical
+//  HAL_Delay(1);//delay_us(SPI3_SPEED);    //Time-Critical
   return(RdPara);
 }
 

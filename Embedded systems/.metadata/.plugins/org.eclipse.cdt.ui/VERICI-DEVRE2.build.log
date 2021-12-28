@@ -1,0 +1,50 @@
+11:13:15 **** Build of configuration Debug for project VERICI-DEVRE2 ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L010x6 -c -I../Core/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+In file included from ../Core/Inc/RFM300_Driver.h:17,
+                 from ../Core/Src/main.c:25:
+../Core/Inc/HopeDuino_SPI3.h: In function 'delayMicroseconds':
+../Core/Inc/HopeDuino_SPI3.h:54:5: warning: unused variable 'i' [-Wunused-variable]
+   54 | int i=0;
+      |     ^
+../Core/Inc/HopeDuino_SPI3.h: In function 'vSpi3BurstWriteFIFO':
+../Core/Inc/HopeDuino_SPI3.h:348:9: warning: variable 'vSpi3WriteFIFO1' set but not used [-Wunused-but-set-variable]
+  348 |    byte vSpi3WriteFIFO1;
+      |         ^~~~~~~~~~~~~~~
+In file included from ../Core/Src/main.c:25:
+../Core/Inc/RFM300_Driver.h: In function 'set_node_id':
+../Core/Inc/RFM300_Driver.h:532:55: warning: suggest parentheses around arithmetic in operand of '|' [-Wparentheses]
+  532 |     vSpi3Write((word)(CMT23_NODE_ADDR_3<<8)| (node>>8)&0x00FF);
+      |                                              ~~~~~~~~~^~~~~~~
+../Core/Inc/RFM300_Driver.h: In function 'vSetClockDiv':
+../Core/Inc/RFM300_Driver.h:649:45: warning: suggest parentheses around arithmetic in operand of '|' [-Wparentheses]
+  649 |     vSpi3Write(((word)CMT23_CLK_CTL<<8)+(tmp&0xC0|(enable<<5)|div));
+      |                                          ~~~^~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:133:15: warning: unused variable 'tx_cnt' [-Wunused-variable]
+  133 |    static int tx_cnt=0;
+      |               ^~~~~~
+../Core/Src/main.c:101:8: warning: unused variable 'tx_buf' [-Wunused-variable]
+  101 |   byte tx_buf[32] = {'H','o','p','e','R','F',' ','R','F','M',' ','C','O','B','R','F','M','3','0','0','A'};
+      |        ^~~~~~
+At top level:
+../Core/Src/main.c:133:15: warning: 'tx_cnt' defined but not used [-Wunused-variable]
+  133 |    static int tx_cnt=0;
+      |               ^~~~~~
+arm-none-eabi-gcc -o "VERICI-DEVRE2.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Enelsis\Desktop\enelsis\kendi github\kendi-kodlarim\Embedded systems\VERICI-DEVRE2\STM32L010C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="VERICI-DEVRE2.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: VERICI-DEVRE2.elf
+ 
+arm-none-eabi-size   VERICI-DEVRE2.elf 
+arm-none-eabi-objdump -h -S  VERICI-DEVRE2.elf  > "VERICI-DEVRE2.list"
+arm-none-eabi-objcopy  -O binary  VERICI-DEVRE2.elf  "VERICI-DEVRE2.bin"
+   text	   data	    bss	    dec	    hex	filename
+  14896	    404	   1780	  17080	   42b8	VERICI-DEVRE2.elf
+Finished building: default.size.stdout
+ 
+Finished building: VERICI-DEVRE2.bin
+ 
+Finished building: VERICI-DEVRE2.list
+ 
+
+11:13:16 Build Finished. 0 errors, 7 warnings. (took 1s.554ms)
+

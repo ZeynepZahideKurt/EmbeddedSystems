@@ -1,0 +1,12 @@
+11:13:13 **** Build of configuration Debug for project DHT22_us ****
+make all 
+arm-none-eabi-size   DHT22_us.elf 
+   text	   data	    bss	    dec	    hex	filename
+  10596	    120	   1792	  12508	   30dc	DHT22_us.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objcopy.exe -O ihex "DHT22_us.elf" "DHT22_us.hex"
+ 
+
+11:13:14 Build Finished. 0 errors, 0 warnings. (took 986ms)
+

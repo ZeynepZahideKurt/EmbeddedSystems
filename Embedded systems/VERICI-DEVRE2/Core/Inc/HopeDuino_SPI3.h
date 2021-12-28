@@ -1,0 +1,373 @@
+#ifndef HopeDuino_SPI3_h
+#define HopeDuino_SPI3_h
+
+//#include <arduino.h>
+//#include <util/delay.h>
+//#include "stm32l0xx_hal_gpio.h"
+//#include "stm32l0xx_hal.h"
+#include "main.h"
+  UART_HandleTypeDef hlpuart1;
+#ifndef  byte
+typedef unsigned char byte;
+#endif
+
+#ifndef word
+typedef unsigned int  word;
+#endif
+byte bSpi3ReadByte(void);     /** SPI-3 read one byte **/
+
+int c;
+#define SPI3_SPEED  1
+#define	SetCSB()	HAL_GPIO_WritePin(CSB_GPIO_Port, CSB_Pin, 1)
+  #define	ClrCSB()	HAL_GPIO_WritePin(CSB_GPIO_Port, CSB_Pin, 0)
+
+  #define	SetFCSB()	HAL_GPIO_WritePin(FCSB_GPIO_Port, FCSB_Pin, 1)
+  #define	ClrFCSB()	HAL_GPIO_WritePin(FCSB_GPIO_Port, FCSB_Pin, 0)
+
+  #define	SetSDCK()	HAL_GPIO_WritePin(SCLK_GPIO_Port, SCLK_Pin, 1)
+  #define	ClrSDCK()	HAL_GPIO_WritePin(SCLK_GPIO_Port, SCLK_Pin, 0)
+
+  #define	SetSDIO()	HAL_GPIO_WritePin(SDIO_GPIO_Port, SDIO_Pin, 1)
+  #define	ClrSDIO()	HAL_GPIO_WritePin(SDIO_GPIO_Port, SDIO_Pin, 0)
+
+  //#define   InputSDIO()		//GPIO_Init(GPIO_PORT_C,GPIO_PINS_SDIO,GPIO_MODE_IN_FL_NO_IT)
+  //#define	OutputSDIO()	//GPIO_Init(GPIO_PORT_C,GPIO_PINS_SDIO,GPIO_MODE_OUT_PP_LOW_FAST)
+
+  #define	SDIO_H()	HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin) == 1
+  #define	SDIO_L()	HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin) == 0
+
+void vSpi3Init(void);       /** initialize software SPI-3 **/
+void vSpi3Write(word dat);      /** SPI-3 send one word **/
+byte bSpi3Read(byte addr);      /** SPI-3 read one byte **/
+
+void vSpi3WriteFIFO(byte dat);    /** SPI-3 send one byte to FIFO **/
+byte bSpi3ReadFIFO(void);     /** SPI-3 read one byte from FIFO **/
+void vSpi3BurstWriteFIFO(byte ptr[], byte length);      /** SPI-3 burst send N byte to FIFO**/
+void vSpi3BurstReadFIFO(byte ptr[], byte length);     /** SPI-3 burst read N byte to FIFO**/
+
+void vSpi3WriteByte(byte dat);    /** SPI-3 send one byte **/
+void delayMicroseconds(void);
+
+void delayMicroseconds(){
+	 // for (int i = 0; i <= 1; i++){
+	  		  //HAL_UART_Transmit( &hlpuart1, (uint8_t *)"geliyor\r\n",9, 100);
+int i=0;
+ // HAL_UART_Transmit( &hlpuart1, (uint8_t *)"giriyor\r\n",9, 100);
+
+//HAL_Delay(1);
+	  	  //}
+  }
+
+void InputSDIO(void)
+{
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+  	    /* Check the parameters */
+	GPIO_InitStruct.Pin = SDIO_Pin;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  	GPIO_InitStruct.Pull = GPIO_NOPULL;
+  	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+}
+void OutputSDIO(void){
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	  __HAL_RCC_GPIOH_CLK_ENABLE();
+	  __HAL_RCC_GPIOA_CLK_ENABLE();
+	  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(SDIO_GPIO_Port, SDIO_Pin, GPIO_PIN_RESET);
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+  	GPIO_InitStruct.Pin = SDIO_Pin;
+  	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  	GPIO_InitStruct.Pull = GPIO_NOPULL;
+  	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+}
+
+void OutputSDCK(void){
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	  __HAL_RCC_GPIOH_CLK_ENABLE();
+	  __HAL_RCC_GPIOA_CLK_ENABLE();
+	  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(SCLK_GPIO_Port, SCLK_Pin, GPIO_PIN_RESET);
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+  	GPIO_InitStruct.Pin = SCLK_Pin;
+  	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  	GPIO_InitStruct.Pull = GPIO_NOPULL;
+  	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+}
+
+void OutputFCSB(void){
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	  __HAL_RCC_GPIOH_CLK_ENABLE();
+	  __HAL_RCC_GPIOA_CLK_ENABLE();
+	  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(FCSB_GPIO_Port, FCSB_Pin, GPIO_PIN_RESET);
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+  	GPIO_InitStruct.Pin = FCSB_Pin;
+  	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  	GPIO_InitStruct.Pull = GPIO_NOPULL;
+  	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+
+}
+
+void OutputCSB(void){
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	  __HAL_RCC_GPIOH_CLK_ENABLE();
+	  __HAL_RCC_GPIOA_CLK_ENABLE();
+	  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+	  /*Configure GPIO pin Output Level */
+	  HAL_GPIO_WritePin(CSB_GPIO_Port, CSB_Pin, GPIO_PIN_RESET);
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+  	GPIO_InitStruct.Pin = CSB_Pin;
+  	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  	GPIO_InitStruct.Pull = GPIO_NOPULL;
+  	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+}
+
+void vSpi3Init(void)
+{
+  OutputCSB();
+  OutputFCSB();
+  OutputSDCK();
+  OutputSDIO();
+
+  SetCSB();
+  SetFCSB();
+  SetSDIO();
+  ClrSDCK();
+}
+
+/**********************************************************
+**Name:   vSpi3WriteByte
+**Func:   SPI-3 send one byte
+**Input:
+**Output:
+**********************************************************/
+void vSpi3WriteByte(byte dat)
+{
+
+  byte bitcnt;
+
+  SetFCSB();        //FCSB = 1;
+
+  OutputSDIO();     //SDA output mode
+  SetSDIO();        //    output 1
+
+  ClrSDCK();
+  ClrCSB();
+
+  for(bitcnt=8; bitcnt!=0; bitcnt--)
+    {
+    ClrSDCK();
+    delayMicroseconds();//delayMicroseconds(SPI3_SPEED);
+    if(dat&0x80)
+      SetSDIO();
+    else
+      ClrSDIO();
+    SetSDCK();
+    dat <<= 1;
+    delayMicroseconds();//delayMicroseconds(SPI3_SPEED);
+    }
+  ClrSDCK();
+  SetSDIO();
+}
+
+/**********************************************************
+**Name:   bSpi3ReadByte
+**Func:   SPI-3 read one byte
+**Input:
+**Output:
+**********************************************************/
+byte bSpi3ReadByte(void)
+{
+  byte RdPara = 0;
+  byte bitcnt;
+
+  ClrCSB();
+  InputSDIO();
+
+  for(bitcnt=8; bitcnt!=0; bitcnt--)
+    {
+    ClrSDCK();
+    RdPara <<= 1;
+    delayMicroseconds();//delayMicroseconds(SPI3_SPEED);
+    SetSDCK();
+    delayMicroseconds();//delayMicroseconds(SPI3_SPEED);
+
+    if(HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin) == 1){
+          c=1;
+        }else if(HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin) == 0){
+          c=0;
+        }
+
+
+    if(c==1)
+      RdPara |= 0x01;
+    else if(c==0)
+      RdPara |= 0x00;
+    }
+  ClrSDCK();
+  OutputSDIO();
+  SetSDIO();
+  SetCSB();
+  return(RdPara);
+}
+
+/**********************************************************
+**Name:   vSpi3Write
+**Func:   SPI Write One word
+**Input:  Write word
+**Output: none
+**********************************************************/
+void vSpi3Write(word dat)
+{
+  vSpi3WriteByte((byte)(dat>>8)&0x7F);
+  vSpi3WriteByte((byte)dat);
+  SetCSB();
+}
+
+/**********************************************************
+**Name:   bSpi3Read
+**Func:   SPI-3 Read One byte
+**Input:  readout addresss
+**Output: readout byte
+**********************************************************/
+byte bSpi3Read(byte addr)
+{
+    vSpi3WriteByte(addr|0x80);
+  return(bSpi3ReadByte());
+}
+
+/**********************************************************
+**Name:   vSpi3WriteFIFO
+**Func:   SPI-3 send one byte to FIFO
+**Input:  one byte buffer
+**Output: none
+**********************************************************/
+void vSpi3WriteFIFO(byte dat)
+{
+  byte bitcnt;
+
+  SetCSB();
+  OutputSDIO();
+  ClrSDCK();
+  ClrFCSB();      //FCSB = 0
+  for(bitcnt=8; bitcnt!=0; bitcnt--)
+    {
+    ClrSDCK();
+
+    if(dat&0x80)
+      SetSDIO();
+    else
+      ClrSDIO();
+    delayMicroseconds();//delayMicroseconds(SPI3_SPEED);
+    SetSDCK();
+    delayMicroseconds();//delayMicroseconds(SPI3_SPEED);
+    dat <<= 1;
+    }
+  ClrSDCK();
+  delayMicroseconds();//delayMicroseconds(SPI3_SPEED);    //Time-Critical
+  delayMicroseconds();//delayMicroseconds(SPI3_SPEED);    //Time-Critical
+  SetFCSB();
+  SetSDIO();
+  delayMicroseconds();//delayMicroseconds(SPI3_SPEED);    //Time-Critical
+  delayMicroseconds();//delayMicroseconds(SPI3_SPEED);    //Time-Critical
+}
+
+/**********************************************************
+**Name:   bSpi3ReadFIFO
+**Func:   SPI-3 read one byte to FIFO
+**Input:  none
+**Output: one byte buffer
+**********************************************************/
+byte bSpi3ReadFIFO(void)
+{
+  byte RdPara;
+  byte bitcnt;
+
+  SetCSB();
+  InputSDIO();
+  ClrSDCK();
+  ClrFCSB();
+
+  for(bitcnt=8; bitcnt!=0; bitcnt--)
+    {
+    ClrSDCK();
+    RdPara <<= 1;
+    delayMicroseconds();//delayMicroseconds(SPI3_SPEED);
+    SetSDCK();
+    delayMicroseconds();//delayMicroseconds(SPI3_SPEED);
+
+    if(HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin) == 1){
+    	c=1;
+    }else if(HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin) == 0){
+        c=0;
+    }
+
+
+    if(c==1)
+      RdPara |= 0x01;   //NRZ MSB
+    else if(c==0)
+      RdPara |= 0x00;   //NRZ MSB
+    }
+
+  ClrSDCK();
+  delayMicroseconds();//delayMicroseconds(SPI3_SPEED);    //Time-Critical
+  delayMicroseconds();//delayMicroseconds(SPI3_SPEED);    //Time-Critical
+  SetFCSB();
+  OutputSDIO();
+  SetSDIO();
+  delayMicroseconds();//delayMicroseconds(SPI3_SPEED);    //Time-Critical
+  delayMicroseconds();//delayMicroseconds(SPI3_SPEED);    //Time-Critical
+  return(RdPara);
+}
+
+/**********************************************************
+**Name:   vSpi3BurstWriteFIFO
+**Func:   burst wirte N byte to FIFO
+**Input:  array length & head pointer
+**Output: none
+**********************************************************/
+void vSpi3BurstWriteFIFO(byte ptr[], byte length)
+{
+  byte i;
+  if(length!=0x00)
+  {
+	  for(i=0;i<length;i++)
+		  vSpi3WriteFIFO(ptr[i]);
+	  byte vSpi3WriteFIFO1;
+	  vSpi3WriteFIFO1 = bSpi3Read(i);
+  }
+  return;
+}
+
+/**********************************************************
+**Name:   vSpiBurstRead
+**Func:   burst wirte N byte to FIFO
+**Input:  array length  & head pointer
+**Output: none
+**********************************************************/
+void vSpi3BurstReadFIFO(byte ptr[], byte length)
+{
+	byte i;
+	if(length!=0){
+		for(i=0;i<length;i++)
+			ptr[i] = bSpi3ReadFIFO();
+	}
+	return;
+}
+
+
+#else
+#warning "HopeDuino_SPI3.h have been defined!"
+#endif

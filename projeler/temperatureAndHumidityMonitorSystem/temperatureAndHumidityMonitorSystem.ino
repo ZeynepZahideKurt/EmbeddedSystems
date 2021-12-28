@@ -3,7 +3,7 @@
   GPIO 0 12k-13k direnç ve butonla ve EN( Resetleme butonu-12k 13k direnç tak )programlama moduna geç. önce I0 butonuna basıp sonra EN butonuna basarsan programlama moduna geçer
   GPIO1 (TX) / GPIO3 (RX) ile program at
   GPIO2 bi tane led tak wifii ye bağlandığınında ışığı söner
-  GPIO15 bir buton tak wifiiye bağlanma oradaki butonla eepromdaki kullanıcı adı şifreyi değiştir
+  GPIO15 (pcbde 12) bir buton tak wifiiye bağlanma oradaki butonla eepromdaki kullanıcı adı şifreyi değiştir
   GPIO21 SDA / GPIO22 SCL 3.3 volt
 
   SPI   MOSI    MISO    CLK     CS

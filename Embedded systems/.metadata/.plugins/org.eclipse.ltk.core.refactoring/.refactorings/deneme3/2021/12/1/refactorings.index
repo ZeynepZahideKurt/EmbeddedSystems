@@ -1,0 +1,4 @@
+1640677180890	Move 'sht3x.h' to 'Inc'
+1640677195891	Move 'sensirion_common.h' to 'Inc'
+1640677202753	Move 'sensirion_arch_config.h' to 'Inc'
+1640677208319	Move 'sensirion_i2c.h' to 'Inc'

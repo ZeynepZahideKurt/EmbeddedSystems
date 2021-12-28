@@ -1,42 +1,10 @@
-10:26:39 **** Incremental Build of configuration Debug for project rf verici ****
+11:13:22 **** Build of configuration Debug for project rf verici ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L010x6 -c -I../Core/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
-In file included from ../Core/Src/main.c:28:
-../Core/Inc/CMT2300drive.h: In function 'cmt2300aEasy_vInit':
-../Core/Inc/CMT2300drive.h:664:2: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
-  664 |  printf("tmp1=%d while(1)\n",(u16)tmp1);
-      |  ^~~~~~
-../Core/Inc/CMT2300drive.h:664:2: warning: incompatible implicit declaration of built-in function 'printf'
-In file included from ../Core/Src/main.c:28:
-../Core/Inc/CMT2300drive.h:1:1: note: include '<stdio.h>' or provide a declaration of 'printf'
-  +++ |+#include <stdio.h>
-    1 | #ifndef __CMT2300drive_H
-In file included from ../Core/Src/main.c:28:
-../Core/Inc/CMT2300drive.h: In function 'cmt2300aEasy_bSendMessage':
-../Core/Inc/CMT2300drive.h:786:2: warning: implicit declaration of function 'cmt2300aEasy_vSetTxPayloadLength' [-Wimplicit-function-declaration]
-  786 |  cmt2300aEasy_vSetTxPayloadLength(length);
-      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../Core/Inc/CMT2300drive.h: At top level:
-../Core/Inc/CMT2300drive.h:793:6: warning: conflicting types for 'cmt2300aEasy_vSetTxPayloadLength'
-  793 | void cmt2300aEasy_vSetTxPayloadLength(unsigned short int length)
-      |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../Core/Inc/CMT2300drive.h:786:2: note: previous implicit declaration of 'cmt2300aEasy_vSetTxPayloadLength' was here
-  786 |  cmt2300aEasy_vSetTxPayloadLength(length);
-      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-arm-none-eabi-gcc -o "rf verici.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Enelsis\Desktop\enelsis\kendi github\kendi-kodlarim\projeler\temperatureAndHumidityMonitorSystem\RF\rf-verici\rf verici\STM32L010C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="rf verici.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: rf verici.elf
- 
 arm-none-eabi-size   rf\ verici.elf 
-arm-none-eabi-objdump -h -S  rf\ verici.elf  > "rf verici.list"
-arm-none-eabi-objcopy  -O binary  rf\ verici.elf  "rf verici.bin"
    text	   data	    bss	    dec	    hex	filename
   14988	    536	   1648	  17172	   4314	rf verici.elf
 Finished building: default.size.stdout
  
-Finished building: rf verici.bin
- 
-Finished building: rf verici.list
- 
 
-10:26:40 Build Finished. 0 errors, 4 warnings. (took 1s.298ms)
+11:13:23 Build Finished. 0 errors, 0 warnings. (took 408ms)
 

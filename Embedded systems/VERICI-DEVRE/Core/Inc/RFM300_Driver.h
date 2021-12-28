@@ -431,7 +431,7 @@ byte bGoTx(void)
   #if 0
   vSpi3Write(((word)CMT23_MODE_CTL<<8)+MODE_GO_TFS);
   for(i=0; i<100; i++){
-    HAL_Delay_us(100);
+    HAL_Delay(1);//delay_us(100);
     tmp = (MODE_MASK_STA & bSpi3Read(CMT23_MODE_STA));
     if(tmp==MODE_STA_TFS)
       break;
@@ -442,7 +442,7 @@ byte bGoTx(void)
 
   vSpi3Write(((word)CMT23_MODE_CTL<<8)+MODE_GO_TX);
   for(i=0; i<100; i++){
-    HAL_Delay_us(100);
+    HAL_Delay(1);//delay_us(100);
     tmp = (MODE_MASK_STA & bSpi3Read(CMT23_MODE_STA));
     if(tmp==MODE_STA_TX)
       break;
@@ -466,7 +466,7 @@ byte bGoRx(void)
   RssiTrig = false;
   vSpi3Write(((word)CMT23_MODE_CTL<<8)+MODE_GO_RFS);
   for(i=0; i<100; i++){
-    HAL_Delay_us(100);
+    HAL_Delay(1);//delay_us(100);
     tmp = (MODE_MASK_STA & bSpi3Read(CMT23_MODE_STA));
     if(tmp==MODE_STA_RFS)
       break;
@@ -477,7 +477,7 @@ byte bGoRx(void)
 
   vSpi3Write(((word)CMT23_MODE_CTL<<8)+MODE_GO_RX);
   for(i=0; i<100; i++){
-    HAL_Delay_us(100);
+    HAL_Delay(1);//delay_us(100);
     tmp = (MODE_MASK_STA & bSpi3Read(CMT23_MODE_STA));
     if(tmp==MODE_STA_RX)
       break;
@@ -499,7 +499,7 @@ byte bGoSleep(void)
   byte tmp;
 
   vSpi3Write(((word)CMT23_MODE_CTL<<8)+MODE_GO_SLEEP);
-  HAL_Delay_us(100);   //enough?
+  HAL_Delay(1);//delay_us(100);   //enough?
   tmp = (MODE_MASK_STA & bSpi3Read(CMT23_MODE_STA));
   if(tmp==MODE_GO_SLEEP)
     return(true);
@@ -520,7 +520,7 @@ byte bGoStandby(void)
   RssiTrig = false;
   vSpi3Write(((word)CMT23_MODE_CTL<<8)+MODE_GO_STBY);
   for(i=0; i<100; i++){
-    HAL_Delay_us(100);
+    HAL_Delay(1);//delay_us(100);
     tmp = (MODE_MASK_STA & bSpi3Read(CMT23_MODE_STA));
 
     if(tmp==MODE_STA_STBY)
@@ -540,11 +540,9 @@ byte bGoStandby(void)
 **********************************************************/
 void vSoftReset(void)
 {
-	HAL_UART_Transmit( &hlpuart1, "buradaa7\r\n",10, 100);
   vSpi3Write(((word)CMT23_SOFTRST<<8)+0xFF);
-  HAL_UART_Transmit( &hlpuart1, "buradaa8\r\n",10, 100);
   HAL_Delay(1);       //enough?
-  HAL_UART_Transmit( &hlpuart1, "buradaa9\r\n",10, 100);
+
 }
 
 /**********************************************************
@@ -790,17 +788,12 @@ void vEnableWrFifo(void)
 {
   byte tmp;
   tmp = bSpi3Read(CMT23_FIFO_CTL);
-  //Serial.print("vEnableWrFifo tmp: "); Serial.println(tmp);
 
   tmp |= (SPI_FIFO_RD_WR_SEL|FIFO_RX_TX_SEL);
- // printf("tmp: %x\r\n", tmp);
+
 
   vSpi3Write(((word)CMT23_FIFO_CTL<<8)+tmp);
-  //printf("CMT23_FIFO_CTL: %x\r\n", (CMT23_FIFO_CTL<<8));
 
-  /*byte CMT23_FIFO_CTL1;
-  CMT23_FIFO_CTL1 = bSpi3Read(CMT23_FIFO_CTL);
-  printf("CMT23_FIFO_CTL'de yazan: %x\r\n", CMT23_FIFO_CTL1);*/
 
 }
 
@@ -845,10 +838,10 @@ CFG
 void vInit(void)
 {
   byte tmp;
-  HAL_UART_Transmit( &hlpuart1, "buradaa3\r\n",10, 100);
+ // HAL_UART_Transmit( &hlpuart1, "buradaa3\r\n",10, 100);
 
   vSpi3Init();
-  HAL_UART_Transmit( &hlpuart1, "buradaa4\r\n",10, 100);
+  //HAL_UART_Transmit( &hlpuart1, "buradaa4\r\n",10, 100);
 //  GPO1In();
   //GPO2In();
   //GPO3In();
@@ -857,10 +850,10 @@ void vInit(void)
   //RX_ANTOut();
 
   vSoftReset();
-  HAL_UART_Transmit( &hlpuart1, "buradaa5\r\n",10, 100);
+  //HAL_UART_Transmit( &hlpuart1, "buradaa5\r\n",10, 100);
   HAL_Delay(20);
   bGoStandby();
-  HAL_UART_Transmit( &hlpuart1, "buradaa6\r\n",10, 100);
+  //HAL_UART_Transmit( &hlpuart1, "buradaa6\r\n",10, 100);
 
   //
   tmp = bSpi3Read(CMT23_MODE_STA);

@@ -1,0 +1,11 @@
+myiic.c:9:6:IIC_Init	8	static
+myiic.c:26:6:_delay_us	8	static
+myiic.c:36:6:SDA_IN	56	static
+myiic.c:57:6:SDA_OUT	56	static
+myiic.c:88:6:IIC_Start	8	static
+myiic.c:106:6:IIC_Stop	8	static
+myiic.c:125:4:IIC_Wait_Ack	16	static
+myiic.c:151:6:IIC_Ack	8	static
+myiic.c:166:6:IIC_NAck	8	static
+myiic.c:184:6:IIC_Send_Byte	24	static
+myiic.c:210:4:IIC_Read_Byte	32	static

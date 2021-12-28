@@ -1,0 +1,4 @@
+SHT30.c:19:15:SHT3X_CRC	24	static
+SHT30.c:41:6:SHT30_CMD	16	static
+SHT30.c:60:4:SHT30_Read_Humiture	32	static
+SHT30.c:94:6:SHT30_Init	8	static

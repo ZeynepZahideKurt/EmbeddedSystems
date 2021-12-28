@@ -1,44 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="HAL_Delay("/>
+		<item key="selection" value=""/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="hal_delay("/>
-			<item value="mikro"/>
-			<item value="HAL_Delay_us"/>
-			<item value="buradaa7"/>
-			<item value=" HAL_UART_Transmit( &amp;hlpuart1, &quot;buradaa7\r\n&quot;,10, 100);"/>
-			<item value="vSpi3Init"/>
-			<item value="CMTBank"/>
-			<item value="delay("/>
-			<item value="delayMicroseconds("/>
-			<item value="DWT_Delay_ms("/>
-			<item value="delay_us(SPI3_SPEED);"/>
-			<item value="delayMicroseconds"/>
-			<item value="DELAY("/>
-			<item value="delayMicroseconds(SPI3_SPEED);"/>
-			<item value="GO_STBY"/>
+			<item value="cmd"/>
+			<item value="I2C2"/>
+			<item value="I2C_AcknowledgeConfig"/>
+			<item value="I2C_GenerateSTART"/>
+			<item value="__HAL_RCC_GPIOH_CLK_ENABLE"/>
+			<item value="READ_SDA"/>
+			<item value="IIC_SCL=1;"/>
+			<item value="IIC_SCL=0;"/>
+			<item value="IIC_SDA=0;"/>
+			<item value="IIC_SDA=1;"/>
+			<item value="HAL_GPIO_WritePin(IIC_SDA_GPIO_Port, IIC_SDA_Pin, 1);"/>
+			<item value="delay_ms("/>
+			<item value="Hal"/>
+			<item value="SDIO_H"/>
+			<item value="_delay_ms"/>
 		</list>
 		<list key="replacehistory">
-			<item value="HAL_Delay"/>
+			<item value="I2C1"/>
+			<item value="HAL_GPIO_ReadPin(IIC_SDA_GPIO_Port, IIC_SDA_Pin) "/>
+			<item value="HAL_GPIO_ReadPin(IIC_SDA_GPIO_Port, SDIO_Pin) "/>
+			<item value="HAL_GPIO_ReadPin(SDIO_GPIO_Port, SDIO_Pin) "/>
+			<item value="HAL_GPIO_WritePin(IIC_SCL_GPIO_Port, IIC_SCL_Pin, 1);"/>
+			<item value="HAL_GPIO_WritePin(IIC_SCL_GPIO_Port, IIC_SCL_Pin, 0);"/>
+			<item value="HAL_GPIO_WritePin(IIC_SDA_GPIO_Port, IIC_SDA_Pin, 0);"/>
+			<item value="HAL_GPIO_WritePin(IIC_SDA_GPIO_Port, IIC_SDA_Pin, 1);"/>
 			<item value="HAL_Delay("/>
-			<item value="HAL_Delay_us("/>
-			<item value="DWT_Delay_ms(SPI3_SPEED);"/>
-			<item value="DWT_Delay_ms(volatile uint32_t au32_milliseconds)"/>
-			<item value="delay_us(SPI3_SPEED);"/>
-			<item value="HAL_Delay(SPI3_SPEED);"/>
+			<item value="delay_ms"/>
+			<item value="HAL_Delay"/>
+			<item value="_delay_us(); //_delay_us(1);"/>
+			<item value="_delay_us(); //_delay_us(100);"/>
+			<item value="delayMicroseconds();"/>
+			<item value="delayMicroseconds();//"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="1280"/>
-		<item key="DIALOG_Y_ORIGIN" value="243"/>
-		<item key="DIALOG_WIDTH" value="284"/>
-		<item key="DIALOG_HEIGHT" value="366"/>
+		<item key="DIALOG_X_ORIGIN" value="1073"/>
+		<item key="DIALOG_Y_ORIGIN" value="175"/>
+		<item key="DIALOG_WIDTH" value="392"/>
+		<item key="DIALOG_HEIGHT" value="322"/>
 		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
 	</section>
 </section>
