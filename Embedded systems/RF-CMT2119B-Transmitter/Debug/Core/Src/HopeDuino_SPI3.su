@@ -1,0 +1,15 @@
+HopeDuino_SPI3.c:8:6:InputSDIO	48	static
+HopeDuino_SPI3.c:24:6:OutputSDIO	48	static
+HopeDuino_SPI3.c:44:6:OutputSDCK	48	static
+HopeDuino_SPI3.c:64:6:OutputFCSB	48	static
+HopeDuino_SPI3.c:83:6:OutputCSB	48	static
+HopeDuino_SPI3.c:98:6:_delay_us	8	static
+HopeDuino_SPI3.c:108:6:vSpi3Init	8	static
+HopeDuino_SPI3.c:127:6:vSpi3WriteByte	24	static
+HopeDuino_SPI3.c:162:6:bSpi3ReadByte	16	static
+HopeDuino_SPI3.c:196:6:vSpi3Write	16	static
+HopeDuino_SPI3.c:209:6:bSpi3Read	16	static
+HopeDuino_SPI3.c:221:6:vSpi3WriteFIFO	24	static
+HopeDuino_SPI3.c:257:6:bSpi3ReadFIFO	16	static
+HopeDuino_SPI3.c:297:6:vSpi3BurstWriteFIFO	32	static
+HopeDuino_SPI3.c:314:6:vSpi3BurstReadFIFO	32	static
