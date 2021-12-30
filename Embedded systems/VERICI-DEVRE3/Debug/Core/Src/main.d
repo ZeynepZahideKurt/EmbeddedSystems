@@ -26,8 +26,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_pwr_ex.h \
  ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_uart.h \
  ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_uart_ex.h \
- ../Core/Src/RFM300_Driver.h ../Core/Inc/HopeDuino_SPI3.h \
- ../Core/Inc/main.h ../Core/Inc/rf_conf.h
+ ../Core/Inc/RFM300_Driver.h ../Core/Inc/HopeDuino_SPI3.h \
+ ../Core/Inc/main.h ../Core/Inc/rf_conf.h ../Core/Src/sht3x.h \
+ ../Core/Inc/sensirion_arch_config.h ../Core/Inc/sensirion_i2c.h \
+ ../Core/Inc/sensirion_arch_config.h
 
 ../Core/Inc/main.h:
 
@@ -85,10 +87,18 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_uart_ex.h:
 
-../Core/Src/RFM300_Driver.h:
+../Core/Inc/RFM300_Driver.h:
 
 ../Core/Inc/HopeDuino_SPI3.h:
 
 ../Core/Inc/main.h:
 
 ../Core/Inc/rf_conf.h:
+
+../Core/Src/sht3x.h:
+
+../Core/Inc/sensirion_arch_config.h:
+
+../Core/Inc/sensirion_i2c.h:
+
+../Core/Inc/sensirion_arch_config.h:

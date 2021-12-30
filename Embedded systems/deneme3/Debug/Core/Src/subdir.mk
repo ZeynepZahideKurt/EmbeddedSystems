@@ -5,9 +5,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Core/Src/SHT30.c \
 ../Core/Src/main.c \
-../Core/Src/myiic.c \
 ../Core/Src/sensirion_common.c \
 ../Core/Src/sensirion_hw_i2c_implementation.c \
 ../Core/Src/sht3x.c \
@@ -19,9 +17,7 @@ C_SRCS += \
 ../Core/Src/system_stm32l0xx.c 
 
 OBJS += \
-./Core/Src/SHT30.o \
 ./Core/Src/main.o \
-./Core/Src/myiic.o \
 ./Core/Src/sensirion_common.o \
 ./Core/Src/sensirion_hw_i2c_implementation.o \
 ./Core/Src/sht3x.o \
@@ -33,9 +29,7 @@ OBJS += \
 ./Core/Src/system_stm32l0xx.o 
 
 C_DEPS += \
-./Core/Src/SHT30.d \
 ./Core/Src/main.d \
-./Core/Src/myiic.d \
 ./Core/Src/sensirion_common.d \
 ./Core/Src/sensirion_hw_i2c_implementation.d \
 ./Core/Src/sht3x.d \

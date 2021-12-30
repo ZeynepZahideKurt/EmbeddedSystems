@@ -24,6 +24,10 @@
 /* USER CODE BEGIN Includes */
 #include "RFM300_Driver.h"
 #include "rf_conf.h"
+#include <string.h>
+#include <stdio.h>
+#include "sht3x.h"
+#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,6 +45,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+I2C_HandleTypeDef hi2c1;
+
 UART_HandleTypeDef hlpuart1;
 
 /* USER CODE BEGIN PV */
@@ -51,6 +57,7 @@ UART_HandleTypeDef hlpuart1;
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_LPUART1_UART_Init(void);
+static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -90,11 +97,23 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_LPUART1_UART_Init();
+  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
+  //  https://github.com/Sensirion/embedded-sht
+ HAL_UART_Transmit(&hlpuart1, (uint8_t *)"Basladi\r\n", 9, 100);
+  sensirion_i2c_init();
+
+  while (sht3x_probe(SHT3X_I2C_ADDR_DFLT) != STATUS_OK) {
+    	printf("SHT sensor probing failed\n");
+  }
+  printf("SHT sensor probing successful\n");
+
   #define TX_NUM  21
   byte tx_buf[32] = {'H', 'o', 'p', 'e', 'R', 'F', ' ', 'R', 'F', 'M', ' ', 'C', 'O', 'B', 'R', 'F', 'M', '3', '0', '0', 'A'};
-  byte mode = 1;
-  HAL_UART_Transmit(&hlpuart1, (uint8_t *)"Basladi\r\n", 9, 100);
+  char buffer[100];
+  char buffer2[100];
+  char bufferkontrol[100];
+
 
   FixedPktLength    = 0;
   PayloadLength     = 21;
@@ -109,13 +128,14 @@ int main(void)
   vGpioFuncCfg(GPIO1_DCLK + GPIO2_DCLK + GPIO3_INT2); //GPIO Maping
 
 
-  mode = 1;
+
   vIntSrcCfg(INT_FIFO_NMTY_TX, INT_TX_DONE);    //IRQ maping
   vIntSrcEnable(TX_DONE_EN);
   vClearFIFO();
   bGoSleep();
 
   HAL_UART_Transmit(&hlpuart1, (uint8_t *)"Tx...\r\n", 7, 100);
+
 
   /* USER CODE END 2 */
 
@@ -126,16 +146,74 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  static uint16_t tx_cnt = 0;
-	  static uint16_t rx_cnt = 0;
-	  byte tmp;
-	  bSendMessage(tx_buf, TX_NUM);
+	  int32_t temperature, humidity;
+	  int8_t ret = sht3x_measure_blocking_read(SHT3X_I2C_ADDR_DFLT,&temperature, &humidity);
+
+	  if (ret == STATUS_OK) {
+		  sprintf(buffer, "%d", temperature/1000); //100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 710 diyeceğiz
+	      HAL_UART_Transmit(&hlpuart1, "t: ", 3, 1000);
+	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
+	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
+	      //  printf("measured temperature: %0.2f degreeCelsius","measured humidity: %0.2f percentRH\n",temperature / 1000.0f, humidity / 1000.0f);
+
+
+
+
+
+
+	      sprintf(buffer2, "%d", humidity/1000);
+	      HAL_UART_Transmit(&hlpuart1, "n: ", 3, 1000);
+	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer2, strlen(buffer2), 1000);
+	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
+
+
+	      strncat(buffer, buffer2, 5); //sondaki sayı eklenecek karakter sayısı
+	      HAL_UART_Transmit(&hlpuart1, "buffer toplam: ", 15, 1000);
+	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
+	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
+
+	      if((bufferkontrol[0]!=buffer[0])||(bufferkontrol[1]!=buffer[1])||(bufferkontrol[2]!=buffer[2])||(bufferkontrol[3]!=buffer[3])){
+	    	  bSendMessage(buffer,  strlen(buffer));
+	    	  while (GPO3_L());
+	    	  bIntSrcFlagClr();
+	    	  vClearFIFO();
+	    	  bGoSleep();
+	    	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderildi\r\n",12, 100);
+	    	  HAL_Delay(2000);
+
+
+	      }
+	      else HAL_UART_Transmit( &hlpuart1, (uint8_t *)"degısmedi\r\n",11, 100);
+
+	      strcpy(bufferkontrol,buffer);
+
+
+	  }else
+	  {
+		  printf("error reading measurement\n");
+	  }
+
+
+
+
+
+
+	 /* sensirion_sleep_usec(1000000);
+
+	  unsigned char myChar;
+	  myChar = (unsigned char)temperature;
+
+	  HAL_UART_Transmit(&hlpuart1, "myChar: ", 9, 1000);
+	  HAL_UART_Transmit(&hlpuart1, myChar, sizeof(myChar), 1000);
+	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
+
+	  bSendMessage(myChar, sizeof(myChar));
 	  while (GPO3_L());
 	  bIntSrcFlagClr();
 	  vClearFIFO();
 	  bGoSleep();
 	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderildi\r\n",12, 100);
-	  HAL_Delay(2000);
+	  HAL_Delay(2000);*/
 
   }
   /* USER CODE END 3 */
@@ -157,13 +235,11 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLLMUL_4;
-  RCC_OscInitStruct.PLL.PLLDIV = RCC_PLLDIV_2;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
+  RCC_OscInitStruct.MSIState = RCC_MSI_ON;
+  RCC_OscInitStruct.MSICalibrationValue = 0;
+  RCC_OscInitStruct.MSIClockRange = RCC_MSIRANGE_5;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -172,21 +248,68 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_MSI;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_LPUART1;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_LPUART1|RCC_PERIPHCLK_I2C1;
   PeriphClkInit.Lpuart1ClockSelection = RCC_LPUART1CLKSOURCE_PCLK1;
+  PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
   }
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.Timing = 0x00000708;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.OwnAddress2Masks = I2C_OA2_NOMASK;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Analogue filter
+  */
+  if (HAL_I2CEx_ConfigAnalogFilter(&hi2c1, I2C_ANALOGFILTER_ENABLE) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure Digital filter
+  */
+  if (HAL_I2CEx_ConfigDigitalFilter(&hi2c1, 0) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
 }
 
 /**

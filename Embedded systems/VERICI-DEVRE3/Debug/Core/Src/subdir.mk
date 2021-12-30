@@ -8,6 +8,10 @@ C_SRCS += \
 ../Core/Src/HopeDuino_SPI3.c \
 ../Core/Src/RFM300_Driver.c \
 ../Core/Src/main.c \
+../Core/Src/sensirion_common.c \
+../Core/Src/sensirion_hw_i2c_implementation.c \
+../Core/Src/sht3x.c \
+../Core/Src/sht_git_version.c \
 ../Core/Src/stm32l0xx_hal_msp.c \
 ../Core/Src/stm32l0xx_it.c \
 ../Core/Src/syscalls.c \
@@ -18,6 +22,10 @@ OBJS += \
 ./Core/Src/HopeDuino_SPI3.o \
 ./Core/Src/RFM300_Driver.o \
 ./Core/Src/main.o \
+./Core/Src/sensirion_common.o \
+./Core/Src/sensirion_hw_i2c_implementation.o \
+./Core/Src/sht3x.o \
+./Core/Src/sht_git_version.o \
 ./Core/Src/stm32l0xx_hal_msp.o \
 ./Core/Src/stm32l0xx_it.o \
 ./Core/Src/syscalls.o \
@@ -28,6 +36,10 @@ C_DEPS += \
 ./Core/Src/HopeDuino_SPI3.d \
 ./Core/Src/RFM300_Driver.d \
 ./Core/Src/main.d \
+./Core/Src/sensirion_common.d \
+./Core/Src/sensirion_hw_i2c_implementation.d \
+./Core/Src/sht3x.d \
+./Core/Src/sht_git_version.d \
 ./Core/Src/stm32l0xx_hal_msp.d \
 ./Core/Src/stm32l0xx_it.d \
 ./Core/Src/syscalls.d \
