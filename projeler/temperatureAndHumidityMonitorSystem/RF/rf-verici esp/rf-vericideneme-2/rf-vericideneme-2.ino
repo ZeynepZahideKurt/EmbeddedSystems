@@ -53,7 +53,7 @@ void loop(void)
   static uint16_t rx_cnt = 0;
   byte tmp;
   bSendMessage(tx_buf, TX_NUM);
-  //while (GPO3_L());
+  while (GPO3_L());
   bIntSrcFlagClr();
   vClearFIFO();
   bGoSleep();

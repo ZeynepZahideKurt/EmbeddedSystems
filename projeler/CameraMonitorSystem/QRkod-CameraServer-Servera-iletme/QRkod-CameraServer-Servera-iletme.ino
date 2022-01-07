@@ -1,4 +1,4 @@
-
+//
 #include <Arduino.h>
 #include "ESP32QRCodeReader.h"
 #include "esp_camera.h"

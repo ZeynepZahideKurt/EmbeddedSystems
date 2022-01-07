@@ -60,11 +60,11 @@ void loop(void)
    }
 
    */
-   delay(100);
+  delay(300);
 if (GPO3_L()){
     //delay (200);
-   // Serial.print("RSSI: ");
-   // Serial.println(bReadRssi(1) - 128);
+    //Serial.print("RSSI: ");
+    //Serial.println(bReadRssi(1) - 128);
     tmp = bGetMessage(rx_buf);
     bIntSrcFlagClr();
     vClearFIFO();
@@ -76,7 +76,7 @@ if (GPO3_L()){
      Serial.print("\r\n");
     // Serial.print(" şimdi aldı");
     }
-  }
+  } 
    
 
 }

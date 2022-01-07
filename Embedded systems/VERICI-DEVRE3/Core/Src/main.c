@@ -150,7 +150,7 @@ int main(void)
 	  int8_t ret = sht3x_measure_blocking_read(SHT3X_I2C_ADDR_DFLT,&temperature, &humidity);
 
 	  if (ret == STATUS_OK) {
-		  sprintf(buffer, "%d", temperature/1000); //100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 710 diyeceğiz
+		  sprintf(buffer, "%d", temperature/10); //100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
 	      HAL_UART_Transmit(&hlpuart1, "t: ", 3, 1000);
 	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
 	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
@@ -161,18 +161,19 @@ int main(void)
 
 
 
-	      sprintf(buffer2, "%d", humidity/1000);
+	      sprintf(buffer2, "%d", humidity/10);
 	      HAL_UART_Transmit(&hlpuart1, "n: ", 3, 1000);
 	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer2, strlen(buffer2), 1000);
 	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
 
 
 	      strncat(buffer, buffer2, 5); //sondaki sayı eklenecek karakter sayısı
+	      strncat(buffer,"0000000001", 10);
 	      HAL_UART_Transmit(&hlpuart1, "buffer toplam: ", 15, 1000);
 	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
 	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
 
-	      if((bufferkontrol[0]!=buffer[0])||(bufferkontrol[1]!=buffer[1])||(bufferkontrol[2]!=buffer[2])||(bufferkontrol[3]!=buffer[3])){
+	      //if((bufferkontrol[0]!=buffer[0])||(bufferkontrol[1]!=buffer[1])||(bufferkontrol[2]!=buffer[2])||(bufferkontrol[3]!=buffer[3])){
 	    	  bSendMessage(buffer,  strlen(buffer));
 	    	  while (GPO3_L());
 	    	  bIntSrcFlagClr();
@@ -182,8 +183,8 @@ int main(void)
 	    	  HAL_Delay(2000);
 
 
-	      }
-	      else HAL_UART_Transmit( &hlpuart1, (uint8_t *)"degısmedi\r\n",11, 100);
+	      //}
+	     // else HAL_UART_Transmit( &hlpuart1, (uint8_t *)"degısmedi\r\n",11, 100);
 
 	      strcpy(bufferkontrol,buffer);
 

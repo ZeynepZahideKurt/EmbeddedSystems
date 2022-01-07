@@ -1,11 +1,11 @@
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86_64
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
-configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:VERICI-DEVRE3 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:deneme3 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:VERICI-DEVRE Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:SHT30 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:VERICI-DEVRE Debug (1),org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:RF-CMT2119B-Transmitter Debug
+configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:VERICI-DEVRE3 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:deneme3 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:VERICI-DEVRE Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:RF-CMT2119B-Transmitter Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:SHT30 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:VERICI-DEVRE Debug (1)
 eclipse.preferences.version=1
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:DENEME2\ Debug/activeLaunchMode=run
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:DENEME2\ Debug/activeLaunchTarget=null\:---
-org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:RF-CMT2119B-Transmitter\ Debug/activeLaunchMode=debug
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:RF-CMT2119B-Transmitter\ Debug/activeLaunchMode=run
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:RF-CMT2119B-Transmitter\ Debug/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:SHT30\ Debug/activeLaunchMode=run
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:VERICI-DEVRE\ Debug\ (1)/activeLaunchMode=run
