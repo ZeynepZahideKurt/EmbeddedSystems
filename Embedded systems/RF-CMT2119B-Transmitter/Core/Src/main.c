@@ -92,6 +92,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
   #define TX_NUM  21
   byte tx_buf[32] = {'H', 'o', 'p', 'e', 'R', 'F', ' ', 'R', 'F', 'M', ' ', 'C', 'O', 'B', 'R', 'F', 'M', '3', '0', '0', 'A'};
+  byte tx_buf2[32] = {'2', '4', '5', '6', '6', '5', '4', '3', '2', 'A', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', 'B'};
+
+
+
   HAL_UART_Transmit(&hlpuart1, (uint8_t *)"Basladi\r\n", 9, 100);
 
   FixedPktLength    = 0;
@@ -129,7 +133,15 @@ int main(void)
 	  vClearFIFO();
 	  bGoSleep();
 	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderildi\r\n",12, 100);
-	  HAL_Delay(2000);
+	  HAL_Delay(3000);
+
+	  bSendMessage(tx_buf2, TX_NUM);
+	  	  while (GPO3_L());
+	  	  bIntSrcFlagClr();
+	  	  vClearFIFO();
+	  	  bGoSleep();
+	  	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"tx_buf2\r\n",12, 100);
+	  	  HAL_Delay(3000);
   }
   /* USER CODE END 3 */
 }
