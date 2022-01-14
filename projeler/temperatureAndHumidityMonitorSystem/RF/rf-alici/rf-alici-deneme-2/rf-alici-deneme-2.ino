@@ -67,8 +67,8 @@ void loop(void)
   tmp3 = bSpi3Read(CMT23_FIFO_FLG);
   if (tmp3 == 48) {
   
-    delayMicroseconds(15565); //15535 us'de 21 bit alıyor
-    //delay(16); //16 ms'de 21 bit alıyor, 19 ms'de 22 bit alıyor,  22 ms'de 23 bit alıyor
+    //delayMicroseconds(15565); //15535 us'de 21 bit alıyor
+    delay(17); //16 ms'de 21 bit alıyor, 19 ms'de 22 bit alıyor,  22 ms'de 23 bit alıyor
     tmp = bGetMessage(rx_buf);
     bIntSrcFlagClr();
     vClearFIFO();
