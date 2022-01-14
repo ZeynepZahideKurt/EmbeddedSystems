@@ -197,6 +197,8 @@ GPIO & Interrupt CFG
 void vGpioFuncCfg(byte io_cfg)
 {
 	vSpi3Write(((word)CMT23_IO_SEL<<8)+io_cfg);
+/* int gpiofunconfig = bSpi3Read(((word)CMT23_IO_SEL<<8));
+ Serial.print("gpiofunconfig: "); Serial.println(gpiofunconfig);*/
 }
 
 /**********************************************************
@@ -213,6 +215,14 @@ void vIntSrcCfg(byte int_1, byte int_2)
 
 	tmp = INT_MASK & bSpi3Read(CMT23_INT2_CTL);
 	vSpi3Write(((word)CMT23_INT2_CTL<<8)+(tmp|int_2));
+
+  int setup_CMT23_INT1_CTL = bSpi3Read(CMT23_INT1_CTL );
+    Serial.print("CMT23_INT1_CTL(0x66) : "); //Serial.println(setup_CMT23_INT1_CTL );
+    Serial.println(setup_CMT23_INT1_CTL,HEX);
+    int setup_CMT23_INT2_CTL = bSpi3Read(CMT23_INT2_CTL );
+    Serial.print("CMT23_INT2_CTL(0x67) : "); //Serial.println(setup_CMT23_INT2_CTL );
+    Serial.println(setup_CMT23_INT2_CTL,HEX);
+
 }
 
 /**********************************************************

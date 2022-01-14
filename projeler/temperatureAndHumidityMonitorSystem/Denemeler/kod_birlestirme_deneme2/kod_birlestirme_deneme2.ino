@@ -90,7 +90,7 @@ int circle_kontrol2 = 0;
 int circle_kontrol3 = 0;
 int circle_kontrol4 = 0;
 int circle_kontrol5 = 0;
-int circle_sira=0;
+int circle_sira = 0;
 int LED = LED_BUILTIN;
 
 float cTemp;
@@ -115,11 +115,22 @@ int string4_eeprom, string4_eeprom1, string4_eeprom2, string4_eeprom3, string4_e
 int string5_eeprom, string5_eeprom1, string5_eeprom2, string5_eeprom3, string5_eeprom4;
 int string6_eeprom, string6_eeprom1, string6_eeprom2, string6_eeprom3, string6_eeprom4;
 
-float cihaz1ft,cihaz2ft,cihaz3ft,cihaz4ft,cihaz5ft,cihaz6ft;
-float cihaz1fh,cihaz2fh,cihaz3fh,cihaz4fh,cihaz5fh,cihaz6fh;
- char sicaklik_cihaz1[6];
-          char nem_cihaz1[6];
-          
+float cihaz1ft, cihaz2ft, cihaz3ft, cihaz4ft, cihaz5ft, cihaz6ft;
+float cihaz1fh, cihaz2fh, cihaz3fh, cihaz4fh, cihaz5fh, cihaz6fh;
+char sicaklik_cihaz1[6], sicaklik_cihaz2[6], sicaklik_cihaz3[6], sicaklik_cihaz4[6], sicaklik_cihaz5[6], sicaklik_cihaz6[6];
+char nem_cihaz1[6],nem_cihaz2[6],nem_cihaz3[6],nem_cihaz4[6],nem_cihaz5[6],nem_cihaz6[6];
+char gonder_sicaklik_cihaz1[6], gonder_sicaklik_cihaz2[6], gonder_sicaklik_cihaz3[6], gonder_sicaklik_cihaz4[6], gonder_sicaklik_cihaz5[6], gonder_sicaklik_cihaz6[6];
+char gonder_nem_cihaz1[6],gonder_nem_cihaz2[6],gonder_nem_cihaz3[6],gonder_nem_cihaz4[6],gonder_nem_cihaz5[6],gonder_nem_cihaz6[6];
+char stemp[6];
+char nem[6];
+int clclkontrol=0;
+int clclkontrol1=0;
+int clclkontrol2=0;
+int clclkontrol3=0;
+int clclkontrol4=0;
+int clclkontrol5=0;
+int clclkontrol6=0;
+
 String rf_seri_numb;
 byte rx_buf[32];
 String rx;
@@ -699,24 +710,18 @@ void printWifiStatus() {
 
 }
 void circle_location() {
+  Serial.print("cihaz_sayisi_eeprom: ");Serial.println(cihaz_sayisi_eeprom);
   //clearPage(2);
   setPage(2);
   if (cihaz_sayisi_eeprom == 0) {
-    circle_sira=0;
-    if (circle_kontrol2 == 0) {
+    circle_sira = 0;
+    if (circle_kontrol == 0) {
       clclearPage(2);
-      circle_kontrol2 = 1;
+      circle_kontrol = 1;
     }
-    display(2, "ANA CIHAZ",  CENTER, 0);
-    circle_kontrol3 = 0;
+     display(2, "             ANA CIHAZ             ",  CENTER, 0);
   } else {
-    circle_kontrol2 = 0;
-    if (circle_kontrol3 == 0) {
-      clclearPage(2);
-      Serial.println("girmiyor");
-      circle_kontrol3 = 1;
-      display(2, "          ",  CENTER, 0);
-    }
+    circle_kontrol = 0;
     //Serial.print("circleye girdi ");//Serial.print("c: ");Serial.println(c);
     int a = (65 - (8 * cihaz_sayisi_eeprom));
     int b = (65 + (8 * cihaz_sayisi_eeprom)) ;
@@ -724,30 +729,12 @@ void circle_location() {
     setColumn(a);
     //Serial.print("a: "); Serial.println(a);Serial.print("b: ");Serial.println(b);Serial.print("d: ");Serial.println(d);
     if (kontrolsayi == 0  ) {
-      display(2, "ANA CIHAZ",  CENTER, 0);
-      circle_sira=0;
-      if (circle_kontrol == 0) {
-        display(2, "ANA CIHAZ",  CENTER, 0);
-        clclearPage(2);
-        circle_kontrol = 1;
-      }
-      if(circle_kontrol4==0){
-        display(2, "ANA CIHAZ",  CENTER, 0);
-        clclearPage(2);
-        circle_kontrol4 = 1;
-      }
-      circle_kontrol5=0;
+      display(2, "             ANA CIHAZ             ",  CENTER, 0);
+      circle_sira = 0;
+      
     } else if (kontrolsayi == 1  ) {
-      circle_sira=1;
-      if(circle_kontrol5==0){
-         clclearPage(2);
-         circle_kontrol5=1;
-      }
-      circle_kontrol4 = 0;
-      if (circle_kontrol == 1) {
-        clclearPage(2);
-        circle_kontrol = 2;
-      }
+      circle_sira = 1;
+     
       for (int i = d; i > 0 ; i--) {
         // Serial.print("i: "); Serial.println(i);
         if (i == 1) {
@@ -779,13 +766,7 @@ void circle_location() {
 
       }
     } else if (kontrolsayi == 2) {
-      circle_sira=2;
-      circle_kontrol4 = 0;
-      if (circle_kontrol == 2) {
-        clclearPage(2);
-        circle_kontrol = 3;
-      }
-
+      circle_sira = 2;
       for (int i = d; i > 0 ; i--) {
         // Serial.print("i: "); Serial.println(i);
         if (i == 1) {
@@ -817,13 +798,7 @@ void circle_location() {
 
       }
     } else if (kontrolsayi == 3) {
-      circle_sira=3;
-      circle_kontrol4 = 0;
-      if (circle_kontrol == 3) {
-        clclearPage(2);
-        Serial.println("sildi1");
-        circle_kontrol = 4;
-      }
+      circle_sira = 3;
       for (int i = d; i > 0 ; i--) {
         // Serial.print("i: "); Serial.println(i);
         if (i == 1) {
@@ -855,13 +830,7 @@ void circle_location() {
 
       }
     } else if (kontrolsayi == 4) {
-      circle_sira=4;
-      circle_kontrol4 = 0;
-      if (circle_kontrol == 4) {
-        clclearPage(2);
-        Serial.println("sildi1");
-        circle_kontrol = 5;
-      }
+      circle_sira = 4;
       for (int i = d; i > 0 ; i--) {
         // Serial.print("i: "); Serial.println(i);
         if (i == 1) {
@@ -893,13 +862,7 @@ void circle_location() {
 
       }
     } else if (kontrolsayi == 5) {
-      circle_sira=5;
-      circle_kontrol4 = 0;
-      if (circle_kontrol == 5) {
-        clclearPage(2);
-        Serial.println("sildi1");
-        circle_kontrol = 6;
-      }
+      circle_sira = 5;
       for (int i = d; i > 0 ; i--) {
         // Serial.print("i: "); Serial.println(i);
         if (i == 1) {
@@ -931,13 +894,7 @@ void circle_location() {
 
       }
     } else if (kontrolsayi == 6) {
-      circle_sira=6;
-      circle_kontrol4 = 0;
-      if (circle_kontrol == 6) {
-        clclearPage(2);
-        Serial.println("sildi1");
-        circle_kontrol = 0;
-      }
+      circle_sira = 6;
       for (int i = d; i > 0 ; i--) {
         if (i == 1) {
           for (int l = a; l < a + 16; l++) {
@@ -974,6 +931,53 @@ void circle_location() {
     d = 0;
 
   }
+
+  if (circle_sira == 0) {
+    
+   /* if(cihaz_sayisi_eeprom==6){
+      if(clclkontrol6==0){
+        clclearPage(2);        
+      }
+    }
+    clclkontrol=0;  
+    clclkontrol6=1;*/
+    displayBig(3, stemp, CENTER, 0); displayBig(5, nem, CENTER, 0);
+    
+  }if (circle_sira == 1) {
+    
+    if(clclkontrol==0){
+      clclearPage(2); // Cihazdaki ana ekran yazısından yuvarlaklara geçtiğinde ana ekran yazısının değişmesi için
+    }
+    clclkontrol=1;
+        Serial.println("1de");
+        Serial.print("gonder_sicaklik_cihaz1:"); Serial.println(gonder_sicaklik_cihaz1);
+    displayBig(3, gonder_sicaklik_cihaz1, CENTER, 0); displayBig(5, gonder_nem_cihaz1, CENTER, 0);
+  }if (circle_sira == 2) {
+      // displayBig(3, "2.TEMP", CENTER, 0); displayBig(5, "2.NEM", CENTER, 0);
+      clclkontrol=0;
+    displayBig(3, gonder_sicaklik_cihaz2, CENTER, 0); displayBig(5, gonder_nem_cihaz2, CENTER, 0);
+  }if (circle_sira == 3) {
+    clclkontrol=0;
+      // displayBig(3, "3.TEMP", CENTER, 0); displayBig(5, "3.NEM", CENTER, 0);
+    displayBig(3, gonder_sicaklik_cihaz3, CENTER, 0); displayBig(5, gonder_nem_cihaz3, CENTER, 0);
+  }if (circle_sira == 4) 
+  clclkontrol=0;{
+      // displayBig(3, "4.TEMP", CENTER, 0); displayBig(5, "4.NEM", CENTER, 0);
+    displayBig(3, gonder_sicaklik_cihaz4, CENTER, 0); displayBig(5, gonder_nem_cihaz4, CENTER, 0);
+  }if (circle_sira == 5) {
+    clclkontrol=0;
+      // displayBig(3, "5.TEMP", CENTER, 0); displayBig(5, "5.NEM", CENTER, 0);
+    displayBig(3, gonder_sicaklik_cihaz5, CENTER, 0); displayBig(5, gonder_nem_cihaz5, CENTER, 0);
+  }
+  
+  if (circle_sira == 6) {
+      // displayBig(3, "6.TEMP", CENTER, 0); displayBig(5, "6.NEM", CENTER, 0);
+    displayBig(3, gonder_sicaklik_cihaz6, CENTER, 0); displayBig(5, gonder_nem_cihaz6, CENTER, 0);
+    clclkontrol=0;
+   // clclkontrol6=0;
+  }
+
+  
 }
 void handle_message(WebsocketsClient &client, WebsocketsMessage msg) {
   Serial.println(msg.data());
@@ -1287,11 +1291,11 @@ void postTempHum() {
   /*Serial.print("mytemp: ");
     Serial.println(mytemp);*/
 
-  char stemp[6];
+  
   mytemp.toCharArray(stemp, 6);
   humidity = (100.0 * ((data[3] * 256.0) + data[4])) / 65535.0;
   //Serial.print("humidity: "); Serial.println(humidity);
-  char nem[6];
+  
   String myhum = String(humidity);
   myhum.toCharArray(nem, 6);
   //Serial.print("myhum: "); Serial.println(myhum);
@@ -1312,15 +1316,11 @@ void postTempHum() {
   circleyuzdeust();
   circleyuzdealt();
   displayBig(3, "S", LEFT, 0);
-  
+
   displayBig(5, "N", LEFT, 0);
+/*Serial.print("gonder_nem_cihaz1: ");
+Serial.println(gonder_nem_cihaz1);*/
   
-  if (circle_sira == 0) {
-    displayBig(3, stemp, CENTER, 0);displayBig(5, nem, CENTER, 0);
-  }
-  if (circle_sira == 1) {
-    displayBig(3, sicaklik_cihaz1, CENTER, 0);displayBig(5, nem_cihaz1, CENTER, 0);
-  }
 
 
 }
@@ -1422,6 +1422,10 @@ void cihaz_sayisi() {
   if (cihaz_sayisi_eeprom != 1 && cihaz_sayisi_eeprom != 2 && cihaz_sayisi_eeprom != 3 && cihaz_sayisi_eeprom != 4 && cihaz_sayisi_eeprom != 5 && cihaz_sayisi_eeprom != 6 ) {
     cihaz_sayisi_eeprom = 0;
   }
+  
+  EEPROM.write(24, cihaz_sayisi_eeprom);
+  EEPROM.commit();
+
 
   //  Serial.print(" cihaz_sayisi_eepromdaki: "); Serial.println(cihaz_sayisi_eeprom);
   /*Serial.print(" c6: ");
@@ -1429,6 +1433,7 @@ void cihaz_sayisi() {
 
 }
 void write_cihaz1(String string1) {
+  
   int string1_int = string1.toInt();
   //Serial.print("string1_int: "); Serial.println(string1_int);
   int string1_int1 = string1_int >> 24; //cihaz biz 32 bitlik integer sayısının ilk 8 biti örneğin 100 0010 1110 0101 0111 0110 1000 0110 sayısının 24 bit sağa kaydırılmış hali yani 100 0010 66
@@ -1600,26 +1605,29 @@ void receive_() {
         write_cihaz4(mystring_reset);
         write_cihaz5(mystring_reset);
         write_cihaz6(mystring_reset);
-      }if (reset_eeprom == "sil1") {
+        clclkontrol=0;
+        cihaz_sayisi_eeprom = 0;
+        EEPROM.write(24, cihaz_sayisi_eeprom);
+        EEPROM.commit();
+      } if (reset_eeprom == "sil1") {
         write_cihaz1(mystring_reset);
-      }if (reset_eeprom == "sil2") {
+      } if (reset_eeprom == "sil2") {
         write_cihaz2(mystring_reset);
-      }if (reset_eeprom == "sil3") {
+      } if (reset_eeprom == "sil3") {
         write_cihaz3(mystring_reset);
-      }if (reset_eeprom == "sil4") {
+      } if (reset_eeprom == "sil4") {
         write_cihaz4(mystring_reset);
-      }if (reset_eeprom == "sil5") {
+      } if (reset_eeprom == "sil5") {
         write_cihaz5(mystring_reset);
-      }if (reset_eeprom == "sil6") {
+      } if (reset_eeprom == "sil6") {
         write_cihaz6(mystring_reset);
       }
 
-      
 
 
-      
+
+
       if (rx_buf[9] == 'A' && rx_buf[20] == 'B') {
-
 
         String mystring_kontrol = mystring.substring(10, 20);
 
@@ -1644,113 +1652,227 @@ void receive_() {
           write_cihaz6(mystring_kontrol);
           string6_kontrol = read_cihaz6(); //cihaz1'in seri numarası "string3_kontrol" server'dan gelen ile karşılaştırabilirsin
         }
+    /*   Serial.print("mystring_int: ");
+        Serial.println(mystring_int);
+         Serial.print("string1_eeprom: ");
+        Serial.println(string1_eeprom);
+        Serial.print("string2_eeprom: ");
+        Serial.println(string2_eeprom);*/
+//buraya bak
 
-
-        if (mystring_int == string1_eeprom) {
+        if (mystring_int == string1_eeprom) { //if (mystring_int == string1_eeprom ||)
           String sicaklik_cihaz = mystring.substring(0, 4);
-          cihaz1ft= sicaklik_cihaz.toFloat();
-          cihaz1ft=cihaz1ft/100;
+          cihaz1ft = sicaklik_cihaz.toFloat();
+          cihaz1ft = cihaz1ft / 100;
           //Serial.print(" cihaz1ft: "); Serial.println(cihaz1ft);
 
           String nem_cihaz = mystring.substring(4, 8);
-          cihaz1fh= nem_cihaz.toFloat();
-          cihaz1fh=cihaz1fh/100;
+          cihaz1fh = nem_cihaz.toFloat();
+          cihaz1fh = cihaz1fh / 100;
           //Serial.print(" cihaz1fh: "); Serial.println(cihaz1fh);
 
-         
-          
+
+
           String mytemp1 = String(cihaz1ft);
           mytemp1.toCharArray(sicaklik_cihaz1, 6);
           Serial.print("sicaklik_cihaz1: "); Serial.println(sicaklik_cihaz1);
-          
-          
+
           String myhum1 = String(cihaz1fh);
-          myhum1.toCharArray(nem_cihaz1, 6);          
+          myhum1.toCharArray(nem_cihaz1, 6);
           Serial.print("nem_cihaz1: "); Serial.println(nem_cihaz1);
-          
-         // string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
+         
+          // string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
           Serial.println("gönder gitsin 1");
         } else if (mystring_int == string2_eeprom) {
-          
+
           String sicaklik_cihaz = mystring.substring(0, 4);
-          cihaz2ft= sicaklik_cihaz.toFloat();
-          cihaz2ft=cihaz2ft/100;
+          cihaz2ft = sicaklik_cihaz.toFloat();
+          cihaz2ft = cihaz2ft / 100;
           Serial.print(" cihaz2ft: ");
           Serial.println(cihaz2ft);
 
           String nem_cihaz = mystring.substring(4, 8);
-          cihaz2fh= nem_cihaz.toFloat();
-          cihaz2fh=cihaz2fh/100;
+          cihaz2fh = nem_cihaz.toFloat();
+          cihaz2fh = cihaz2fh / 100;
           Serial.print(" cihaz2fh: ");
           Serial.println(cihaz2fh);
-          string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
+          
+          String mytemp2 = String(cihaz2ft);
+          mytemp2.toCharArray(sicaklik_cihaz2, 6);
+          Serial.print("sicaklik_cihaz2: "); Serial.println(sicaklik_cihaz2);
+
+          String myhum2 = String(cihaz2fh);
+          myhum2.toCharArray(nem_cihaz2, 6);
+          Serial.print("nem_cihaz2: "); Serial.println(nem_cihaz2);
+
+          
+          //string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
           Serial.println("gönder gitsin 2");
         } else if (mystring_int == string3_eeprom) {
-          
+
           String sicaklik_cihaz = mystring.substring(0, 4);
-          cihaz3ft= sicaklik_cihaz.toFloat();
-          cihaz3ft=cihaz3ft/100;
+          cihaz3ft = sicaklik_cihaz.toFloat();
+          cihaz3ft = cihaz3ft / 100;
           Serial.print(" cihaz3ft: ");
           Serial.println(cihaz3ft);
 
           String nem_cihaz = mystring.substring(4, 8);
-          cihaz3fh= nem_cihaz.toFloat();
-          cihaz3fh=cihaz3fh/100;
+          cihaz3fh = nem_cihaz.toFloat();
+          cihaz3fh = cihaz3fh / 100;
           Serial.print(" cihaz3fh: ");
           Serial.println(cihaz3fh);
-          string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
+          
+          String mytemp3 = String(cihaz3ft);
+          mytemp3.toCharArray(sicaklik_cihaz3, 6);
+          Serial.print("sicaklik_cihaz3: "); Serial.println(sicaklik_cihaz3);
+
+          String myhum3 = String(cihaz3fh);
+          myhum3.toCharArray(nem_cihaz3, 6);
+          Serial.print("nem_cihaz3: "); Serial.println(nem_cihaz3);
+          
+          //string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
           Serial.println("gönder gitsin 3");
-          
+
         } else if (mystring_int == string4_eeprom) {
-          
-           String sicaklik_cihaz = mystring.substring(0, 4);
-          cihaz4ft= sicaklik_cihaz.toFloat();
-          cihaz4ft=cihaz4ft/100;
+
+          String sicaklik_cihaz = mystring.substring(0, 4);
+          cihaz4ft = sicaklik_cihaz.toFloat();
+          cihaz4ft = cihaz4ft / 100;
           Serial.print(" cihaz4ft: ");
           Serial.println(cihaz4ft);
 
           String nem_cihaz = mystring.substring(4, 8);
-          cihaz4fh= nem_cihaz.toFloat();
-          cihaz4fh=cihaz4fh/100;
+          cihaz4fh = nem_cihaz.toFloat();
+          cihaz4fh = cihaz4fh / 100;
           Serial.print(" cihaz4fh: ");
           Serial.println(cihaz4fh);
-          
-          string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
+
+          String mytemp4 = String(cihaz4ft);
+          mytemp4.toCharArray(sicaklik_cihaz4, 6);
+          Serial.print("sicaklik_cihaz4: "); Serial.println(sicaklik_cihaz4);
+
+          String myhum4 = String(cihaz4fh);
+          myhum4.toCharArray(nem_cihaz4, 6);
+          Serial.print("nem_cihaz4: "); Serial.println(nem_cihaz4);
+
+          //string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
           Serial.println("gönder gitsin 4");
         } else if (mystring_int == string5_eeprom) {
-           String sicaklik_cihaz = mystring.substring(0, 4);
-          cihaz5ft= sicaklik_cihaz.toFloat();
-          cihaz5ft=cihaz5ft/100;
+          String sicaklik_cihaz = mystring.substring(0, 4);
+          cihaz5ft = sicaklik_cihaz.toFloat();
+          cihaz5ft = cihaz5ft / 100;
           Serial.print(" cihaz5ft: ");
           Serial.println(cihaz5ft);
 
           String nem_cihaz = mystring.substring(4, 8);
-          cihaz5fh= nem_cihaz.toFloat();
-          cihaz5fh=cihaz5fh/100;
+          cihaz5fh = nem_cihaz.toFloat();
+          cihaz5fh = cihaz5fh / 100;
           Serial.print(" cihaz5fh: ");
           Serial.println(cihaz5fh);
-          
-          string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
+
+          String mytemp5 = String(cihaz5ft);
+          mytemp5.toCharArray(sicaklik_cihaz5, 6);
+          Serial.print("sicaklik_cihaz5: "); Serial.println(sicaklik_cihaz5);
+
+          String myhum5 = String(cihaz5fh);
+          myhum5.toCharArray(nem_cihaz5, 6);
+          Serial.print("nem_cihaz5: "); Serial.println(nem_cihaz5);
+
+          //string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
           Serial.println("gönder gitsin 5");
         } else if (mystring_int == string6_eeprom) {
 
-           String sicaklik_cihaz = mystring.substring(0, 4);
-          cihaz6ft= sicaklik_cihaz.toFloat();
-          cihaz6ft=cihaz6ft/100;
+          String sicaklik_cihaz = mystring.substring(0, 4);
+          cihaz6ft = sicaklik_cihaz.toFloat();
+          cihaz6ft = cihaz6ft / 100;
           Serial.print(" cihaz6ft: ");
           Serial.println(cihaz6ft);
 
           String nem_cihaz = mystring.substring(4, 8);
-          cihaz6fh= nem_cihaz.toFloat();
-          cihaz6fh=cihaz6fh/100;
+          cihaz6fh = nem_cihaz.toFloat();
+          cihaz6fh = cihaz6fh / 100;
           Serial.print(" cihaz6fh: ");
           Serial.println(cihaz6fh);
-          string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
+
+          String mytemp6 = String(cihaz6ft);
+          mytemp6.toCharArray(sicaklik_cihaz6, 6);
+          Serial.print("sicaklik_cihaz6: "); Serial.println(sicaklik_cihaz6);
+
+          String myhum6 = String(cihaz6fh);
+          myhum6.toCharArray(nem_cihaz6, 6);
+          Serial.print("nem_cihaz6: "); Serial.println(nem_cihaz6);
+          
+          //string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
           Serial.println("gönder gitsin 6");
         }
 
       }
+      if(nem_cihaz1!=0){
+        for(int i=0; i<6; i++)
+        {
+          gonder_nem_cihaz1[i] = nem_cihaz1[i];
+          }
+          }
+          if(nem_cihaz2!=0){
+        for(int i=0; i<6; i++)
+        {
+          gonder_nem_cihaz2[i] = nem_cihaz2[i];
+          }
+          }if(nem_cihaz3!=0){
+        for(int i=0; i<6; i++)
+        {
+          gonder_nem_cihaz3[i] = nem_cihaz3[i];
+          }
+          }if(nem_cihaz4!=0){
+        for(int i=0; i<6; i++)
+        {
+          gonder_nem_cihaz4[i] = nem_cihaz4[i];
+          }
+          }if(nem_cihaz5!=0){
+        for(int i=0; i<6; i++)
+        {
+          gonder_nem_cihaz5[i] = nem_cihaz5[i];
+          }
+          }if(nem_cihaz6!=0){
+        for(int i=0; i<6; i++)
+        {
+          gonder_nem_cihaz6[i] = nem_cihaz6[i];
+          }
+          }
 
+         
+          if(sicaklik_cihaz1!=0){
+        for(int i=0; i<6; i++)
+        {
+          gonder_sicaklik_cihaz1[i] = sicaklik_cihaz1[i];
+          }
+          }
+          if(sicaklik_cihaz2!=0){
+        for(int i=0; i<6; i++)
+        {
+          gonder_sicaklik_cihaz2[i] = sicaklik_cihaz2[i];
+          }
+          }if(sicaklik_cihaz3!=0){
+        for(int i=0; i<6; i++)
+        {
+          gonder_sicaklik_cihaz3[i] = sicaklik_cihaz3[i];
+          }
+          }if(sicaklik_cihaz4!=0){
+        for(int i=0; i<6; i++)
+        {
+          gonder_sicaklik_cihaz4[i] = sicaklik_cihaz4[i];
+          }
+          }if(sicaklik_cihaz5!=0){
+        for(int i=0; i<6; i++)
+        {
+          gonder_sicaklik_cihaz5[i] = sicaklik_cihaz5[i];
+          }
+          }if(sicaklik_cihaz6!=0){
+        for(int i=0; i<6; i++)
+        {
+          gonder_sicaklik_cihaz6[i] = sicaklik_cihaz6[i];
+          }
+          }
 
     }
   }
@@ -1847,7 +1969,7 @@ void loop() {
     receive_();
     cihaz_sayisi();
     postTempHum();
-    
+
     simdikizaman = millis();
     simdikizaman2 = millis();
     simdikizaman3 = millis();
@@ -1855,7 +1977,7 @@ void loop() {
     if (simdikizaman - eskizaman >= 60000)
     {
       Serial.print("displaye girdi ");
-     // postTempHum();
+      // postTempHum();
       displayBattery();
       printWifiStatus();
       eskizaman = simdikizaman;

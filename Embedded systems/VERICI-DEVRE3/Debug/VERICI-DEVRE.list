@@ -7,23 +7,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         00005c24  080000c0  080000c0  000100c0  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       0000019c  08005ce4  08005ce4  00015ce4  2**2
+  2 .rodata       000001ac  08005ce4  08005ce4  00015ce4  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08005e80  08005e80  000201f4  2**0
+  3 .ARM.extab    00000000  08005e90  08005e90  000201f4  2**0
                   CONTENTS
-  4 .ARM          00000008  08005e80  08005e80  00015e80  2**2
+  4 .ARM          00000008  08005e90  08005e90  00015e90  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .preinit_array 00000000  08005e88  08005e88  000201f4  2**0
+  5 .preinit_array 00000000  08005e98  08005e98  000201f4  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  08005e88  08005e88  00015e88  2**2
+  6 .init_array   00000004  08005e98  08005e98  00015e98  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .fini_array   00000004  08005e8c  08005e8c  00015e8c  2**2
+  7 .fini_array   00000004  08005e9c  08005e9c  00015e9c  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         000001f4  20000000  08005e90  00020000  2**2
+  8 .data         000001f4  20000000  08005ea0  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          00000164  200001f4  08006084  000201f4  2**2
+  9 .bss          00000164  200001f4  08006094  000201f4  2**2
                   ALLOC
- 10 ._user_heap_stack 00000600  20000358  08006084  00020358  2**0
+ 10 ._user_heap_stack 00000600  20000358  08006094  00020358  2**0
                   ALLOC
  11 .ARM.attributes 00000028  00000000  00000000  000201f4  2**0
                   CONTENTS, READONLY
@@ -2811,8 +2811,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //  https://github.com/Sensirion/embedded-sht
  HAL_UART_Transmit(&hlpuart1, (uint8_t *)"Basladi\r\n", 9, 100);
- 8001296:	49ea      	ldr	r1, [pc, #936]	; (8001640 <main+0x3c4>)
- 8001298:	48ea      	ldr	r0, [pc, #936]	; (8001644 <main+0x3c8>)
+ 8001296:	49eb      	ldr	r1, [pc, #940]	; (8001644 <main+0x3c8>)
+ 8001298:	48eb      	ldr	r0, [pc, #940]	; (8001648 <main+0x3cc>)
  800129a:	2364      	movs	r3, #100	; 0x64
  800129c:	2209      	movs	r2, #9
  800129e:	f002 ff91 	bl	80041c4 <HAL_UART_Transmit>
@@ -2823,7 +2823,7 @@ int main(void)
     	printf("SHT sensor probing failed\n");
   }*/ // burayı aç
   printf("SHT sensor probing successful\n");
- 80012a6:	4be8      	ldr	r3, [pc, #928]	; (8001648 <main+0x3cc>)
+ 80012a6:	4be9      	ldr	r3, [pc, #932]	; (800164c <main+0x3d0>)
  80012a8:	0018      	movs	r0, r3
  80012aa:	f003 fd03 	bl	8004cb4 <puts>
 
@@ -2832,7 +2832,7 @@ int main(void)
  80012ae:	239c      	movs	r3, #156	; 0x9c
  80012b0:	005b      	lsls	r3, r3, #1
  80012b2:	18f9      	adds	r1, r7, r3
- 80012b4:	4ae5      	ldr	r2, [pc, #916]	; (800164c <main+0x3d0>)
+ 80012b4:	4ae6      	ldr	r2, [pc, #920]	; (8001650 <main+0x3d4>)
  80012b6:	000b      	movs	r3, r1
  80012b8:	ca31      	ldmia	r2!, {r0, r4, r5}
  80012ba:	c331      	stmia	r3!, {r0, r4, r5}
@@ -2852,42 +2852,42 @@ int main(void)
 
 
   FixedPktLength    = 0;
- 80012d2:	4bdf      	ldr	r3, [pc, #892]	; (8001650 <main+0x3d4>)
+ 80012d2:	4be0      	ldr	r3, [pc, #896]	; (8001654 <main+0x3d8>)
  80012d4:	2200      	movs	r2, #0
  80012d6:	701a      	strb	r2, [r3, #0]
   PayloadLength     = 22;
- 80012d8:	4bde      	ldr	r3, [pc, #888]	; (8001654 <main+0x3d8>)
+ 80012d8:	4bdf      	ldr	r3, [pc, #892]	; (8001658 <main+0x3dc>)
  80012da:	2216      	movs	r2, #22
  80012dc:	601a      	str	r2, [r3, #0]
   vInit();
  80012de:	f7ff fef1 	bl	80010c4 <vInit>
   vCfgBank(CMTBank, 12);
- 80012e2:	4bdd      	ldr	r3, [pc, #884]	; (8001658 <main+0x3dc>)
+ 80012e2:	4bde      	ldr	r3, [pc, #888]	; (800165c <main+0x3e0>)
  80012e4:	210c      	movs	r1, #12
  80012e6:	0018      	movs	r0, r3
  80012e8:	f7ff ff1b 	bl	8001122 <vCfgBank>
   vCfgBank(SystemBank, 12);
- 80012ec:	4bdb      	ldr	r3, [pc, #876]	; (800165c <main+0x3e0>)
+ 80012ec:	4bdc      	ldr	r3, [pc, #880]	; (8001660 <main+0x3e4>)
  80012ee:	210c      	movs	r1, #12
  80012f0:	0018      	movs	r0, r3
  80012f2:	f7ff ff16 	bl	8001122 <vCfgBank>
   vCfgBank(FrequencyBank, 8);
- 80012f6:	4bda      	ldr	r3, [pc, #872]	; (8001660 <main+0x3e4>)
+ 80012f6:	4bdb      	ldr	r3, [pc, #876]	; (8001664 <main+0x3e8>)
  80012f8:	2108      	movs	r1, #8
  80012fa:	0018      	movs	r0, r3
  80012fc:	f7ff ff11 	bl	8001122 <vCfgBank>
   vCfgBank(DataRateBank, 24);
- 8001300:	4bd8      	ldr	r3, [pc, #864]	; (8001664 <main+0x3e8>)
+ 8001300:	4bd9      	ldr	r3, [pc, #868]	; (8001668 <main+0x3ec>)
  8001302:	2118      	movs	r1, #24
  8001304:	0018      	movs	r0, r3
  8001306:	f7ff ff0c 	bl	8001122 <vCfgBank>
   vCfgBank(BasebandBank, 29);
- 800130a:	4bd7      	ldr	r3, [pc, #860]	; (8001668 <main+0x3ec>)
+ 800130a:	4bd8      	ldr	r3, [pc, #864]	; (800166c <main+0x3f0>)
  800130c:	211d      	movs	r1, #29
  800130e:	0018      	movs	r0, r3
  8001310:	f7ff ff07 	bl	8001122 <vCfgBank>
   vCfgBank(TXBank, 11);
- 8001314:	4bd5      	ldr	r3, [pc, #852]	; (800166c <main+0x3f0>)
+ 8001314:	4bd6      	ldr	r3, [pc, #856]	; (8001670 <main+0x3f4>)
  8001316:	210b      	movs	r1, #11
  8001318:	0018      	movs	r0, r3
  800131a:	f7ff ff02 	bl	8001122 <vCfgBank>
@@ -2913,8 +2913,8 @@ int main(void)
  800133c:	f7ff fd62 	bl	8000e04 <bGoSleep>
 
   HAL_UART_Transmit(&hlpuart1, (uint8_t *)"Tx...\r\n", 7, 100);
- 8001340:	49cb      	ldr	r1, [pc, #812]	; (8001670 <main+0x3f4>)
- 8001342:	48c0      	ldr	r0, [pc, #768]	; (8001644 <main+0x3c8>)
+ 8001340:	49cc      	ldr	r1, [pc, #816]	; (8001674 <main+0x3f8>)
+ 8001342:	48c1      	ldr	r0, [pc, #772]	; (8001648 <main+0x3cc>)
  8001344:	2364      	movs	r3, #100	; 0x64
  8001346:	2207      	movs	r2, #7
  8001348:	f002 ff3c 	bl	80041c4 <HAL_UART_Transmit>
@@ -2957,7 +2957,7 @@ int kontrol=1;
  8001382:	f7fe ff5d 	bl	8000240 <__divsi3>
  8001386:	0003      	movs	r3, r0
  8001388:	001a      	movs	r2, r3
- 800138a:	49ba      	ldr	r1, [pc, #744]	; (8001674 <main+0x3f8>)
+ 800138a:	49bb      	ldr	r1, [pc, #748]	; (8001678 <main+0x3fc>)
  800138c:	24d4      	movs	r4, #212	; 0xd4
  800138e:	193b      	adds	r3, r7, r4
  8001390:	0018      	movs	r0, r3
@@ -2965,8 +2965,8 @@ int kontrol=1;
 	      HAL_UART_Transmit(&hlpuart1, "t: ", 3, 1000);
  8001396:	23fa      	movs	r3, #250	; 0xfa
  8001398:	009b      	lsls	r3, r3, #2
- 800139a:	49b7      	ldr	r1, [pc, #732]	; (8001678 <main+0x3fc>)
- 800139c:	48a9      	ldr	r0, [pc, #676]	; (8001644 <main+0x3c8>)
+ 800139a:	49b8      	ldr	r1, [pc, #736]	; (800167c <main+0x400>)
+ 800139c:	48aa      	ldr	r0, [pc, #680]	; (8001648 <main+0x3cc>)
  800139e:	2203      	movs	r2, #3
  80013a0:	f002 ff10 	bl	80041c4 <HAL_UART_Transmit>
 	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
@@ -2978,11 +2978,11 @@ int kontrol=1;
  80013b0:	23fa      	movs	r3, #250	; 0xfa
  80013b2:	009b      	lsls	r3, r3, #2
  80013b4:	1939      	adds	r1, r7, r4
- 80013b6:	48a3      	ldr	r0, [pc, #652]	; (8001644 <main+0x3c8>)
+ 80013b6:	48a4      	ldr	r0, [pc, #656]	; (8001648 <main+0x3cc>)
  80013b8:	f002 ff04 	bl	80041c4 <HAL_UART_Transmit>
 	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
- 80013bc:	49af      	ldr	r1, [pc, #700]	; (800167c <main+0x400>)
- 80013be:	48a1      	ldr	r0, [pc, #644]	; (8001644 <main+0x3c8>)
+ 80013bc:	49b0      	ldr	r1, [pc, #704]	; (8001680 <main+0x404>)
+ 80013be:	48a2      	ldr	r0, [pc, #648]	; (8001648 <main+0x3cc>)
  80013c0:	2364      	movs	r3, #100	; 0x64
  80013c2:	2202      	movs	r2, #2
  80013c4:	f002 fefe 	bl	80041c4 <HAL_UART_Transmit>
@@ -2998,7 +2998,7 @@ int kontrol=1;
  80013ce:	f7fe ff37 	bl	8000240 <__divsi3>
  80013d2:	0003      	movs	r3, r0
  80013d4:	001a      	movs	r2, r3
- 80013d6:	49a7      	ldr	r1, [pc, #668]	; (8001674 <main+0x3f8>)
+ 80013d6:	49a8      	ldr	r1, [pc, #672]	; (8001678 <main+0x3fc>)
  80013d8:	2570      	movs	r5, #112	; 0x70
  80013da:	197b      	adds	r3, r7, r5
  80013dc:	0018      	movs	r0, r3
@@ -3006,8 +3006,8 @@ int kontrol=1;
 	      HAL_UART_Transmit(&hlpuart1, "n: ", 3, 1000);
  80013e2:	23fa      	movs	r3, #250	; 0xfa
  80013e4:	009b      	lsls	r3, r3, #2
- 80013e6:	49a6      	ldr	r1, [pc, #664]	; (8001680 <main+0x404>)
- 80013e8:	4896      	ldr	r0, [pc, #600]	; (8001644 <main+0x3c8>)
+ 80013e6:	49a7      	ldr	r1, [pc, #668]	; (8001684 <main+0x408>)
+ 80013e8:	4897      	ldr	r0, [pc, #604]	; (8001648 <main+0x3cc>)
  80013ea:	2203      	movs	r2, #3
  80013ec:	f002 feea 	bl	80041c4 <HAL_UART_Transmit>
 	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer2, strlen(buffer2), 1000);
@@ -3019,11 +3019,11 @@ int kontrol=1;
  80013fc:	23fa      	movs	r3, #250	; 0xfa
  80013fe:	009b      	lsls	r3, r3, #2
  8001400:	1979      	adds	r1, r7, r5
- 8001402:	4890      	ldr	r0, [pc, #576]	; (8001644 <main+0x3c8>)
+ 8001402:	4891      	ldr	r0, [pc, #580]	; (8001648 <main+0x3cc>)
  8001404:	f002 fede 	bl	80041c4 <HAL_UART_Transmit>
 	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
- 8001408:	499c      	ldr	r1, [pc, #624]	; (800167c <main+0x400>)
- 800140a:	488e      	ldr	r0, [pc, #568]	; (8001644 <main+0x3c8>)
+ 8001408:	499d      	ldr	r1, [pc, #628]	; (8001680 <main+0x404>)
+ 800140a:	488f      	ldr	r0, [pc, #572]	; (8001648 <main+0x3cc>)
  800140c:	2364      	movs	r3, #100	; 0x64
  800140e:	2202      	movs	r2, #2
  8001410:	f002 fed8 	bl	80041c4 <HAL_UART_Transmit>
@@ -3043,7 +3043,7 @@ int kontrol=1;
  800142a:	001a      	movs	r2, r3
  800142c:	193b      	adds	r3, r7, r4
  800142e:	189a      	adds	r2, r3, r2
- 8001430:	4b94      	ldr	r3, [pc, #592]	; (8001684 <main+0x408>)
+ 8001430:	4b95      	ldr	r3, [pc, #596]	; (8001688 <main+0x40c>)
  8001432:	0010      	movs	r0, r2
  8001434:	0019      	movs	r1, r3
  8001436:	230d      	movs	r3, #13
@@ -3052,8 +3052,8 @@ int kontrol=1;
 	      HAL_UART_Transmit(&hlpuart1, "buffer toplam: ", 15, 1000);
  800143e:	23fa      	movs	r3, #250	; 0xfa
  8001440:	009b      	lsls	r3, r3, #2
- 8001442:	4991      	ldr	r1, [pc, #580]	; (8001688 <main+0x40c>)
- 8001444:	487f      	ldr	r0, [pc, #508]	; (8001644 <main+0x3c8>)
+ 8001442:	4992      	ldr	r1, [pc, #584]	; (800168c <main+0x410>)
+ 8001444:	4880      	ldr	r0, [pc, #512]	; (8001648 <main+0x3cc>)
  8001446:	220f      	movs	r2, #15
  8001448:	f002 febc 	bl	80041c4 <HAL_UART_Transmit>
 	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
@@ -3065,11 +3065,11 @@ int kontrol=1;
  8001458:	23fa      	movs	r3, #250	; 0xfa
  800145a:	009b      	lsls	r3, r3, #2
  800145c:	1939      	adds	r1, r7, r4
- 800145e:	4879      	ldr	r0, [pc, #484]	; (8001644 <main+0x3c8>)
+ 800145e:	487a      	ldr	r0, [pc, #488]	; (8001648 <main+0x3cc>)
  8001460:	f002 feb0 	bl	80041c4 <HAL_UART_Transmit>
 	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
- 8001464:	4985      	ldr	r1, [pc, #532]	; (800167c <main+0x400>)
- 8001466:	4877      	ldr	r0, [pc, #476]	; (8001644 <main+0x3c8>)
+ 8001464:	4986      	ldr	r1, [pc, #536]	; (8001680 <main+0x404>)
+ 8001466:	4878      	ldr	r0, [pc, #480]	; (8001648 <main+0x3cc>)
  8001468:	2364      	movs	r3, #100	; 0x64
  800146a:	2202      	movs	r2, #2
  800146c:	f002 feaa 	bl	80041c4 <HAL_UART_Transmit>
@@ -3103,8 +3103,8 @@ int kontrol=1;
 	    	  bGoSleep();
  80014a4:	f7ff fcae 	bl	8000e04 <bGoSleep>
 	    	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderildi\r\n",12, 100);
- 80014a8:	4978      	ldr	r1, [pc, #480]	; (800168c <main+0x410>)
- 80014aa:	4866      	ldr	r0, [pc, #408]	; (8001644 <main+0x3c8>)
+ 80014a8:	4979      	ldr	r1, [pc, #484]	; (8001690 <main+0x414>)
+ 80014aa:	4867      	ldr	r0, [pc, #412]	; (8001648 <main+0x3cc>)
  80014ac:	2364      	movs	r3, #100	; 0x64
  80014ae:	220c      	movs	r2, #12
  80014b0:	f002 fe88 	bl	80041c4 <HAL_UART_Transmit>
@@ -3131,13 +3131,13 @@ int kontrol=1;
 
 	  }else
 	  {
-		  int temperature1=2412;
- 80014d0:	4b6f      	ldr	r3, [pc, #444]	; (8001690 <main+0x414>)
+		  int temperature1=6666;
+ 80014d0:	4b70      	ldr	r3, [pc, #448]	; (8001694 <main+0x418>)
  80014d2:	22ae      	movs	r2, #174	; 0xae
  80014d4:	0052      	lsls	r2, r2, #1
  80014d6:	18b9      	adds	r1, r7, r2
  80014d8:	600b      	str	r3, [r1, #0]
-		  int humidity1=4308;
+		  int humidity1=6666;
  80014da:	4b6e      	ldr	r3, [pc, #440]	; (8001694 <main+0x418>)
  80014dc:	25ac      	movs	r5, #172	; 0xac
  80014de:	006d      	lsls	r5, r5, #1
@@ -3147,7 +3147,7 @@ int kontrol=1;
 		  sprintf(buffer, "%d", temperature1); //100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
  80014e4:	18bb      	adds	r3, r7, r2
  80014e6:	681a      	ldr	r2, [r3, #0]
- 80014e8:	4962      	ldr	r1, [pc, #392]	; (8001674 <main+0x3f8>)
+ 80014e8:	4963      	ldr	r1, [pc, #396]	; (8001678 <main+0x3fc>)
  80014ea:	24d4      	movs	r4, #212	; 0xd4
  80014ec:	193b      	adds	r3, r7, r4
  80014ee:	0018      	movs	r0, r3
@@ -3155,8 +3155,8 @@ int kontrol=1;
 		  	      HAL_UART_Transmit(&hlpuart1, "t: ", 3, 1000);
  80014f4:	23fa      	movs	r3, #250	; 0xfa
  80014f6:	009b      	lsls	r3, r3, #2
- 80014f8:	495f      	ldr	r1, [pc, #380]	; (8001678 <main+0x3fc>)
- 80014fa:	4852      	ldr	r0, [pc, #328]	; (8001644 <main+0x3c8>)
+ 80014f8:	4960      	ldr	r1, [pc, #384]	; (800167c <main+0x400>)
+ 80014fa:	4853      	ldr	r0, [pc, #332]	; (8001648 <main+0x3cc>)
  80014fc:	2203      	movs	r2, #3
  80014fe:	f002 fe61 	bl	80041c4 <HAL_UART_Transmit>
 		  	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
@@ -3168,11 +3168,11 @@ int kontrol=1;
  800150e:	23fa      	movs	r3, #250	; 0xfa
  8001510:	009b      	lsls	r3, r3, #2
  8001512:	1939      	adds	r1, r7, r4
- 8001514:	484b      	ldr	r0, [pc, #300]	; (8001644 <main+0x3c8>)
+ 8001514:	484c      	ldr	r0, [pc, #304]	; (8001648 <main+0x3cc>)
  8001516:	f002 fe55 	bl	80041c4 <HAL_UART_Transmit>
 		  	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
- 800151a:	4958      	ldr	r1, [pc, #352]	; (800167c <main+0x400>)
- 800151c:	4849      	ldr	r0, [pc, #292]	; (8001644 <main+0x3c8>)
+ 800151a:	4959      	ldr	r1, [pc, #356]	; (8001680 <main+0x404>)
+ 800151c:	484a      	ldr	r0, [pc, #296]	; (8001648 <main+0x3cc>)
  800151e:	2364      	movs	r3, #100	; 0x64
  8001520:	2202      	movs	r2, #2
  8001522:	f002 fe4f 	bl	80041c4 <HAL_UART_Transmit>
@@ -3184,7 +3184,7 @@ int kontrol=1;
 		  	      sprintf(buffer2, "%d", humidity1);
  8001526:	197b      	adds	r3, r7, r5
  8001528:	681a      	ldr	r2, [r3, #0]
- 800152a:	4952      	ldr	r1, [pc, #328]	; (8001674 <main+0x3f8>)
+ 800152a:	4953      	ldr	r1, [pc, #332]	; (8001678 <main+0x3fc>)
  800152c:	2570      	movs	r5, #112	; 0x70
  800152e:	197b      	adds	r3, r7, r5
  8001530:	0018      	movs	r0, r3
@@ -3192,8 +3192,8 @@ int kontrol=1;
 		  	      HAL_UART_Transmit(&hlpuart1, "n: ", 3, 1000);
  8001536:	23fa      	movs	r3, #250	; 0xfa
  8001538:	009b      	lsls	r3, r3, #2
- 800153a:	4951      	ldr	r1, [pc, #324]	; (8001680 <main+0x404>)
- 800153c:	4841      	ldr	r0, [pc, #260]	; (8001644 <main+0x3c8>)
+ 800153a:	4952      	ldr	r1, [pc, #328]	; (8001684 <main+0x408>)
+ 800153c:	4842      	ldr	r0, [pc, #264]	; (8001648 <main+0x3cc>)
  800153e:	2203      	movs	r2, #3
  8001540:	f002 fe40 	bl	80041c4 <HAL_UART_Transmit>
 		  	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer2, strlen(buffer2), 1000);
@@ -3205,11 +3205,11 @@ int kontrol=1;
  8001550:	23fa      	movs	r3, #250	; 0xfa
  8001552:	009b      	lsls	r3, r3, #2
  8001554:	1979      	adds	r1, r7, r5
- 8001556:	483b      	ldr	r0, [pc, #236]	; (8001644 <main+0x3c8>)
+ 8001556:	483c      	ldr	r0, [pc, #240]	; (8001648 <main+0x3cc>)
  8001558:	f002 fe34 	bl	80041c4 <HAL_UART_Transmit>
 		  	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
- 800155c:	4947      	ldr	r1, [pc, #284]	; (800167c <main+0x400>)
- 800155e:	4839      	ldr	r0, [pc, #228]	; (8001644 <main+0x3c8>)
+ 800155c:	4948      	ldr	r1, [pc, #288]	; (8001680 <main+0x404>)
+ 800155e:	483a      	ldr	r0, [pc, #232]	; (8001648 <main+0x3cc>)
  8001560:	2364      	movs	r3, #100	; 0x64
  8001562:	2202      	movs	r2, #2
  8001564:	f002 fe2e 	bl	80041c4 <HAL_UART_Transmit>
@@ -3236,7 +3236,7 @@ int kontrol=1;
  800158c:	001a      	movs	r2, r3
  800158e:	f003 fb0d 	bl	8004bac <memcpy>
 
-		  	    strncat(buffer,"A0000000001B", 12);
+		  	    strncat(buffer,"A0000000006B", 12);
  8001592:	193b      	adds	r3, r7, r4
  8001594:	0018      	movs	r0, r3
  8001596:	f7fe fdb7 	bl	8000108 <strlen>
@@ -3244,7 +3244,7 @@ int kontrol=1;
  800159c:	001a      	movs	r2, r3
  800159e:	193b      	adds	r3, r7, r4
  80015a0:	189a      	adds	r2, r3, r2
- 80015a2:	4b38      	ldr	r3, [pc, #224]	; (8001684 <main+0x408>)
+ 80015a2:	4b3e      	ldr	r3, [pc, #248]	; (800169c <main+0x420>)
  80015a4:	0010      	movs	r0, r2
  80015a6:	0019      	movs	r1, r3
  80015a8:	230d      	movs	r3, #13
@@ -3258,8 +3258,8 @@ int kontrol=1;
 		  	      HAL_UART_Transmit(&hlpuart1, "buffer toplam: ", 15, 1000);
  80015b0:	23fa      	movs	r3, #250	; 0xfa
  80015b2:	009b      	lsls	r3, r3, #2
- 80015b4:	4934      	ldr	r1, [pc, #208]	; (8001688 <main+0x40c>)
- 80015b6:	4823      	ldr	r0, [pc, #140]	; (8001644 <main+0x3c8>)
+ 80015b4:	4935      	ldr	r1, [pc, #212]	; (800168c <main+0x410>)
+ 80015b6:	4824      	ldr	r0, [pc, #144]	; (8001648 <main+0x3cc>)
  80015b8:	220f      	movs	r2, #15
  80015ba:	f002 fe03 	bl	80041c4 <HAL_UART_Transmit>
 		  	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
@@ -3271,11 +3271,11 @@ int kontrol=1;
  80015ca:	23fa      	movs	r3, #250	; 0xfa
  80015cc:	009b      	lsls	r3, r3, #2
  80015ce:	1939      	adds	r1, r7, r4
- 80015d0:	481c      	ldr	r0, [pc, #112]	; (8001644 <main+0x3c8>)
+ 80015d0:	481d      	ldr	r0, [pc, #116]	; (8001648 <main+0x3cc>)
  80015d2:	f002 fdf7 	bl	80041c4 <HAL_UART_Transmit>
 		  	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
- 80015d6:	4929      	ldr	r1, [pc, #164]	; (800167c <main+0x400>)
- 80015d8:	481a      	ldr	r0, [pc, #104]	; (8001644 <main+0x3c8>)
+ 80015d6:	492a      	ldr	r1, [pc, #168]	; (8001680 <main+0x404>)
+ 80015d8:	481b      	ldr	r0, [pc, #108]	; (8001648 <main+0x3cc>)
  80015da:	2364      	movs	r3, #100	; 0x64
  80015dc:	2202      	movs	r2, #2
  80015de:	f002 fdf1 	bl	80041c4 <HAL_UART_Transmit>
@@ -3309,54 +3309,55 @@ int kontrol=1;
 		  	    	  bGoSleep();
  8001616:	f7ff fbf5 	bl	8000e04 <bGoSleep>
 		  	    	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderildi\r\n",12, 100);
- 800161a:	491c      	ldr	r1, [pc, #112]	; (800168c <main+0x410>)
- 800161c:	4809      	ldr	r0, [pc, #36]	; (8001644 <main+0x3c8>)
+ 800161a:	491d      	ldr	r1, [pc, #116]	; (8001690 <main+0x414>)
+ 800161c:	480a      	ldr	r0, [pc, #40]	; (8001648 <main+0x3cc>)
  800161e:	2364      	movs	r3, #100	; 0x64
  8001620:	220c      	movs	r2, #12
  8001622:	f002 fdcf 	bl	80041c4 <HAL_UART_Transmit>
-		  	    	  HAL_Delay(10000);
- 8001626:	4b1d      	ldr	r3, [pc, #116]	; (800169c <main+0x420>)
- 8001628:	0018      	movs	r0, r3
- 800162a:	f000 fef3 	bl	8002414 <HAL_Delay>
+		  	    	  HAL_Delay(4000);
+ 8001626:	23fa      	movs	r3, #250	; 0xfa
+ 8001628:	011b      	lsls	r3, r3, #4
+ 800162a:	0018      	movs	r0, r3
+ 800162c:	f000 fef2 	bl	8002414 <HAL_Delay>
 
 
 		  	      //}
 		  	     // else HAL_UART_Transmit( &hlpuart1, (uint8_t *)"degısmedi\r\n",11, 100);
 
 		  	      strcpy(bufferkontrol,buffer);
- 800162e:	23d4      	movs	r3, #212	; 0xd4
- 8001630:	18fa      	adds	r2, r7, r3
- 8001632:	230c      	movs	r3, #12
- 8001634:	18fb      	adds	r3, r7, r3
- 8001636:	0011      	movs	r1, r2
- 8001638:	0018      	movs	r0, r3
- 800163a:	f003 fb65 	bl	8004d08 <strcpy>
+ 8001630:	23d4      	movs	r3, #212	; 0xd4
+ 8001632:	18fa      	adds	r2, r7, r3
+ 8001634:	230c      	movs	r3, #12
+ 8001636:	18fb      	adds	r3, r7, r3
+ 8001638:	0011      	movs	r1, r2
+ 800163a:	0018      	movs	r0, r3
+ 800163c:	f003 fb64 	bl	8004d08 <strcpy>
   {
- 800163e:	e68a      	b.n	8001356 <main+0xda>
- 8001640:	08005ce4 	.word	0x08005ce4
- 8001644:	20000268 	.word	0x20000268
- 8001648:	08005cf0 	.word	0x08005cf0
- 800164c:	08005d5c 	.word	0x08005d5c
- 8001650:	200002f2 	.word	0x200002f2
- 8001654:	200002f4 	.word	0x200002f4
- 8001658:	20000000 	.word	0x20000000
- 800165c:	20000030 	.word	0x20000030
- 8001660:	20000060 	.word	0x20000060
- 8001664:	20000080 	.word	0x20000080
- 8001668:	200000e0 	.word	0x200000e0
- 800166c:	20000154 	.word	0x20000154
- 8001670:	08005d10 	.word	0x08005d10
- 8001674:	08005d18 	.word	0x08005d18
- 8001678:	08005d1c 	.word	0x08005d1c
- 800167c:	08005d20 	.word	0x08005d20
- 8001680:	08005d24 	.word	0x08005d24
- 8001684:	08005d28 	.word	0x08005d28
- 8001688:	08005d38 	.word	0x08005d38
- 800168c:	08005d48 	.word	0x08005d48
- 8001690:	0000096c 	.word	0x0000096c
- 8001694:	000010d4 	.word	0x000010d4
+ 8001640:	e689      	b.n	8001356 <main+0xda>
+ 8001642:	46c0      	nop			; (mov r8, r8)
+ 8001644:	08005ce4 	.word	0x08005ce4
+ 8001648:	20000268 	.word	0x20000268
+ 800164c:	08005cf0 	.word	0x08005cf0
+ 8001650:	08005d6c 	.word	0x08005d6c
+ 8001654:	200002f2 	.word	0x200002f2
+ 8001658:	200002f4 	.word	0x200002f4
+ 800165c:	20000000 	.word	0x20000000
+ 8001660:	20000030 	.word	0x20000030
+ 8001664:	20000060 	.word	0x20000060
+ 8001668:	20000080 	.word	0x20000080
+ 800166c:	200000e0 	.word	0x200000e0
+ 8001670:	20000154 	.word	0x20000154
+ 8001674:	08005d10 	.word	0x08005d10
+ 8001678:	08005d18 	.word	0x08005d18
+ 800167c:	08005d1c 	.word	0x08005d1c
+ 8001680:	08005d20 	.word	0x08005d20
+ 8001684:	08005d24 	.word	0x08005d24
+ 8001688:	08005d28 	.word	0x08005d28
+ 800168c:	08005d38 	.word	0x08005d38
+ 8001690:	08005d48 	.word	0x08005d48
+ 8001694:	00001a0a 	.word	0x00001a0a
  8001698:	08005d58 	.word	0x08005d58
- 800169c:	00002710 	.word	0x00002710
+ 800169c:	08005d5c 	.word	0x08005d5c
 
 080016a0 <SystemClock_Config>:
 /**
@@ -5661,7 +5662,7 @@ LoopForever:
   ldr r1, =_edata
  8002320:	200001f4 	.word	0x200001f4
   ldr r2, =_sidata
- 8002324:	08005e90 	.word	0x08005e90
+ 8002324:	08005ea0 	.word	0x08005ea0
   ldr r2, =_sbss
  8002328:	200001f4 	.word	0x200001f4
   ldr r4, =_ebss
@@ -9323,7 +9324,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
  80036cc:	fffeffff 	.word	0xfffeffff
  80036d0:	fffbffff 	.word	0xfffbffff
  80036d4:	ffffe0ff 	.word	0xffffe0ff
- 80036d8:	08005d7c 	.word	0x08005d7c
+ 80036d8:	08005d8c 	.word	0x08005d8c
  80036dc:	20000184 	.word	0x20000184
  80036e0:	20000188 	.word	0x20000188
  80036e4:	ffff1fff 	.word	0xffff1fff
@@ -10483,7 +10484,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
  8003d00:	40021000 	.word	0x40021000
  8003d04:	fffff8ff 	.word	0xfffff8ff
  8003d08:	ffffc7ff 	.word	0xffffc7ff
- 8003d0c:	08005d7c 	.word	0x08005d7c
+ 8003d0c:	08005d8c 	.word	0x08005d8c
  8003d10:	20000184 	.word	0x20000184
  8003d14:	20000188 	.word	0x20000188
 
@@ -10708,7 +10709,7 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
  8003e54:	003d0900 	.word	0x003d0900
  8003e58:	00f42400 	.word	0x00f42400
  8003e5c:	017d7840 	.word	0x017d7840
- 8003e60:	08005d94 	.word	0x08005d94
+ 8003e60:	08005da4 	.word	0x08005da4
 
 08003e64 <HAL_RCC_GetHCLKFreq>:
   * @note   The SystemCoreClock CMSIS variable is used to store System Clock Frequency
@@ -10757,7 +10758,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  8003e98:	bd80      	pop	{r7, pc}
  8003e9a:	46c0      	nop			; (mov r8, r8)
  8003e9c:	40021000 	.word	0x40021000
- 8003ea0:	08005d8c 	.word	0x08005d8c
+ 8003ea0:	08005d9c 	.word	0x08005d9c
 
 08003ea4 <HAL_RCC_GetPCLK2Freq>:
   * @note   Each time PCLK2 changes, this function must be called to update the
@@ -10787,7 +10788,7 @@ uint32_t HAL_RCC_GetPCLK2Freq(void)
  8003ec4:	bd80      	pop	{r7, pc}
  8003ec6:	46c0      	nop			; (mov r8, r8)
  8003ec8:	40021000 	.word	0x40021000
- 8003ecc:	08005d8c 	.word	0x08005d8c
+ 8003ecc:	08005d9c 	.word	0x08005d9c
 
 08003ed0 <HAL_RCCEx_PeriphCLKConfig>:
   * @retval HAL status
@@ -12145,7 +12146,7 @@ HAL_StatusTypeDef UART_SetConfig(UART_HandleTypeDef *huart)
  8004650:	40021000 	.word	0x40021000
  8004654:	003d0900 	.word	0x003d0900
  8004658:	00f42400 	.word	0x00f42400
- 800465c:	08005da0 	.word	0x08005da0
+ 800465c:	08005db0 	.word	0x08005db0
       default:
         pclk = 0U;
  8004660:	2300      	movs	r3, #0
@@ -12398,7 +12399,7 @@ HAL_StatusTypeDef UART_SetConfig(UART_HandleTypeDef *huart)
  80047c2:	46bd      	mov	sp, r7
  80047c4:	b00e      	add	sp, #56	; 0x38
  80047c6:	bdb0      	pop	{r4, r5, r7, pc}
- 80047c8:	08005dc4 	.word	0x08005dc4
+ 80047c8:	08005dd4 	.word	0x08005dd4
  80047cc:	40021000 	.word	0x40021000
  80047d0:	003d0900 	.word	0x003d0900
  80047d4:	00f42400 	.word	0x00f42400
@@ -13070,10 +13071,10 @@ __STATIC_FORCEINLINE void __set_PRIMASK(uint32_t priMask)
  8004b96:	4798      	blx	r3
  8004b98:	3601      	adds	r6, #1
  8004b9a:	e7f2      	b.n	8004b82 <__libc_init_array+0x1e>
- 8004b9c:	08005e88 	.word	0x08005e88
- 8004ba0:	08005e88 	.word	0x08005e88
- 8004ba4:	08005e88 	.word	0x08005e88
- 8004ba8:	08005e8c 	.word	0x08005e8c
+ 8004b9c:	08005e98 	.word	0x08005e98
+ 8004ba0:	08005e98 	.word	0x08005e98
+ 8004ba4:	08005e98 	.word	0x08005e98
+ 8004ba8:	08005e9c 	.word	0x08005e9c
 
 08004bac <memcpy>:
  8004bac:	2300      	movs	r3, #0
@@ -13199,9 +13200,9 @@ __STATIC_FORCEINLINE void __set_PRIMASK(uint32_t priMask)
  8004ca2:	6022      	str	r2, [r4, #0]
  8004ca4:	701d      	strb	r5, [r3, #0]
  8004ca6:	e7bf      	b.n	8004c28 <_puts_r+0x58>
- 8004ca8:	08005e0c 	.word	0x08005e0c
- 8004cac:	08005e2c 	.word	0x08005e2c
- 8004cb0:	08005dec 	.word	0x08005dec
+ 8004ca8:	08005e1c 	.word	0x08005e1c
+ 8004cac:	08005e3c 	.word	0x08005e3c
+ 8004cb0:	08005dfc 	.word	0x08005dfc
 
 08004cb4 <puts>:
  8004cb4:	b510      	push	{r4, lr}
@@ -13354,9 +13355,9 @@ __STATIC_FORCEINLINE void __set_PRIMASK(uint32_t priMask)
  8004dde:	2601      	movs	r6, #1
  8004de0:	4276      	negs	r6, r6
  8004de2:	e7ea      	b.n	8004dba <__swbuf_r+0x76>
- 8004de4:	08005e0c 	.word	0x08005e0c
- 8004de8:	08005e2c 	.word	0x08005e2c
- 8004dec:	08005dec 	.word	0x08005dec
+ 8004de4:	08005e1c 	.word	0x08005e1c
+ 8004de8:	08005e3c 	.word	0x08005e3c
+ 8004dec:	08005dfc 	.word	0x08005dfc
 
 08004df0 <__swsetup_r>:
  8004df0:	4b37      	ldr	r3, [pc, #220]	; (8004ed0 <__swsetup_r+0xe0>)
@@ -13469,9 +13470,9 @@ __STATIC_FORCEINLINE void __set_PRIMASK(uint32_t priMask)
  8004ecc:	60a2      	str	r2, [r4, #8]
  8004ece:	e7ef      	b.n	8004eb0 <__swsetup_r+0xc0>
  8004ed0:	20000190 	.word	0x20000190
- 8004ed4:	08005e0c 	.word	0x08005e0c
- 8004ed8:	08005e2c 	.word	0x08005e2c
- 8004edc:	08005dec 	.word	0x08005dec
+ 8004ed4:	08005e1c 	.word	0x08005e1c
+ 8004ed8:	08005e3c 	.word	0x08005e3c
+ 8004edc:	08005dfc 	.word	0x08005dfc
 
 08004ee0 <__sflush_r>:
  8004ee0:	b5f7      	push	{r0, r1, r2, r4, r5, r6, r7, lr}
@@ -13668,9 +13669,9 @@ __STATIC_FORCEINLINE void __set_PRIMASK(uint32_t priMask)
  8005066:	68ec      	ldr	r4, [r5, #12]
  8005068:	e7da      	b.n	8005020 <_fflush_r+0x28>
  800506a:	46c0      	nop			; (mov r8, r8)
- 800506c:	08005e0c 	.word	0x08005e0c
- 8005070:	08005e2c 	.word	0x08005e2c
- 8005074:	08005dec 	.word	0x08005dec
+ 800506c:	08005e1c 	.word	0x08005e1c
+ 8005070:	08005e3c 	.word	0x08005e3c
+ 8005074:	08005dfc 	.word	0x08005dfc
 
 08005078 <std>:
  8005078:	2300      	movs	r3, #0
@@ -13812,7 +13813,7 @@ __STATIC_FORCEINLINE void __set_PRIMASK(uint32_t priMask)
  800519e:	2301      	movs	r3, #1
  80051a0:	61a3      	str	r3, [r4, #24]
  80051a2:	e7d2      	b.n	800514a <__sinit+0xe>
- 80051a4:	08005de8 	.word	0x08005de8
+ 80051a4:	08005df8 	.word	0x08005df8
  80051a8:	080050c1 	.word	0x080050c1
 
 080051ac <__sfp>:
@@ -13877,7 +13878,7 @@ __STATIC_FORCEINLINE void __set_PRIMASK(uint32_t priMask)
  800522e:	603b      	str	r3, [r7, #0]
  8005230:	e7ef      	b.n	8005212 <__sfp+0x66>
  8005232:	46c0      	nop			; (mov r8, r8)
- 8005234:	08005de8 	.word	0x08005de8
+ 8005234:	08005df8 	.word	0x08005df8
  8005238:	ffff0001 	.word	0xffff0001
 
 0800523c <_fwalk_reent>:
@@ -14526,9 +14527,9 @@ __STATIC_FORCEINLINE void __set_PRIMASK(uint32_t priMask)
  8005754:	f000 f87c 	bl	8005850 <_printf_i>
  8005758:	e7ea      	b.n	8005730 <_svfiprintf_r+0x1c0>
  800575a:	46c0      	nop			; (mov r8, r8)
- 800575c:	08005e4c 	.word	0x08005e4c
- 8005760:	08005e52 	.word	0x08005e52
- 8005764:	08005e56 	.word	0x08005e56
+ 800575c:	08005e5c 	.word	0x08005e5c
+ 8005760:	08005e62 	.word	0x08005e62
+ 8005764:	08005e66 	.word	0x08005e66
  8005768:	00000000 	.word	0x00000000
  800576c:	080054ad 	.word	0x080054ad
 
@@ -14902,8 +14903,8 @@ __STATIC_FORCEINLINE void __set_PRIMASK(uint32_t priMask)
  8005a66:	2500      	movs	r5, #0
  8005a68:	e7f7      	b.n	8005a5a <_printf_i+0x20a>
  8005a6a:	46c0      	nop			; (mov r8, r8)
- 8005a6c:	08005e5d 	.word	0x08005e5d
- 8005a70:	08005e6e 	.word	0x08005e6e
+ 8005a6c:	08005e6d 	.word	0x08005e6d
+ 8005a70:	08005e7e 	.word	0x08005e7e
 
 08005a74 <_sbrk_r>:
  8005a74:	2300      	movs	r3, #0

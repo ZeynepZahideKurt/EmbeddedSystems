@@ -191,8 +191,8 @@ int kontrol=1;
 
 	  }else
 	  {
-		  int temperature1=2412;
-		  int humidity1=4308;
+		  int temperature1=6666;
+		  int humidity1=6666;
 		  //HAL_UART_Transmit(&hlpuart1, "error",  5, 1000);
 		  sprintf(buffer, "%d", temperature1); //100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
 		  	      HAL_UART_Transmit(&hlpuart1, "t: ", 3, 1000);
@@ -214,7 +214,7 @@ int kontrol=1;
 		  	      strncat(buffer, buffer2, 5); //sondaki sayı eklenecek karakter sayısı
 		  	    strncat(buffer, "6", 1); //pil durumu 1-6 arası kadameli olacak
 
-		  	    strncat(buffer,"A0000000001B", 12);
+		  	    strncat(buffer,"A0000000006B", 12);
 		  	    //  strncat(buffer,"AsillB", 12);
 		  	  //  strncat(buffer,"Asil1B", 12);
 		  	  //  strncat(buffer,"Asil2B", 12);
@@ -233,7 +233,7 @@ int kontrol=1;
 		  	    	  vClearFIFO();
 		  	    	  bGoSleep();
 		  	    	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderildi\r\n",12, 100);
-		  	    	  HAL_Delay(10000);
+		  	    	  HAL_Delay(4000);
 
 
 		  	      //}
