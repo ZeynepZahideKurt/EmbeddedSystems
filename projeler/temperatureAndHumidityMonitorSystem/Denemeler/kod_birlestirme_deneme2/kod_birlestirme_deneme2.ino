@@ -141,6 +141,14 @@ int eksikontrol4=0;
 int eksikontrol5=0;
 int eksikontrol6=0;
 
+int HATA_KONROL0=0;
+int HATA_KONROL1=0;
+int HATA_KONROL2=0;
+int HATA_KONROL3=0;
+int HATA_KONROL4=0;
+int HATA_KONROL5=0;
+int HATA_KONROL6=0;
+
 int clclkontrol = 0;
 
 byte rf_kontrol;
@@ -973,7 +981,12 @@ void circle_location() {
       circlealt();
     }
     displayBig(3, "S", LEFT, 0);
-    displayBig(3, kontrol_stemp, CENTER, 0); displayBig(5, kontrol_nem, CENTER, 0);
+    if(HATA_KONROL0==1){
+       displayBig(3, "HATA", CENTER, 0); displayBig(5, "HATA", CENTER, 0);
+    }else if(HATA_KONROL0==0){
+      displayBig(3, kontrol_stemp, CENTER, 0); displayBig(5, kontrol_nem, CENTER, 0);
+    }
+    
     eksikontrol1=0; //1. sıranın -'si veya S harfinin sürekli loop olarak dönmemesi için, 
      clclkontrol=0;
   } 
@@ -1002,9 +1015,13 @@ void circle_location() {
       }
       eksikontrol1=1;
     }
-    
+    if(HATA_KONROL1==1){ //vericideki sensörden veriler hatalı gelirse buraya giriyor
+       displayBig(3, "HATA", CENTER, 0); displayBig(5, "HATA", CENTER, 0);
+    }else if(HATA_KONROL1==0){//vericideki sensörden veriler doğru gelirse buraya giriyor
+       displayBig(3, gonder_sicaklik_cihaz1, CENTER, 0); displayBig(5, gonder_nem_cihaz1, CENTER, 0);
+    }
     //Serial.print("gonder_sicaklik_cihaz1:"); Serial.println(gonder_sicaklik_cihaz1);
-    displayBig(3, gonder_sicaklik_cihaz1, CENTER, 0); displayBig(5, gonder_nem_cihaz1, CENTER, 0);
+   
     eksikontrol2=0; //2. sıranın -'si veya S harfinin sürekli loop olarak dönmemesi için, 
   } if (circle_sira == 2) {
     // displayBig(3, "2.TEMP", CENTER, 0); displayBig(5, "2.NEM", CENTER, 0);
@@ -1027,7 +1044,12 @@ void circle_location() {
       }
       eksikontrol2=1;
     }
-    displayBig(3, gonder_sicaklik_cihaz2, CENTER, 0); displayBig(5, gonder_nem_cihaz2, CENTER, 0);
+    if(HATA_KONROL2==1){
+       displayBig(3, "HATA", CENTER, 0); displayBig(5, "HATA", CENTER, 0);
+    }else if(HATA_KONROL2==0){
+       displayBig(3, gonder_sicaklik_cihaz2, CENTER, 0); displayBig(5, gonder_nem_cihaz2, CENTER, 0);
+    }
+    
     eksikontrol3=0; //3. sıranın -'si veya S harfinin sürekli loop olarak dönmemesi için, 
   } if (circle_sira == 3) {
     clclkontrol = 0;
@@ -1050,7 +1072,12 @@ void circle_location() {
       eksikontrol3=1;
     }
     // displayBig(3, "3.TEMP", CENTER, 0); displayBig(5, "3.NEM", CENTER, 0);
-    displayBig(3, gonder_sicaklik_cihaz3, CENTER, 0); displayBig(5, gonder_nem_cihaz3, CENTER, 0);
+    if(HATA_KONROL3==1){
+       displayBig(3, "HATA", CENTER, 0); displayBig(5, "HATA", CENTER, 0);
+    }else if(HATA_KONROL3==0){
+       displayBig(3, gonder_sicaklik_cihaz3, CENTER, 0); displayBig(5, gonder_nem_cihaz3, CENTER, 0);
+    }
+    
     eksikontrol4=0; //4. sıranın -'si veya S harfinin sürekli loop olarak dönmemesi için, 
   } if (circle_sira == 4) {
     clclkontrol = 0;
@@ -1073,8 +1100,13 @@ void circle_location() {
       eksikontrol4=1;
     }
     // displayBig(3, "4.TEMP", CENTER, 0); displayBig(5, "4.NEM", CENTER, 0);
-    eksikontrol5=0; //5. sıranın -'si veya S harfinin sürekli loop olarak dönmemesi için, 
-    displayBig(3, gonder_sicaklik_cihaz4, CENTER, 0); displayBig(5, gonder_nem_cihaz4, CENTER, 0);
+    eksikontrol5=0; //5. sıranın -'si veya S harfinin sürekli loop olarak dönmemesi için,
+    if(HATA_KONROL4==1){
+       displayBig(3, "HATA", CENTER, 0); displayBig(5, "HATA", CENTER, 0);
+    }else if(HATA_KONROL4==0){
+      displayBig(3, gonder_sicaklik_cihaz4, CENTER, 0); displayBig(5, gonder_nem_cihaz4, CENTER, 0);
+    }
+    
   } if (circle_sira == 5) {
     clclkontrol = 0;
     if(eksikontrol5==0){
@@ -1096,7 +1128,12 @@ void circle_location() {
       eksikontrol5=1;
     }
     // displayBig(3, "5.TEMP", CENTER, 0); displayBig(5, "5.NEM", CENTER, 0);
-    displayBig(3, gonder_sicaklik_cihaz5, CENTER, 0); displayBig(5, gonder_nem_cihaz5, CENTER, 0);
+    if(HATA_KONROL5==1){
+       displayBig(3, "HATA", CENTER, 0); displayBig(5, "HATA", CENTER, 0);
+    }else if(HATA_KONROL5==0){
+      displayBig(3, gonder_sicaklik_cihaz5, CENTER, 0); displayBig(5, gonder_nem_cihaz5, CENTER, 0);
+      
+    }
     eksikontrol6=0; //6. sıranın -'si veya S harfinin sürekli loop olarak dönmemesi için
   } if (circle_sira == 6) {
     // displayBig(3, "6.TEMP", CENTER, 0); displayBig(5, "6.NEM", CENTER, 0);
@@ -1118,7 +1155,11 @@ void circle_location() {
       }
       eksikontrol6=1;
     }
-    displayBig(3, gonder_sicaklik_cihaz6, CENTER, 0); displayBig(5, gonder_nem_cihaz6, CENTER, 0);
+    if(HATA_KONROL6==1){
+       displayBig(3, "HATA", CENTER, 0); displayBig(5, "HATA", CENTER, 0);
+    }else if(HATA_KONROL6==0){
+        displayBig(3, gonder_sicaklik_cihaz6, CENTER, 0); displayBig(5, gonder_nem_cihaz6, CENTER, 0);
+    }
     clclkontrol = 0;
   }
 
@@ -1426,15 +1467,23 @@ void postTempHum() {
 
   String mytemp = String(cTemp);
   //Serial.print("mytemp: ");Serial.println(mytemp);
-
+cTemp=-45.56;
   mytemp.toCharArray(stemp, 6);
 
-
   humidity = (100.0 * ((data[3] * 256.0) + data[4])) / 65535.0;
+  humidity=101.3;
+  //Serial.print("humidity:"); Serial.println(humidity);
   String myhum = String(humidity);
   myhum.toCharArray(nem, 6);
-  //Serial.print("myhum: "); Serial.println(myhum);
 
+  
+  
+if (-40 <= cTemp && cTemp <= 100 && 0 <= humidity && humidity <= 100) {
+  Serial.print("girdi");
+  HATA_KONROL0=0;
+}else{ //hatalıysa
+  HATA_KONROL0=1;
+}
   /* Serial.print("cTemp: ");
     Serial.println(cTemp);
     Serial.print("humidity: ");
@@ -1863,9 +1912,14 @@ void receive_() {
           String myhum1 = String(cihaz1fh);
           myhum1.toCharArray(nem_cihaz1, 6);
           Serial.print("nem_cihaz1: "); Serial.println(nem_cihaz1);
-
+          if (rx_buf[0] == 'H' && rx_buf[1] == 'A' && rx_buf[2] == 'T' && rx_buf[3] == 'A') 
+            HATA_KONROL1=1;
+          else
+            HATA_KONROL2=0;
+          
           // string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
           Serial.println("gönder gitsin 1");
+          
         } else if (mystring_int == string2_eeprom) {
 
            if (rx_buf[9] == '+' && rx_buf[8] != 'e') { //2555
@@ -1936,7 +1990,11 @@ void receive_() {
           String myhum2 = String(cihaz2fh);
           myhum2.toCharArray(nem_cihaz2, 6);
           Serial.print("nem_cihaz2: "); Serial.println(nem_cihaz2);
-
+          if (rx_buf[0] == 'H' && rx_buf[1] == 'A' && rx_buf[2] == 'T' && rx_buf[3] == 'A') 
+            HATA_KONROL2=1;
+          else
+            HATA_KONROL2=0;
+            
           // string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
           Serial.println("gönder gitsin 2");
         } else if (mystring_int == string3_eeprom) {
@@ -2010,6 +2068,11 @@ void receive_() {
           myhum3.toCharArray(nem_cihaz3, 6);
           Serial.print("nem_cihaz3: "); Serial.println(nem_cihaz3);
           //string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
+          
+          if (rx_buf[0] == 'H' && rx_buf[1] == 'A' && rx_buf[2] == 'T' && rx_buf[3] == 'A') 
+            HATA_KONROL3=1;
+          else
+            HATA_KONROL3=0;
           Serial.println("gönder gitsin 3");
 
         } else if (mystring_int == string4_eeprom) {
@@ -2082,7 +2145,10 @@ void receive_() {
           String myhum4 = String(cihaz4fh);
           myhum4.toCharArray(nem_cihaz4, 6);
           Serial.print("nem_cihaz4: "); Serial.println(nem_cihaz4);
-     
+          if (rx_buf[0] == 'H' && rx_buf[1] == 'A' && rx_buf[2] == 'T' && rx_buf[3] == 'A') 
+            HATA_KONROL4=1;
+          else
+            HATA_KONROL4=0;
 
           //string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
           Serial.println("gönder gitsin 4");
@@ -2155,7 +2221,10 @@ void receive_() {
           String myhum5 = String(cihaz5fh);
           myhum5.toCharArray(nem_cihaz5, 6);
           Serial.print("nem_cihaz5: "); Serial.println(nem_cihaz5);
-     
+          if (rx_buf[0] == 'H' && rx_buf[1] == 'A' && rx_buf[2] == 'T' && rx_buf[3] == 'A') 
+            HATA_KONROL5=1;
+          else
+            HATA_KONROL5=0;
           //string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın
           Serial.println("gönder gitsin 5");
         } else if (mystring_int == string6_eeprom) {
@@ -2229,7 +2298,10 @@ void receive_() {
           myhum6.toCharArray(nem_cihaz6, 6);
           Serial.print("nem_cihaz6: "); Serial.println(nem_cihaz6);
      
-
+          if (rx_buf[0] == 'H' && rx_buf[1] == 'A' && rx_buf[2] == 'T' && rx_buf[3] == 'A') 
+            HATA_KONROL6=1;
+          else
+            HATA_KONROL6=0;
 
 
           //string_parcala = mystring; //string1i parçalayıp servera ver lcd ekrana göndereceksin,  string1_eeprom seri numarasını server'dan gelen ile karşılaştıracaksın

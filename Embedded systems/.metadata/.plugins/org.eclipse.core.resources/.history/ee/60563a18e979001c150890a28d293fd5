@@ -109,11 +109,11 @@ int main(void)
   printf("SHT sensor probing successful\n");
 
 #define TX_NUM  24
-  byte tx_buf[32] = {'H', 'A', 'T', 'A', '1', '1', '1', '1', '1', '1', 'A', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', 'B'};
+  byte tx_buf[32] = {'H', 'o', 'p', 'e', 'R', 'F', ' ', 'R', 'F', 'M', ' ', 'C', 'O', 'B', 'R', 'F', 'M', '3', '0', '0', 'A'};
   char buffer[23];
   char buffer2[100];
   //char buffer[100];
-  char buffer3[100];
+  char bufferkontrol[100];
   char sayac[100];
   char buffer_temperature[100];
 
@@ -336,14 +336,18 @@ int main(void)
 
         //strcpy(buffer,bufferkontrol);
       } else {
-
+        strncat(buffer, "HATAHATAHAA0000000003B", 22);
+        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
+        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
         HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderilmedi\r\n", 14, 100);
         HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-        bSendMessage(tx_buf, 22);
+        bSendMessage(buffer,  strlen(buffer));
         while (GPO3_L());
         bIntSrcFlagClr();
         vClearFIFO();
         bGoSleep();
+        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderildi\r\n", 12, 100);
+        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
         HAL_Delay(4000);
       }
     }

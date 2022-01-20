@@ -109,7 +109,7 @@ int main(void)
   printf("SHT sensor probing successful\n");
 
 #define TX_NUM  24
-  byte tx_buf[32] = {'H', 'A', 'T', 'A', '1', '1', '1', '1', '1', '1', 'A', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', 'B'};
+  byte tx_buf[32] = {'H', 'o', 'p', 'e', 'R', 'F', ' ', 'R', 'F', 'M', ' ', 'C', 'O', 'B', 'R', 'F', 'M', '3', '0', '0', 'A'};
   char buffer[23];
   char buffer2[100];
   //char buffer[100];
@@ -336,10 +336,13 @@ int main(void)
 
         //strcpy(buffer,bufferkontrol);
       } else {
+        strncat(buffer3, "HATAHATAHAA0000000003B", 22);
+        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer3, 22, 1000);
+        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
 
         HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderilmedi\r\n", 14, 100);
         HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-        bSendMessage(tx_buf, 22);
+        bSendMessage(buffer3,  strlen(buffer3));
         while (GPO3_L());
         bIntSrcFlagClr();
         vClearFIFO();
