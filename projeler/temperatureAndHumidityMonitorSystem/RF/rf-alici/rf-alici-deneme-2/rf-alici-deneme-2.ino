@@ -1,17 +1,16 @@
 #include <arduino.h>
 #include "RFM300_Driver.h"
 #include "rf_conf.h"
-
+int i=0;
 
 byte rx_buf[42];
-int rfkontrol = 0;
 
 void setup(void)
 {
   Serial.begin(115200);
 
   FixedPktLength    = false;
-  PayloadLength     = 21;
+  //PayloadLength     = 22;
   vInit();
   vCfgBank(CMTBank, 12);
   vCfgBank(SystemBank, 12);
@@ -41,7 +40,7 @@ void loop(void)
   static uint16_t rx_cnt = 0;
   byte tmp, tmp2, tmp3;
 
-  pinMode(GPO3_PIN, INPUT);
+  //pinMode(GPO3_PIN, INPUT);
 
 
   /*if (GPO3_H()){
@@ -68,7 +67,7 @@ void loop(void)
   if (tmp3 == 48) {
   
     //delayMicroseconds(15565); //15535 us'de 21 bit alıyor
-    delay(17); //16 ms'de 21 bit alıyor, 19 ms'de 22 bit alıyor,  22 ms'de 23 bit alıyor
+    delay(20); //16 ms'de 21 bit alıyor, 19 ms'de 22 bit alıyor,  22 ms'de 23 bit alıyor
     tmp = bGetMessage(rx_buf);
     bIntSrcFlagClr();
     vClearFIFO();
@@ -79,6 +78,12 @@ void loop(void)
       Serial.print("\r\n");
       
     }
+
+      if (rx_buf[10] == 'A' && rx_buf[21] == 'B') {
+          i++;
+    Serial.println(i);
+      }
+  
   
 
 
