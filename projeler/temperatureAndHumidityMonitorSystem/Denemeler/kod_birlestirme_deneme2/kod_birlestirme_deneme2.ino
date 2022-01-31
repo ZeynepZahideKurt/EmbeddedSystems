@@ -2552,12 +2552,9 @@ void loop() {
     }
     if (simdikizaman3 - eskizaman3 >= 6000) { //Circle'ların LCD ekranda gözükme süresi x saniye
       kontrolcircle = kontrolcircle + 1;
-      eskizaman3 = simdikizaman3;
-      //Serial.print("kontrolcircle: "); Serial.println(kontrolcircle);
+      eskizaman3 = simdikizaman3; //Serial.print("kontrolcircle: "); Serial.println(kontrolcircle);
       if (cihaz_sayisi_eeprom != 0)
-        kontrolsayi = kontrolcircle % (cihaz_sayisi_eeprom + 1);
-
-      //Serial.print("kontrolsayi: "); Serial.println(kontrolsayi);
+        kontrolsayi = kontrolcircle % (cihaz_sayisi_eeprom + 1); //Serial.print("kontrolsayi: "); Serial.println(kontrolsayi);
 
 
     }

@@ -6457,3 +6457,10 @@ Finished building: VERICI-DEVRE.bin
  
 Finished building: VERICI-DEVRE.list
  
+17:28:55 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  30728	    508	   1988	  33224	   81c8	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
