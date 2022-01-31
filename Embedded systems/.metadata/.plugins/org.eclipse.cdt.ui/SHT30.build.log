@@ -1,4 +1,4 @@
-15:05:33 **** Incremental Build of configuration Debug for project SHT30 ****
+11:15:56 **** Incremental Build of configuration Debug for project SHT30 ****
 make -j4 all 
 arm-none-eabi-size   SHT30.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size   SHT30.elf
 Finished building: default.size.stdout
  
 
-15:05:34 Build Finished. 0 errors, 0 warnings. (took 398ms)
+11:15:56 Build Finished. 0 errors, 0 warnings. (took 285ms)
 

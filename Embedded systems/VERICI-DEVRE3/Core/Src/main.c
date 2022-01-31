@@ -45,6 +45,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+ADC_HandleTypeDef hadc;
+
 I2C_HandleTypeDef hi2c1;
 
 UART_HandleTypeDef hlpuart1;
@@ -58,6 +60,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_LPUART1_UART_Init(void);
 static void MX_I2C1_Init(void);
+static void MX_ADC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -68,9 +71,9 @@ static void MX_I2C1_Init(void);
 /* USER CODE END 0 */
 
 /**
-    @brief  The application entry point.
-    @retval int
-*/
+  * @brief  The application entry point.
+  * @retval int
+  */
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -98,15 +101,18 @@ int main(void)
   MX_GPIO_Init();
   MX_LPUART1_UART_Init();
   MX_I2C1_Init();
+  MX_ADC_Init();
   /* USER CODE BEGIN 2 */
   //  https://github.com/Sensirion/embedded-sht
-  HAL_UART_Transmit(&hlpuart1, (uint8_t *)"Basladi\r\n", 9, 100);
-  sensirion_i2c_init();
 
+  sensirion_i2c_init();
+HAL_UART_Transmit(&hlpuart1, (uint8_t *)"Basladi\r\n", 9, 100);
   /*while (sht3x_probe(SHT3X_I2C_ADDR_DFLT) != STATUS_OK) {
       printf("SHT sensor probing failed\n");
     }*/ // burayı aç
   printf("SHT sensor probing successful\n");
+#define VREFINT_CAL_ADDR			0x1FF80078
+#define VREFINT_CAL 				((uint16_t*) VREFINT_CAL_ADDR)
 
 #define TX_NUM  24
   byte tx_buf[32] = {'H', 'A', 'T', 'A', '1', '1', '1', '1', '1', '1', 'A', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', 'B'};
@@ -140,6 +146,10 @@ int main(void)
   HAL_UART_Transmit(&hlpuart1, (uint8_t *)"Tx...\r\n", 7, 100);
   int kontrol = 1;
   int c = 0;
+  int temperature1 = 2222;
+  int humidity1 = 2525;
+  HAL_ADCEx_Calibration_Start(&hadc, ADC_SINGLE_ENDED);
+  int pil;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -151,41 +161,210 @@ int main(void)
     /* USER CODE BEGIN 3 */
     int32_t temperature, humidity;
     int8_t ret = sht3x_measure_blocking_read(SHT3X_I2C_ADDR_DFLT, &temperature, &humidity);
+    HAL_ADC_Start(&hadc);
 
+    	  	HAL_ADC_PollForConversion(&hadc, 100);
+    	  	uint16_t VREFINTADC = HAL_ADC_GetValue(&hadc);
+    	  	HAL_ADC_Stop(&hadc);
+    	  	float VDD = 3000.0 * (*VREFINT_CAL / (float) VREFINTADC);
+    	  	temperature=temperature/10;
+    	  	humidity=humidity/10;
     if (ret == STATUS_OK) {
-      sprintf(buffer, "%d", temperature / 10); //100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
-      HAL_UART_Transmit(&hlpuart1, "t: ", 3, 1000);
-      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
-      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-      //  printf("measured temperature: %0.2f degreeCelsius","measured humidity: %0.2f percentRH\n",temperature / 1000.0f, humidity / 1000.0f);
+    	HAL_UART_Transmit(&hlpuart1, "burada2", 7, 1000);
+    	HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	c++;
+    	      sprintf(sayac, "%d", c);
+    	      HAL_UART_Transmit(&hlpuart1, (uint8_t *)sayac, strlen(sayac), 1000);
+    	      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+
+    	      //HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
+    	      //HAL_UART_Transmit(&hlpuart1, "error",  5, 1000);
+
+    	      if (-4000 <= temperature && temperature <= 9999 && 0 <= humidity && humidity <= 9999) {
+
+    	        if (temperature < -1000) {
+
+
+    	          temperature = temperature * -1;
+    	          sprintf(buffer, "%d", temperature);
+
+    	          HAL_UART_Transmit(&hlpuart1, "-10dan kucuk", 12, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 5, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+
+    	          temperature = temperature * -1;
+    	        }
+    	        else if (temperature < 0) {
+
+    	          temperature = temperature * -1;
+    	          sprintf(buffer, "%d", temperature);
+
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 5, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+    	          HAL_UART_Transmit(&hlpuart1, "0'la -10 arasında", 18, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	          temperature = temperature * -1;
+
+    	        }
+
+    	        else if (0 == temperature) {
+
+    	        } else if (temperature < 1000) {
+
+    	          HAL_UART_Transmit(&hlpuart1, "0 ile 10 arasinda", 17, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	          sprintf(buffer, "%d", temperature);
+
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 15, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+    	        } else if (temperature >= 1000) {
+
+    	          HAL_UART_Transmit(&hlpuart1, "10'dan buyuk", 12, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+    	          sprintf(buffer, "%d", temperature); //100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        }
+
+    	        //  printf("measured temperature: %0.2f degreeCelsius","measured humidity: %0.2f percentRH\n",temperature / 1000.0f, humidity / 1000.0f);
+
+
+    	        sprintf(buffer2, "%d", humidity);
+
+    	        strncat(buffer, buffer2, 10); //sondaki sayı eklenecek karakter sayısı
+    	        HAL_UART_Transmit(&hlpuart1, "buffer: ", 9, 1000);
+    	        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 4, 1000);
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+
+
+    	        if(VDD<=3600 && VDD>3240){
+    	        	pil=5;
+    	        	HAL_UART_Transmit(&hlpuart1, "pil=5", 12, 1000);
+    	        	HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        	strncat(buffer, "5", 1); //pil durumu 1-5 arası kadameli olacak
+    	        	HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 10, 1000);
+    	        	HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        }else if(VDD<=3240 && VDD>2880){
+    	        	pil=4;
+    	        	HAL_UART_Transmit(&hlpuart1, "pil=4", 12, 1000);
+    	        	HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        	strncat(buffer, "4", 1); //pil durumu 1-5 arası kadameli olacak
+    	        	HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 10, 1000);
+    	        	HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        }else if(VDD<=2880 && VDD>2520){
+    	            pil=3;
+    	            HAL_UART_Transmit(&hlpuart1, "pil=3", 12, 1000);
+    	            HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	            strncat(buffer, "3", 1); //pil durumu 1-5 arası kadameli olacak
+    	            HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 10, 1000);
+    	            HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        }else if(VDD<=2520 && VDD>2160){
+    	        	pil=2;
+    	        	HAL_UART_Transmit(&hlpuart1, "pil=2", 12, 1000);
+    	        	HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        	strncat(buffer, "2", 1); //pil durumu 1-5 arası kadameli olacak
+    	            HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 10, 1000);
+    	        	HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        }else if(VDD<2160){
+    	        	pil=1;
+    	        	HAL_UART_Transmit(&hlpuart1, "pil=1", 12, 1000);
+    	        	HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        	strncat(buffer, "1", 1); //pil durumu 1-5 arası kadameli olacak
+    	        	HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 10, 1000);
+    	        	HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        }
 
 
 
 
 
 
-      sprintf(buffer2, "%d", humidity / 10);
-      HAL_UART_Transmit(&hlpuart1, "n: ", 3, 1000);
-      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer2, strlen(buffer2), 1000);
-      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        if (temperature < -1000) {
+    	          strncat(buffer, "-", 1); //+ - durumu
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
 
 
-      strncat(buffer, buffer2, 5); //sondaki sayı eklenecek karakter sayısı
-      strncat(buffer, "A0000000002B", 12);
-      HAL_UART_Transmit(&hlpuart1, "buffer toplam: ", 15, 1000);
-      HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
-      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	          HAL_UART_Transmit(&hlpuart1, "-10dan kucuk", 12, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        } else if (temperature < 0) {
+    	          strncat(buffer, "e-", 2); //+ - durumu
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 5, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        }
+    	        else if (0 == temperature) {
+
+
+    	        } else if (temperature < 1000) {
+    	          strncat(buffer, "e+", 2);
+    	          HAL_UART_Transmit(&hlpuart1, "0 ile 10 arasinda", 17, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+    	        } else if (temperature >= 1000) {
+
+    	          HAL_UART_Transmit(&hlpuart1, "10'dan buyuk", 12, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	          strncat(buffer, "+", 1); //+ - durumu
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        }
+
+
+
+
+    	        strncat(buffer, "A0000000001B", 12); //seri numarası 10 haneli A ve B arasında
+    	        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	       //     strncat(buffer,"Asill000000B", 12);
+    	        // strncat(buffer,"Asil2000000B", 12);
+    	        //  strncat(buffer,"Asil2000000B", 12);
+    	        //   strncat(buffer,"Asil3000000B", 12);
+    	        //  strncat(buffer,"Asil4000000B", 12);
+    	        //  strncat(buffer,"Asil5000000B", 12);
+    	        // strncat(buffer,"Asil6000000B", 12);
+    	        HAL_UART_Transmit(&hlpuart1, "buffer toplam: ", 15, 1000);
+    	        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+    	        //if((bufferkontrol[0]!=buffer[0])||(bufferkontrol[1]!=buffer[1])||(bufferkontrol[2]!=buffer[2])||(bufferkontrol[3]!=buffer[3])){
+    	        bSendMessage(buffer,  strlen(buffer));
+    	        while (GPO3_L());
+    	        bIntSrcFlagClr();
+    	        vClearFIFO();
+    	        bGoSleep();
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderildi\r\n", 12, 100);
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        HAL_Delay(4000);
+
+
+
+    	        //}
+    	        // else HAL_UART_Transmit( &hlpuart1, (uint8_t *)"degısmedi\r\n",11, 100);
+
+    	        //strcpy(buffer,bufferkontrol);
+    	      } else {
+
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderilmedi\r\n", 14, 100);
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        bSendMessage(tx_buf, 22);
+    	        while (GPO3_L());
+    	        bIntSrcFlagClr();
+    	        vClearFIFO();
+    	        bGoSleep();
+    	        HAL_Delay(4000);
+    	      }
+
 
       //if((bufferkontrol[0]!=buffer[0])||(bufferkontrol[1]!=buffer[1])||(bufferkontrol[2]!=buffer[2])||(bufferkontrol[3]!=buffer[3])){
-      bSendMessage(buffer,  strlen(buffer));
-      while (GPO3_L());
-      bIntSrcFlagClr();
-      vClearFIFO();
-      bGoSleep();
-      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderildi\r\n", 12, 100);
-      HAL_Delay(2000);
-
-
       //}
       // else HAL_UART_Transmit( &hlpuart1, (uint8_t *)"degısmedi\r\n",11, 100);
 
@@ -194,158 +373,159 @@ int main(void)
 
     } else
     {
-      c++;
-      sprintf(sayac, "%d", c);
-      HAL_UART_Transmit(&hlpuart1, (uint8_t *)sayac, strlen(sayac), 1000);
-      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-      int temperature1 = -2511;
-      int humidity1 = 11110;
-
-      //HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
-      //HAL_UART_Transmit(&hlpuart1, "error",  5, 1000);
-
-      if (-4000 <= temperature1 && temperature1 <= 9999 && 0 <= humidity1 && humidity1 <= 9999) {
-
-        if (temperature1 < -1000) {
+    	c++;
+    	HAL_UART_Transmit(&hlpuart1, "göndermiyor", 11, 1000);
+    	HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	sprintf(sayac, "%d", c);
+    	HAL_UART_Transmit(&hlpuart1, (uint8_t *)sayac, strlen(sayac), 1000);
+    	HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
 
 
-          temperature1 = temperature1 * -1;
-          sprintf(buffer, "%d", temperature1);
+    	      //HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
+    	      //HAL_UART_Transmit(&hlpuart1, "error",  5, 1000);
+    	    /*  temperature1=temperature1+10;
+    	      if (-4000 <= temperature1 && temperature1 <= 9999 && 0 <= humidity1 && humidity1 <= 9999) {
 
-          HAL_UART_Transmit(&hlpuart1, "-10dan kucuk", 12, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-
-
-          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 5, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        if (temperature1 < -1000) {
 
 
-          temperature1 = temperature1 * -1;
-        }
-        else if (temperature1 < 0) {
+    	          temperature1 = temperature1 * -1;
+    	          sprintf(buffer, "%d", temperature1);
 
-          temperature1 = temperature1 * -1;
-          sprintf(buffer, "%d", temperature1);
-
-          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 5, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-
-          HAL_UART_Transmit(&hlpuart1, "0'la -10 arasında", 18, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-          temperature1 = temperature1 * -1;
-
-        }
-
-        else if (0 == temperature1) {
-
-        } else if (temperature1 < 1000) {
-
-          HAL_UART_Transmit(&hlpuart1, "0 ile 10 arasinda", 17, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-          sprintf(buffer, "%d", temperature1);
-
-          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 15, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-
-        } else if (temperature1 >= 1000) {
-
-          HAL_UART_Transmit(&hlpuart1, "10'dan buyuk", 12, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-
-          sprintf(buffer, "%d", temperature1); //100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
-          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-        }
-
-        //  printf("measured temperature: %0.2f degreeCelsius","measured humidity: %0.2f percentRH\n",temperature / 1000.0f, humidity / 1000.0f);
+    	          HAL_UART_Transmit(&hlpuart1, "-10dan kucuk", 12, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
 
 
-        sprintf(buffer2, "%d", humidity1);
-
-        strncat(buffer, buffer2, 10); //sondaki sayı eklenecek karakter sayısı
-        HAL_UART_Transmit(&hlpuart1, "buffer: ", 9, 1000);
-        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 4, 1000);
-        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-        strncat(buffer, "7", 1); //pil durumu 1-6 arası kadameli olacak
-        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 10, 1000);
-        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 5, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
 
 
+    	          temperature1 = temperature1 * -1;
+    	        }
+    	        else if (temperature1 < 0) {
 
-        if (temperature1 < -1000) {
-          strncat(buffer, "-", 1); //+ - durumu
-          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	          temperature1 = temperature1 * -1;
+    	          sprintf(buffer, "%d", temperature1);
+
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 5, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+    	          HAL_UART_Transmit(&hlpuart1, "0'la -10 arasında", 18, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	          temperature1 = temperature1 * -1;
+
+    	        }
+
+    	        else if (0 == temperature1) {
+
+    	        } else if (temperature1 < 1000) {
+
+    	          HAL_UART_Transmit(&hlpuart1, "0 ile 10 arasinda", 17, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	          sprintf(buffer, "%d", temperature1);
+
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 15, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+    	        } else if (temperature1 >= 1000) {
+
+    	          HAL_UART_Transmit(&hlpuart1, "10'dan buyuk", 12, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+    	          sprintf(buffer, "%d", temperature1); //100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        }
+
+    	        //  printf("measured temperature: %0.2f degreeCelsius","measured humidity: %0.2f percentRH\n",temperature / 1000.0f, humidity / 1000.0f);
 
 
-          HAL_UART_Transmit(&hlpuart1, "-10dan kucuk", 12, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-        } else if (temperature1 < 0) {
-          strncat(buffer, "e-", 2); //+ - durumu
-          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 5, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-        }
-        else if (0 == temperature1) {
+    	        sprintf(buffer2, "%d", humidity1);
 
-
-        } else if (temperature1 < 1000) {
-          strncat(buffer, "e+", 2);
-          HAL_UART_Transmit(&hlpuart1, "0 ile 10 arasinda", 17, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-
-        } else if (temperature1 >= 1000) {
-
-          HAL_UART_Transmit(&hlpuart1, "10'dan buyuk", 12, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-          strncat(buffer, "+", 1); //+ - durumu
-          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
-          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-        }
+    	        strncat(buffer, buffer2, 10); //sondaki sayı eklenecek karakter sayısı
+    	        HAL_UART_Transmit(&hlpuart1, "buffer: ", 9, 1000);
+    	        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 4, 1000);
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        strncat(buffer, "7", 1); //pil durumu 1-6 arası kadameli olacak
+    	        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 10, 1000);
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
 
 
 
-
-        strncat(buffer, "A0000000003B", 12);
-        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
-        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-        //    strncat(buffer,"Asill000000B", 12);
-        // strncat(buffer,"Asil2000000B", 12);
-        //  strncat(buffer,"Asil2000000B", 12);
-        //   strncat(buffer,"Asil3000000B", 12);
-        //  strncat(buffer,"Asil4000000B", 12);
-        //  strncat(buffer,"Asil5000000B", 12);
-        // strncat(buffer,"Asil6000000B", 12);
-        HAL_UART_Transmit(&hlpuart1, "buffer toplam: ", 15, 1000);
-        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
-        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-
-        //if((bufferkontrol[0]!=buffer[0])||(bufferkontrol[1]!=buffer[1])||(bufferkontrol[2]!=buffer[2])||(bufferkontrol[3]!=buffer[3])){
-        bSendMessage(buffer,  strlen(buffer));
-        while (GPO3_L());
-        bIntSrcFlagClr();
-        vClearFIFO();
-        bGoSleep();
-        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderildi\r\n", 12, 100);
-        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-        HAL_Delay(4000);
+    	        if (temperature1 < -1000) {
+    	          strncat(buffer, "-", 1); //+ - durumu
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
 
 
+    	          HAL_UART_Transmit(&hlpuart1, "-10dan kucuk", 12, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        } else if (temperature1 < 0) {
+    	          strncat(buffer, "e-", 2); //+ - durumu
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 5, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        }
+    	        else if (0 == temperature1) {
 
-        //}
-        // else HAL_UART_Transmit( &hlpuart1, (uint8_t *)"degısmedi\r\n",11, 100);
 
-        //strcpy(buffer,bufferkontrol);
-      } else {
+    	        } else if (temperature1 < 1000) {
+    	          strncat(buffer, "e+", 2);
+    	          HAL_UART_Transmit(&hlpuart1, "0 ile 10 arasinda", 17, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
 
-        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderilmedi\r\n", 14, 100);
-        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-        bSendMessage(tx_buf, 22);
-        while (GPO3_L());
-        bIntSrcFlagClr();
-        vClearFIFO();
-        bGoSleep();
-        HAL_Delay(4000);
-      }
+    	        } else if (temperature1 >= 1000) {
+
+    	          HAL_UART_Transmit(&hlpuart1, "10'dan buyuk", 12, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	          strncat(buffer, "+", 1); //+ - durumu
+    	          HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
+    	          HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        }
+
+
+
+
+    	        strncat(buffer, "A0000000003B", 12);
+    	        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	       //     strncat(buffer,"Asill000000B", 12);
+    	        // strncat(buffer,"Asil2000000B", 12);
+    	        //  strncat(buffer,"Asil2000000B", 12);
+    	        //   strncat(buffer,"Asil3000000B", 12);
+    	        //  strncat(buffer,"Asil4000000B", 12);
+    	        //  strncat(buffer,"Asil5000000B", 12);
+    	        // strncat(buffer,"Asil6000000B", 12);
+    	        HAL_UART_Transmit(&hlpuart1, "buffer toplam: ", 15, 1000);
+    	        HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+
+    	        //if((bufferkontrol[0]!=buffer[0])||(bufferkontrol[1]!=buffer[1])||(bufferkontrol[2]!=buffer[2])||(bufferkontrol[3]!=buffer[3])){
+    	        bSendMessage(buffer,  strlen(buffer));
+    	        while (GPO3_L());
+    	        bIntSrcFlagClr();
+    	        vClearFIFO();
+    	        bGoSleep();
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderildi\r\n", 12, 100);
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        HAL_Delay(4000);
+
+
+
+    	        //}
+    	        // else HAL_UART_Transmit( &hlpuart1, (uint8_t *)"degısmedi\r\n",11, 100);
+
+    	        //strcpy(buffer,bufferkontrol);
+    	      } else {
+
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderilmedi\r\n", 14, 100);
+    	        HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
+    	        bSendMessage(tx_buf, 22);
+    	        while (GPO3_L());
+    	        bIntSrcFlagClr();
+    	        vClearFIFO();
+    	        bGoSleep();
+    	        HAL_Delay(4000);
+    	      }*/
     }
 
 
@@ -358,9 +538,9 @@ int main(void)
 }
 
 /**
-    @brief System Clock Configuration
-    @retval None
-*/
+  * @brief System Clock Configuration
+  * @retval None
+  */
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
@@ -371,7 +551,7 @@ void SystemClock_Config(void)
   */
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
   /** Initializes the RCC Oscillators according to the specified parameters
-    in the RCC_OscInitTypeDef structure.
+  * in the RCC_OscInitTypeDef structure.
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_MSI;
   RCC_OscInitStruct.MSIState = RCC_MSI_ON;
@@ -384,8 +564,8 @@ void SystemClock_Config(void)
   }
   /** Initializes the CPU, AHB and APB buses clocks
   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
-                                | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_MSI;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
@@ -395,7 +575,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_LPUART1 | RCC_PERIPHCLK_I2C1;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_LPUART1|RCC_PERIPHCLK_I2C1;
   PeriphClkInit.Lpuart1ClockSelection = RCC_LPUART1CLKSOURCE_PCLK1;
   PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
@@ -405,10 +585,64 @@ void SystemClock_Config(void)
 }
 
 /**
-    @brief I2C1 Initialization Function
-    @param None
-    @retval None
-*/
+  * @brief ADC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC_Init(void)
+{
+
+  /* USER CODE BEGIN ADC_Init 0 */
+
+  /* USER CODE END ADC_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC_Init 1 */
+
+  /* USER CODE END ADC_Init 1 */
+  /** Configure the global features of the ADC (Clock, Resolution, Data Alignment and number of conversion)
+  */
+  hadc.Instance = ADC1;
+  hadc.Init.OversamplingMode = DISABLE;
+  hadc.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV1;
+  hadc.Init.Resolution = ADC_RESOLUTION_12B;
+  hadc.Init.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  hadc.Init.ScanConvMode = ADC_SCAN_DIRECTION_FORWARD;
+  hadc.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc.Init.ContinuousConvMode = DISABLE;
+  hadc.Init.DiscontinuousConvMode = DISABLE;
+  hadc.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
+  hadc.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc.Init.DMAContinuousRequests = DISABLE;
+  hadc.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
+  hadc.Init.Overrun = ADC_OVR_DATA_PRESERVED;
+  hadc.Init.LowPowerAutoWait = DISABLE;
+  hadc.Init.LowPowerFrequencyMode = ENABLE;
+  hadc.Init.LowPowerAutoPowerOff = DISABLE;
+  if (HAL_ADC_Init(&hadc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /** Configure for the selected ADC regular channel to be converted.
+  */
+  sConfig.Channel = ADC_CHANNEL_VREFINT;
+  sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
+  if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC_Init 2 */
+
+  /* USER CODE END ADC_Init 2 */
+
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
 static void MX_I2C1_Init(void)
 {
 
@@ -451,10 +685,10 @@ static void MX_I2C1_Init(void)
 }
 
 /**
-    @brief LPUART1 Initialization Function
-    @param None
-    @retval None
-*/
+  * @brief LPUART1 Initialization Function
+  * @param None
+  * @retval None
+  */
 static void MX_LPUART1_UART_Init(void)
 {
 
@@ -485,10 +719,10 @@ static void MX_LPUART1_UART_Init(void)
 }
 
 /**
-    @brief GPIO Initialization Function
-    @param None
-    @retval None
-*/
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
 static void MX_GPIO_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -503,7 +737,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, CSB_Pin | FCSB_Pin | SCLK_Pin | SDIO_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, CSB_Pin|FCSB_Pin|SCLK_Pin|SDIO_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin : LED_Pin */
   GPIO_InitStruct.Pin = LED_Pin;
@@ -513,14 +747,14 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(LED_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : CSB_Pin FCSB_Pin SCLK_Pin SDIO_Pin */
-  GPIO_InitStruct.Pin = CSB_Pin | FCSB_Pin | SCLK_Pin | SDIO_Pin;
+  GPIO_InitStruct.Pin = CSB_Pin|FCSB_Pin|SCLK_Pin|SDIO_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pins : BUZZER_Pin GPO3_Pin */
-  GPIO_InitStruct.Pin = BUZZER_Pin | GPO3_Pin;
+  GPIO_InitStruct.Pin = BUZZER_Pin|GPO3_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -532,9 +766,9 @@ static void MX_GPIO_Init(void)
 /* USER CODE END 4 */
 
 /**
-    @brief  This function is executed in case of error occurrence.
-    @retval None
-*/
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
@@ -548,12 +782,12 @@ void Error_Handler(void)
 
 #ifdef  USE_FULL_ASSERT
 /**
-    @brief  Reports the name of the source file and the source line number
-            where the assert_param error has occurred.
-    @param  file: pointer to the source file name
-    @param  line: assert_param error line source number
-    @retval None
-*/
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
