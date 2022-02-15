@@ -1,0 +1,10 @@
+10:30:18 **** Incremental Build of configuration Debug for project StopMode ****
+make -j4 all 
+arm-none-eabi-size   StopMode.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16144	    120	   2056	  18320	   4790	StopMode.elf
+Finished building: default.size.stdout
+ 
+
+10:30:19 Build Finished. 0 errors, 0 warnings. (took 297ms)
+

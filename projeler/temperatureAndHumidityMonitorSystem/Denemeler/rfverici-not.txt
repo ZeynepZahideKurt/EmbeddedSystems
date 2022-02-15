@@ -1,6 +1,0 @@
-RF VERİCİ     STM32
-12 FCSB       12 PA2 ADC_IN2
-11 CSB        11 PA1 ADC_IN1
-10 SDIO       31 PA10 I2C1 SDA
-9 SCLK        30 PA9  I2C1-SCL
-               1 PC0 LED GPIO_Output

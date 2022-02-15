@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;standby&apos; to &apos;SleepMode&apos;" description="Rename resource &apos;standby&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/standby" name="SleepMode" stamp="1644301908511" updateReferences="true"/>&#x0A;<refactoring comment="Rename resource &apos;STM32-RTC-WakeUP-Example&apos; to &apos;StandByWithRTC&apos;" description="Rename resource &apos;STM32-RTC-WakeUP-Example&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/STM32-RTC-WakeUP-Example" name="StandByWithRTC" stamp="1644301932403" updateReferences="true"/>
+</session>

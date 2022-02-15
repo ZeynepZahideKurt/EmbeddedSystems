@@ -95,12 +95,11 @@ int main(void)
   MX_I2C1_Init();
   MX_LPUART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"basladi\r\n",9, 100);
+  printf("basladi\r\n");
   sensirion_i2c_init();
 
   while (sht3x_probe(SHT3X_I2C_ADDR_DFLT) != STATUS_OK) {
 	  printf("SHT sensor probing failed\n");
-	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gelmiii\r\n",9, 100);
 
   }
   printf("SHT sensor probing successful\n");
@@ -114,35 +113,21 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"1\r\n",3, 100);
 
 	  char buffer[100];
-	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"2\r\n",3, 100);
 
 	  int32_t temperature, humidity;
-	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"3\r\n",3, 100);
 
       int8_t ret = sht3x_measure_blocking_read(SHT3X_I2C_ADDR_DFLT,&temperature, &humidity);
-      HAL_UART_Transmit( &hlpuart1, (uint8_t *)"4\r\n",3, 100);
 
       if (ret == STATUS_OK) {
-    	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"geliyor\r\n",9, 100);
-    	  sprintf(buffer, "%d", temperature/ 100);
-    	  HAL_UART_Transmit(&hlpuart1, "t: ", 3, 1000);
-    	  HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
-     	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
-     	  //  printf("measured temperature: %0.2f degreeCelsius","measured humidity: %0.2f percentRH\n",temperature / 1000.0f, humidity / 1000.0f);
-
-     	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"geliyor\r\n",9, 100);
-     	  sprintf(buffer, "%d", humidity/ 100);
-     	  HAL_UART_Transmit(&hlpuart1, "n: ", 3, 1000);
-     	  HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, strlen(buffer), 1000);
-     	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n",2, 100);
+     	  printf("t: %d\r\n",temperature/ 100);
+     	  //printf("measured temperature: %0.2f degreeCelsius, measured humidity: %0.2f percentRH\n",temperature / 1000.0f, humidity / 1000.0f);
+     	  printf("n: %d\r\n",humidity/ 100);
 
       }
       else {
     	  printf("error reading measurement\n");
-    	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"calismiyi\r\n",9, 100);
 
       }
       sensirion_sleep_usec(1000000);

@@ -1,0 +1,10 @@
+17:34:09 **** Incremental Build of configuration Debug for project wakefromrtc-kutuphaneli ****
+make -j4 all 
+arm-none-eabi-size   wakefromrtc-kutuphaneli.elf 
+   text	   data	    bss	    dec	    hex	filename
+  16196	    120	   2024	  18340	   47a4	wakefromrtc-kutuphaneli.elf
+Finished building: default.size.stdout
+ 
+
+17:34:09 Build Finished. 0 errors, 0 warnings. (took 313ms)
+
