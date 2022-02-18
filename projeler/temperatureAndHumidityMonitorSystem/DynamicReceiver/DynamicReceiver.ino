@@ -26,7 +26,7 @@
 Ticker ticker;
 
 #include <EEPROM.h>
-#define EEPROM_SIZE 50
+#define EEPROM_SIZE 25
 #include <stdio.h>
 #include <string.h>
 
@@ -57,8 +57,6 @@ const uint16_t websocket_server_port1 = 8887;
 const uint16_t websocket_server_port2 = 8886;
 
 
-
-
 const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = 3600;
 const int   daylightOffset_sec = 3600;
@@ -68,18 +66,17 @@ int Krish_year;
 int Krish_hour;
 int Krish_min;
 int Krish_sec;
-char inByte;
+
 int kontrolcircle = 0;
 int kontrolsayi;
 int kontrol1 = 0;
 
 uint8_t counter, page, column;
 uint16_t screenTempI, screenTempI2;
-char arr[20];
-char displayArr[40];
+
 
 typedef enum {
-  LEFT = 0, CENTER = 1, RIGHT = 2, RIGHT_UP = 3, CENTER_UP = 4, CENTER_LEFT = 5, EKSILEFT = 6
+  LEFT = 0, CENTER = 1, RIGHT = 2
 } LOCATION;
 typedef enum {
   INSTRUCTION = 0, DATA = 1
@@ -100,27 +97,16 @@ float cTemp;
 float humidity;
 
 
-char stemp[6], kontrol_stemp[6];
-char nem[6], kontrol_nem[6];
+char stemp[6],nem[6]; //Ana cihazın sıcaklık ve nemi
 
 
 int HATA_KONROL0 = 0;
-int HATA_KONROL1 = 0;
-int HATA_KONROL2 = 0;
-int HATA_KONROL3 = 0;
-int HATA_KONROL4 = 0;
-int HATA_KONROL5 = 0;
-int HATA_KONROL6 = 0;
-
 int clclkontrol = 0;
 
 byte rf_kontrol;
-
-String rf_seri_numb;
 byte rx_buf[32];
-String rx;
 
-int int_pil_durumu;
+
 #define cihazsayisi 6
 
 int eeprom_cihaz_sayisi = 0;
@@ -132,13 +118,14 @@ typedef struct cihaz_bilgileri {
   int seri_numara;
   int eeprom_seri_numara;
   int eksimi;
+  String sil;
   unsigned long timeout;
-  bool timeout_kontrol;
 } cihaz_t;
 
 cihaz_t galeri[cihazsayisi];
 bool cihaz_sayisi_kontrol = true;
 int eksikontrol = 0;
+
 void tick() {
   //toggle state
   digitalWrite(LED, !digitalRead(LED));     // set pin to the opposite state
@@ -211,41 +198,6 @@ void setColumn(uint8_t column) {
   trans(INSTRUCTION, 0x10 | (column >> 4));
   trans(INSTRUCTION, 0x00 | (column & 0x0f));
 }
-void clearScreen() { //uint8_t removeFirstPage
-  /*for (page = !removeFirstPage; page < 8; page++) {
-    setPage(page);
-    setColumn(0);
-    for (column = 0; column < 1024; column++) {
-      trans(DATA, 0x00);
-    }
-
-    clearPage(1);
-
-    } */
-  clearPage(0);
-  clearPage(1);
-  clearPage(2);
-  clearPage(3);
-  clearPage(4);
-  clearPage(5);
-  clearPage(6);
-  clearPage(7);
-  //clearPage(2);
-
-  /*
-    for (int i = 0; i < 1024; i++) {
-      trans(i, 0x00);
-    }
-    clearPage(page);
-
-    for (screenTempI = 0; screenTempI < 8; screenTempI++) {
-      setPage(screenTempI);
-      setColumn(0);
-      for (screenTempI2 = 0; screenTempI2 < 128; screenTempI2++) {
-        trans(DATA, 0x00);
-      }
-    } */
-}
 void displaycl() {
   for (screenTempI = 0; screenTempI < 8; screenTempI++) {
     setPage(screenTempI);
@@ -298,15 +250,6 @@ void circleyuzdeust() {
   setColumn(1);
   for (int i = 0; i < 128; i++) {
     trans(DATA, circle_yuzde_ust[i]);
-  }
-}
-void satirbir() {
-
-
-  setPage(1);
-  setColumn(0);
-  for (int i = 0; i < 128; i++) {
-    trans(DATA, SATIRBIR[i]);
   }
 }
 void circleyuzdealt() {
@@ -381,14 +324,8 @@ void display(uint8_t page, char sentence[], LOCATION location, bool isClearRow) 
     case LEFT:
       setColumn(123 - total_column); //gün çift haneliyse
       break;
-    case EKSILEFT:
-      setColumn(101); //gün çift haneliyse
-      break;
     case CENTER:
       setColumn(64 - (total_column / 2));
-      break;
-    case CENTER_UP:
-      setColumn(78 - total_column);
       break;
     case RIGHT:
       setColumn(9);
@@ -448,15 +385,6 @@ void display(uint8_t page, char sentence[], LOCATION location, bool isClearRow) 
     displayChar(temp2);
   }
 }
-void circle() {
-
-
-  setPage(2);
-  //  setColumn(65 - (8*i));
-  for (int i = 5; i < 123; i++) {
-    trans(DATA, circle_yuzde_ust[i]);
-  }
-}
 void displayBig(uint8_t page, char sentence[], LOCATION location, bool isClearRow) { //page: 0, 2, 4, 6//MAX 11 KARAKTER
   if (isClearRow) {
     clearPage(page);
@@ -482,9 +410,6 @@ void displayBig(uint8_t page, char sentence[], LOCATION location, bool isClearRo
       break;
     case RIGHT:
       total_column = 8;
-      break;
-    case CENTER_LEFT:
-      total_column = 45 - (total_column / 2);
       break;
   }
   //clearPage(page);
@@ -528,70 +453,7 @@ void displayLogo() {
     }
   }
 }
-void displayMainScreen() {
-  ////displayBattery();
-  //displayDateTime();
-  //displayAlarms();
-  displayBig(3, "TOPLAM", CENTER, 1);
-  sprintf(displayArr, "DENEME");
-  displayBig(6, displayArr, CENTER, 1);
-}
-void displayMainScreen2() {
-  displayBig(3, "KALAN", CENTER, 1);
-  sprintf(displayArr, "DENEME2");
-  displayBig(6, displayArr, CENTER, 1);
-}
-void getBatteryValues() {
-  //BATARYAYI DENERKEN : https://forum.arduino.cc/t/measuring-the-battery-voltage-using-the-adc-on-mini-3v3-8mhz/422944   /   https://forum.arduino.cc/t/battery-level-check-using-arduino/424054  /  https://www.arduino.cc/reference/en/language/functions/analog-io/analogreference/
-
-  /* const long InternalReferenceVoltage = 1062;  // Adjust this value to your board's specific internal BG voltage
-
-    // Code courtesy of "Coding Badly" and "Retrolefty" from the Arduino forum
-    // results are Vcc * 100
-    // So for example, 5V would be 500.
-    int getBandgap ()
-    {
-    // REFS0 : Selects AVcc external reference
-    // MUX3 MUX2 MUX1 : Selects 1.1V (VBG)
-    ADMUX = bit (REFS0) | bit (MUX3) | bit (MUX2) | bit (MUX1);
-    ADCSRA |= bit( ADSC );  // start conversion
-    while (ADCSRA & bit (ADSC))
-      { }  // wait for conversion to complete (toss this measurement)
-    ADCSRA |= bit( ADSC );  // start conversion
-    while (ADCSRA & bit (ADSC))
-      { }  // wait for conversion to complete
-    int results = (((InternalReferenceVoltage * 1024) / ADC) + 5) / 10;
-    return results;
-    } // end of getBandgap */
-
-  //OR
-  /*
-    int value = 0;
-    float voltage;
-    float perc;
-
-    void setup(){
-    Serial.begin(9600);
-    }
-
-    void loop(){
-    value = analogRead(A0);
-    voltage = value * 5.0/1023;
-    perc = map(voltage, 3.6, 4.2, 0, 100);
-    Serial.print("Voltage= ");
-    Serial.println(voltage);
-    Serial.print("Battery level= ");
-    Serial.print(perc);
-    Serial.println(" %");
-    delay(500);
-    }
-  */
-
-
-
-
-}
-void displayBattery(int a) {
+void displayBattery(int int_pil_durumu) {
   //DEVICEbattery1 = '80';
 
   setPage(1);
@@ -604,7 +466,7 @@ void displayBattery(int a) {
   trans(DATA, 0b00011100);
   trans(DATA, 0b01111111);
   trans(DATA, 0b01000001);
-  int_pil_durumu = a;
+  //int_pil_durumu = a;
   if (int_pil_durumu >= 3240) { //if ( DEVICEbattery1 >= 83) {
     trans(DATA, 0b01011101);
   } else {
@@ -738,6 +600,7 @@ void circle_location() {
     //Serial.print("a: "); Serial.println(a);Serial.print("b: ");Serial.println(b);Serial.print("d: ");Serial.println(d);
     if (kontrolsayi == 0  ) {
       display(2, "             ANA CIHAZ             ",  CENTER, 0);
+      
       circle_sira = 0;
       circle_kontrol2 = 0;
 
@@ -946,7 +809,7 @@ void circle_location() {
   }
 
 
-  for (int i = 0; i < eeprom_cihaz_sayisi; i++) {
+  
 
 
     if (circle_sira == 0) {
@@ -966,13 +829,14 @@ void circle_location() {
           circleust();
           circlealt();
         }
-        displayBig(3, kontrol_stemp, CENTER, 0); displayBig(5, kontrol_nem, CENTER, 0);
+        displayBig(3, stemp, CENTER, 0); displayBig(5, nem, CENTER, 0);
       }
       displayBig(3, "S", LEFT, 0);
       eksikontrol = 0; //1. sıranın -'si veya S harfinin sürekli loop olarak dönmemesi için,
       clclkontrol = 0;
     }
-    else if (circle_sira == (i + 1)) {
+    for (int i = 0; i < eeprom_cihaz_sayisi; i++) {
+     if (circle_sira == (i + 1)) {
 
       if (clclkontrol == 0) {
         clclearPage(2); // Cihazdaki ana ekran yazısından yuvarlaklara geçtiğinde ana ekran yazısının değişmesi için
@@ -1006,18 +870,18 @@ void circle_location() {
       myhum.toCharArray(nem_cihaz, 6);
 
       displayBattery(galeri[i].voltaj); // Eğer cihaz i'den bir veri geldiyse pil kısmını receive() kısmında galeri[i].voltaj'e atadım circle_sıra=i iken i. cihazın batarya durumunu gösterecek
-      
-    if (galeri[i].timeout==-1 || galeri[i].timeout==0) {
-      displayBig(3, "  HATA  ", CENTER, 0); displayBig(5, "  HATA  ", CENTER, 0);//60 saniye boyunca veri geldi mi kontrol eder gelmediyse hata yazdırır
-    }else {
-            displayBig(3, sicaklik_cihaz, CENTER, 0); displayBig(5, nem_cihaz, CENTER, 0);//60 saniye boyunca veri geldi mi kontrol eder geldiyse sıcaklığı ve nemi yazdırır
 
-     }
-    
-      
+      if (galeri[i].timeout == -1 || galeri[i].timeout == 0) {
+        displayBig(3, "  HATA  ", CENTER, 0); displayBig(5, "  HATA  ", CENTER, 0);//60 saniye boyunca veri geldi mi kontrol eder gelmediyse hata yazdırır
+      } else {
+        displayBig(3, sicaklik_cihaz, CENTER, 0); displayBig(5, nem_cihaz, CENTER, 0);//60 saniye boyunca veri geldi mi kontrol eder geldiyse sıcaklığı ve nemi yazdırır
+
+      }
+
+
       if (circle_sira == eeprom_cihaz_sayisi + 1) //LCD Ekranda son cihazdan ana ekrana geçerken yuvarlaklar silinsin diye
-      clclkontrol = 0;  
-     
+        clclkontrol = 0;
+
 
 
     }
@@ -1329,8 +1193,8 @@ void postTempHum() {
 
   String mytemp = String(cTemp);
   //Serial.print("mytemp: ");Serial.println(mytemp);
-  mytemp.toCharArray(stemp, 6);
-
+  mytemp.toCharArray(stemp, 6); //string to char
+ //strcpy(kontrol_stemp, stemp); char to char
   humidity = (100.0 * ((data[3] * 256.0) + data[4])) / 65535.0;
   //Serial.print("humidity:"); Serial.println(humidity);
   String myhum = String(humidity);
@@ -1385,7 +1249,23 @@ void postData() {
     }*/
 
 }
+void cihaz_sil() {
+  for(int i = 0; i < 6; i++){
+  int mystring_int = 0000000000;
+  EEPROM.write((4 * i), mystring_int >> 24); //cihaz biz 32 bitlik integer sayısının ilk 8 biti örneğin 100 0010 1110 0101 0111 0110 1000 0110 sayısının 24 bit sağa kaydırılmış hali yani 100 0010 66
+  EEPROM.commit();
+  EEPROM.write((4 * i) + 1, mystring_int >> 16); // 100 0010 1110 0101  17125
+  EEPROM.commit();
+  EEPROM.write((4 * i) + 2, mystring_int >> 8); // 4.384.118 100 0010 1110 0101 0111 0110
+  EEPROM.commit();
+  EEPROM.write((4 * i) + 3, mystring_int); //100 0010 1110 0101 0111 0110 1000 0110
+  EEPROM.commit();
 
+  galeri[i].eeprom_seri_numara = EEPROM.read(4 * i) << 24 | EEPROM.read((4 * i) + 1) << 16 | EEPROM.read((4 * i) + 2) << 8 | EEPROM.read((4 * i) + 3);
+  Serial.println(galeri[i].eeprom_seri_numara);
+  printf(" burada galeri[%d].eeprom_seri_numara: %.d \r\n", i, galeri[i].eeprom_seri_numara); //Serial.println(galeri[i].nem);
+  }
+}
 
 void receive_() {
 
@@ -1414,7 +1294,7 @@ void receive_() {
     tmp = bGetMessage(rx_buf);
     bIntSrcFlagClr();
     vClearFIFO();
-    
+
     if (tmp) {
       Serial.print(tmp);
       Serial.print(" bytes: ");
@@ -1428,62 +1308,70 @@ void receive_() {
       //Serial.print("mystring: "); Serial.println(mystring);
       bool exist = false;
       if (rx_buf[13] == 'A' && rx_buf[24] == 'B') {
-
         int mystring_int = mystring.substring(14, 24).toInt(); //string parçalama, string to int
-        for (int i = 0; i < cihazsayisi; i++) {
-          if (galeri[i].eeprom_seri_numara == 0) { // Eğer galerideki eeprom boşsa buraya girer
-            for (int j = i - 1; j >= -1 ; j--) { // örneğin 2. galeri boş olarak geldi 1. ve 0. galeriye bakar onlardan farklıysa galeri 2.'ye kaydeder
-              if (mystring_int == galeri[j].eeprom_seri_numara ) exist = true; //|| (galeri[0].eeprom_seri_numara == 0)
-              else exist = false;
+        String reset_eeprom = mystring.substring(12, 13);
+         
+      if (reset_eeprom == "s") {
+        Serial.println("reset_eeprom");
+        cihaz_sil();
+        eeprom_cihaz_sayisi = 0;
+      }else{
+          for (int i = 0; i < cihazsayisi; i++) {
+            if (galeri[i].eeprom_seri_numara == 0) { // Eğer galerideki eeprom boşsa buraya girer
+              for (int j = i - 1; j >= -1 ; j--) { // örneğin 2. galeri boş olarak geldi 1. ve 0. galeriye bakar onlardan farklıysa galeri 2.'ye kaydeder
+                if (mystring_int == galeri[j].eeprom_seri_numara ) exist = true; //|| (galeri[0].eeprom_seri_numara == 0)
+                else exist = false;
 
-              if (exist == true) break;
+                if (exist == true) break;
+              }
+
+              if (exist == false) {
+                galeri[i].eeprom_seri_numara = mystring_int;
+                Serial.println("buraya giriyor mu");
+                EEPROM.write((4 * i), mystring_int >> 24); //cihaz biz 32 bitlik integer sayısının ilk 8 biti örneğin 100 0010 1110 0101 0111 0110 1000 0110 sayısının 24 bit sağa kaydırılmış hali yani 100 0010 66
+                EEPROM.commit();
+                EEPROM.write((4 * i) + 1, mystring_int >> 16); // 100 0010 1110 0101  17125
+                EEPROM.commit();
+                EEPROM.write((4 * i) + 2, mystring_int >> 8); // 4.384.118 100 0010 1110 0101 0111 0110
+                EEPROM.commit();
+                EEPROM.write((4 * i) + 3, mystring_int); //100 0010 1110 0101 0111 0110 1000 0110
+                EEPROM.commit();
+                cihaz_sayisi_kontrol = true;
+              }
             }
 
-            if (exist == false) {
-              galeri[i].eeprom_seri_numara = mystring_int;
-              Serial.println("buraya giriyor mu");
-              EEPROM.write((4 * i), mystring_int >> 24); //cihaz biz 32 bitlik integer sayısının ilk 8 biti örneğin 100 0010 1110 0101 0111 0110 1000 0110 sayısının 24 bit sağa kaydırılmış hali yani 100 0010 66
-              EEPROM.commit();
-              EEPROM.write((4 * i) + 1, mystring_int >> 16); // 100 0010 1110 0101  17125
-              EEPROM.commit();
-              EEPROM.write((4 * i) + 2, mystring_int >> 8); // 4.384.118 100 0010 1110 0101 0111 0110
-              EEPROM.commit();
-              EEPROM.write((4 * i) + 3, mystring_int); //100 0010 1110 0101 0111 0110 1000 0110
-              EEPROM.commit();
-              cihaz_sayisi_kontrol = true;
+            printf(" galeri[%d].eeprom_seri_numara: %.d \r\n", i, galeri[i].eeprom_seri_numara); //Serial.println(galeri[i].nem);
+
+            if (galeri[i].eeprom_seri_numara == mystring_int ) {
+              if (rx_buf[11] != 'e') { //2555
+
+                galeri[i].sicaklik = mystring.substring(0, 4).toFloat() / 100 ; // string parçalama, string to float
+                galeri[i].nem = mystring.substring(4, 8).toFloat() / 100;
+                galeri[i].voltaj = mystring.substring(8, 12).toInt(); //string to int
+
+                if (rx_buf[12] == '+') galeri[i].eksimi = 0;
+                else if (rx_buf[12] == '-' ) galeri[i].eksimi = 1;
+
+              } if (rx_buf[11] == 'e') {
+                galeri[i].sicaklik = mystring.substring(0, 3).toFloat() / 100 ; // string parçalama, string to float
+                galeri[i].nem = mystring.substring(3, 7).toFloat() / 100;
+                galeri[i].voltaj = mystring.substring(7, 11).toInt(); //string to int
+
+                if (rx_buf[12] == '+') galeri[i].eksimi = 0;
+                else if (rx_buf[12] == '-' ) galeri[i].eksimi = 1;
+              }
+              printf(" galeri[%d].nem: %.2f \r\n", i, galeri[i].nem); //Serial.println(galeri[i].nem);
+              printf(" galeri[%d].sicaklik: %.2f\r\n", i, galeri[i].sicaklik); //Serial.println(galeri[i].sicaklik);
+              printf(" galeri[%d].voltaj: %d \r\n", i, galeri[i].voltaj); // Serial.println(galeri[i].voltaj);
+              galeri[i].timeout = simdikizaman;
             }
-          }
-          printf(" galeri[%d].eeprom_seri_numara: %.d \r\n", i, galeri[i].eeprom_seri_numara); //Serial.println(galeri[i].nem);
 
-          if (galeri[i].eeprom_seri_numara == mystring_int ) {
-
-            if (rx_buf[11] != 'e') { //2555
-
-              galeri[i].sicaklik = mystring.substring(0, 4).toFloat() / 100 ; // string parçalama, string to float
-              galeri[i].nem = mystring.substring(4, 8).toFloat() / 100;
-              galeri[i].voltaj = mystring.substring(8, 12).toInt(); //string to int
-
-              if (rx_buf[12] == '+') galeri[i].eksimi = 0;
-              else if (rx_buf[12] == '-' ) galeri[i].eksimi = 1;
-
-            } if (rx_buf[11] == 'e') {
-              galeri[i].sicaklik = mystring.substring(0, 3).toFloat() / 100 ; // string parçalama, string to float
-              galeri[i].nem = mystring.substring(3, 7).toFloat() / 100;
-              galeri[i].voltaj = mystring.substring(7, 11).toInt(); //string to int
-
-              if (rx_buf[12] == '+') galeri[i].eksimi = 0;
-              else if (rx_buf[12] == '-' ) galeri[i].eksimi = 1;
-            }
-            printf(" galeri[%d].nem: %.2f \r\n", i, galeri[i].nem); //Serial.println(galeri[i].nem);
-            printf(" galeri[%d].sicaklik: %.2f\r\n", i, galeri[i].sicaklik); //Serial.println(galeri[i].sicaklik);
-            printf(" galeri[%d].voltaj: %d \r\n", i, galeri[i].voltaj); // Serial.println(galeri[i].voltaj);
-            galeri[i].timeout=simdikizaman;        
-            
-          }
+          }//for(i++) döngüsü kapanış
+      }       
+      } // A ve B bitiş
+     
 
 
-        }
-      }
     }
   }
   if (cihaz_sayisi_kontrol == true) {
@@ -1573,7 +1461,7 @@ void setup() {
 
   }
   for (int i = 0; i < cihazsayisi; i++) {
-    galeri[i].timeout=0;
+    galeri[i].timeout = 0;
     galeri[i].eeprom_seri_numara = (EEPROM.read(4 * i) << 24 ) | (EEPROM.read((4 * i) + 1) << 16) | (EEPROM.read((4 * i) + 2) << 8) | (EEPROM.read((4 * i) + 3));
     /* if ( temp == 0) {
        break;
@@ -1606,24 +1494,21 @@ void loop() {
 
     simdikizaman = millis();
     receive_();
-    
+
 
     //    cihaz_sayisi();
     //postTempHum();
 
-    for(int i = 0; i < eeprom_cihaz_sayisi; i++){
-      if (simdikizaman - galeri[i].timeout >= 30000 && galeri[i].timeout!=-1) //60 saniyede bir wifii çekimi güncelenir
-    {
-      galeri[i].timeout=-1;
-      galeri[i].timeout_kontrol=true;
-      printf("buyuktur hatalaıdır, %d\r\n", i);//galeri[i].timeout=
-    }else{
-     galeri[i].timeout_kontrol=false;
+    for (int i = 0; i < eeprom_cihaz_sayisi; i++) {
+      if (simdikizaman - galeri[i].timeout >= 30000 && galeri[i].timeout != -1) //60 saniyede bir wifii çekimi güncelenir
+      {
+        galeri[i].timeout = -1;
+        printf("buyuktur hatalaıdır, %d\r\n", i);//galeri[i].timeout=
+      }
     }
-   }
 
 
-   
+
     if (simdikizaman - eskizaman >= 60000) //60 saniyede bir wifii çekimi güncelenir
     {
       Serial.print("displaye girdi ");
@@ -1643,7 +1528,7 @@ void loop() {
       if (eeprom_cihaz_sayisi != 0)
         kontrolsayi = kontrolcircle % (eeprom_cihaz_sayisi + 1); //Serial.print("kontrolsayi: "); Serial.println(kontrolsayi);
 
-      
+
     }
 
 

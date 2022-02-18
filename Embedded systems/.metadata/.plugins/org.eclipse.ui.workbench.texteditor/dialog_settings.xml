@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="_delay_us("/>
+		<item key="selection" value=""/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="to int"/>
+			<item value=" to int"/>
+			<item value="char to int"/>
+			<item value="4"/>
+			<item value="weak"/>
 			<item value="_delay_us("/>
 			<item value="void _delay_us(void){"/>
 			<item value="begin 4"/>
@@ -18,11 +23,6 @@
 			<item value="DE"/>
 			<item value="clear"/>
 			<item value="uyandi"/>
-			<item value="burada2"/>
-			<item value="sys"/>
-			<item value="void HAL_RTC_MspDeInit(RTC_HandleTypeDef* hrtc)"/>
-			<item value="/* USER CODE BEGIN Header */"/>
-			<item value="HAL_RTC_MspInit"/>
 		</list>
 		<list key="replacehistory">
 			<item value="buffer"/>

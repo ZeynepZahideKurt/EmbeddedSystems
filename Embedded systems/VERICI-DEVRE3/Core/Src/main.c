@@ -284,12 +284,13 @@ int main(void)
 					//printf("10'dan buyuk \r\n");
 					//printf("buffer: %s\r\n",buffer);
 				}
+				//strncat(buffer, "s", 2);
 
 				//Buffer'a seri numarasını ekliyoruz
-				strncat(buffer, "A0000000001B", 12); //seri numarası 10 haneli A ve B arasında
+				strncat(buffer, "A0000000002B", 12); //seri numarası 10 haneli A ve B arasında
 				//HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
 				//HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
-				//     strncat(buffer,"Asill000000B", 12);
+				  //   strncat(buffer,"Asill000000B", 12);
 				// strncat(buffer,"Asil2000000B", 12);
 				//  strncat(buffer,"Asil2000000B", 12);
 				//   strncat(buffer,"Asil3000000B", 12);
@@ -328,6 +329,14 @@ int main(void)
 			}
 
 		} else {
+			//Eger sensorden yanlis veri gelirse veya sensor bozulursa aliciya hatali mesajini gönderir
+							printf("gonderilmedi\r\n");
+							bSendMessage(tx_buf, 22);
+							while (GPO3_L())
+								;
+							bIntSrcFlagClr();
+							vClearFIFO();
+							bGoSleep();
 
 		}
 

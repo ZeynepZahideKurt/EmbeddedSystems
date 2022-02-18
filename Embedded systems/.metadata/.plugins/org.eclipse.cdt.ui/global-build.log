@@ -753,3 +753,718 @@ arm-none-eabi-size   VERICI-DEVRE.elf
   29388	    508	   2276	  32172	   7dac	VERICI-DEVRE.elf
 Finished building: default.size.stdout
  
+10:23:54 **** Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L010x6 -c -I../Core/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:197:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  197 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:203:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  203 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:211:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  211 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:214:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  214 |      sprintf(buffer, "%d", temperature); //Temperature/100 demedik çünkü ilk 4 bitini de alıcıya göndermek istiyoruz.100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:221:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  221 |     sprintf(buffer2, "%d", humidity);
+      |                       ~^   ~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:310:18: warning: pointer targets in passing argument 1 of 'bSendMessage' differ in signedness [-Wpointer-sign]
+  310 |     bSendMessage(buffer, strlen(buffer));
+      |                  ^~~~~~
+      |                  |
+      |                  char *
+In file included from ../Core/Src/main.c:25:
+../Core/Inc/RFM300_Driver.h:396:24: note: expected 'byte *' {aka 'unsigned char *'} but argument is of type 'char *'
+  396 | byte bSendMessage(byte msg[], byte length);
+      |                   ~~~~~^~~~~
+../Core/Src/main.c:349:2: warning: implicit declaration of function 'GPIO_ALL_DisEnable' [-Wimplicit-function-declaration]
+  349 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:634:6: warning: conflicting types for 'GPIO_ALL_DisEnable'
+  634 | void GPIO_ALL_DisEnable(void) {
+      |      ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:349:2: note: previous implicit declaration of 'GPIO_ALL_DisEnable' was here
+  349 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:271:6: warning: 'strncat' specified bound 1 equals source length [-Wstringop-overflow=]
+  271 |      strncat(buffer, "-", 1); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:275:6: warning: 'strncat' specified bound 2 equals source length [-Wstringop-overflow=]
+  275 |      strncat(buffer, "e-", 2); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:279:6: warning: 'strncat' specified bound 2 equals source length [-Wstringop-overflow=]
+  279 |      strncat(buffer, "e+", 2);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:283:6: warning: 'strncat' specified bound 1 equals source length [-Wstringop-overflow=]
+  283 |      strncat(buffer, "+", 1); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:292:10: warning: 'strncat' specified bound 12 equals source length [-Wstringop-overflow=]
+  292 |          strncat(buffer,"Asill000000B", 12);
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "VERICI-DEVRE.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Enelsis\Desktop\enelsis\kendi github\kendi-kodlarim\Embedded systems\VERICI-DEVRE3\STM32L010C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="VERICI-DEVRE.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: VERICI-DEVRE.elf
+ 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+arm-none-eabi-objdump -h -S  VERICI-DEVRE.elf  > "VERICI-DEVRE.list"
+arm-none-eabi-objcopy  -O binary  VERICI-DEVRE.elf  "VERICI-DEVRE.bin"
+   text	   data	    bss	    dec	    hex	filename
+  29388	    508	   2276	  32172	   7dac	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+Finished building: VERICI-DEVRE.bin
+ 
+Finished building: VERICI-DEVRE.list
+ 
+10:26:54 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L010x6 -c -I../Core/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:197:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  197 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:203:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  203 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:211:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  211 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:214:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  214 |      sprintf(buffer, "%d", temperature); //Temperature/100 demedik çünkü ilk 4 bitini de alıcıya göndermek istiyoruz.100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:221:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  221 |     sprintf(buffer2, "%d", humidity);
+      |                       ~^   ~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:311:18: warning: pointer targets in passing argument 1 of 'bSendMessage' differ in signedness [-Wpointer-sign]
+  311 |     bSendMessage(buffer, strlen(buffer));
+      |                  ^~~~~~
+      |                  |
+      |                  char *
+In file included from ../Core/Src/main.c:25:
+../Core/Inc/RFM300_Driver.h:396:24: note: expected 'byte *' {aka 'unsigned char *'} but argument is of type 'char *'
+  396 | byte bSendMessage(byte msg[], byte length);
+      |                   ~~~~~^~~~~
+../Core/Src/main.c:350:2: warning: implicit declaration of function 'GPIO_ALL_DisEnable' [-Wimplicit-function-declaration]
+  350 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:635:6: warning: conflicting types for 'GPIO_ALL_DisEnable'
+  635 | void GPIO_ALL_DisEnable(void) {
+      |      ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:350:2: note: previous implicit declaration of 'GPIO_ALL_DisEnable' was here
+  350 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:287:5: warning: 'strncat' specified bound 2 equals source length [-Wstringop-overflow=]
+  287 |     strncat(buffer, "si", 2);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:290:5: warning: 'strncat' specified bound 12 equals source length [-Wstringop-overflow=]
+  290 |     strncat(buffer, "A0000000001B", 12); //seri numarası 10 haneli A ve B arasında
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "VERICI-DEVRE.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Enelsis\Desktop\enelsis\kendi github\kendi-kodlarim\Embedded systems\VERICI-DEVRE3\STM32L010C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="VERICI-DEVRE.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: VERICI-DEVRE.elf
+ 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+arm-none-eabi-objdump -h -S  VERICI-DEVRE.elf  > "VERICI-DEVRE.list"
+arm-none-eabi-objcopy  -O binary  VERICI-DEVRE.elf  "VERICI-DEVRE.bin"
+   text	   data	    bss	    dec	    hex	filename
+  29228	    508	   2276	  32012	   7d0c	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+Finished building: VERICI-DEVRE.bin
+ 
+Finished building: VERICI-DEVRE.list
+ 
+10:27:00 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29228	    508	   2276	  32012	   7d0c	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+10:34:31 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L010x6 -c -I../Core/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:197:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  197 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:203:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  203 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:211:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  211 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:214:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  214 |      sprintf(buffer, "%d", temperature); //Temperature/100 demedik çünkü ilk 4 bitini de alıcıya göndermek istiyoruz.100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:221:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  221 |     sprintf(buffer2, "%d", humidity);
+      |                       ~^   ~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:311:18: warning: pointer targets in passing argument 1 of 'bSendMessage' differ in signedness [-Wpointer-sign]
+  311 |     bSendMessage(buffer, strlen(buffer));
+      |                  ^~~~~~
+      |                  |
+      |                  char *
+In file included from ../Core/Src/main.c:25:
+../Core/Inc/RFM300_Driver.h:396:24: note: expected 'byte *' {aka 'unsigned char *'} but argument is of type 'char *'
+  396 | byte bSendMessage(byte msg[], byte length);
+      |                   ~~~~~^~~~~
+../Core/Src/main.c:350:2: warning: implicit declaration of function 'GPIO_ALL_DisEnable' [-Wimplicit-function-declaration]
+  350 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:635:6: warning: conflicting types for 'GPIO_ALL_DisEnable'
+  635 | void GPIO_ALL_DisEnable(void) {
+      |      ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:350:2: note: previous implicit declaration of 'GPIO_ALL_DisEnable' was here
+  350 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:290:5: warning: 'strncat' specified bound 12 equals source length [-Wstringop-overflow=]
+  290 |     strncat(buffer, "A0000000001B", 12); //seri numarası 10 haneli A ve B arasında
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "VERICI-DEVRE.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Enelsis\Desktop\enelsis\kendi github\kendi-kodlarim\Embedded systems\VERICI-DEVRE3\STM32L010C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="VERICI-DEVRE.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: VERICI-DEVRE.elf
+ 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+arm-none-eabi-objdump -h -S  VERICI-DEVRE.elf  > "VERICI-DEVRE.list"
+arm-none-eabi-objcopy  -O binary  VERICI-DEVRE.elf  "VERICI-DEVRE.bin"
+   text	   data	    bss	    dec	    hex	filename
+  29228	    508	   2276	  32012	   7d0c	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+Finished building: VERICI-DEVRE.bin
+ 
+Finished building: VERICI-DEVRE.list
+ 
+10:34:33 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29228	    508	   2276	  32012	   7d0c	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+10:34:42 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29228	    508	   2276	  32012	   7d0c	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+13:53:46 **** Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L010x6 -c -I../Core/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:197:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  197 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:203:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  203 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:211:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  211 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:214:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  214 |      sprintf(buffer, "%d", temperature); //Temperature/100 demedik çünkü ilk 4 bitini de alıcıya göndermek istiyoruz.100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:221:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  221 |     sprintf(buffer2, "%d", humidity);
+      |                       ~^   ~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:311:18: warning: pointer targets in passing argument 1 of 'bSendMessage' differ in signedness [-Wpointer-sign]
+  311 |     bSendMessage(buffer, strlen(buffer));
+      |                  ^~~~~~
+      |                  |
+      |                  char *
+In file included from ../Core/Src/main.c:25:
+../Core/Inc/RFM300_Driver.h:396:24: note: expected 'byte *' {aka 'unsigned char *'} but argument is of type 'char *'
+  396 | byte bSendMessage(byte msg[], byte length);
+      |                   ~~~~~^~~~~
+../Core/Src/main.c:350:2: warning: implicit declaration of function 'GPIO_ALL_DisEnable' [-Wimplicit-function-declaration]
+  350 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:635:6: warning: conflicting types for 'GPIO_ALL_DisEnable'
+  635 | void GPIO_ALL_DisEnable(void) {
+      |      ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:350:2: note: previous implicit declaration of 'GPIO_ALL_DisEnable' was here
+  350 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:271:6: warning: 'strncat' specified bound 1 equals source length [-Wstringop-overflow=]
+  271 |      strncat(buffer, "-", 1); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:275:6: warning: 'strncat' specified bound 2 equals source length [-Wstringop-overflow=]
+  275 |      strncat(buffer, "e-", 2); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:279:6: warning: 'strncat' specified bound 2 equals source length [-Wstringop-overflow=]
+  279 |      strncat(buffer, "e+", 2);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:283:6: warning: 'strncat' specified bound 1 equals source length [-Wstringop-overflow=]
+  283 |      strncat(buffer, "+", 1); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:290:5: warning: 'strncat' specified bound 12 equals source length [-Wstringop-overflow=]
+  290 |     strncat(buffer, "A0000000001B", 12); //seri numarası 10 haneli A ve B arasında
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "VERICI-DEVRE.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Enelsis\Desktop\enelsis\kendi github\kendi-kodlarim\Embedded systems\VERICI-DEVRE3\STM32L010C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="VERICI-DEVRE.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: VERICI-DEVRE.elf
+ 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+arm-none-eabi-objdump -h -S  VERICI-DEVRE.elf  > "VERICI-DEVRE.list"
+arm-none-eabi-objcopy  -O binary  VERICI-DEVRE.elf  "VERICI-DEVRE.bin"
+   text	   data	    bss	    dec	    hex	filename
+  29388	    508	   2276	  32172	   7dac	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+Finished building: VERICI-DEVRE.bin
+ 
+Finished building: VERICI-DEVRE.list
+ 
+13:53:58 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29388	    508	   2276	  32172	   7dac	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+13:54:09 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29388	    508	   2276	  32172	   7dac	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+13:55:57 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L010x6 -c -I../Core/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:197:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  197 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:203:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  203 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:211:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  211 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:214:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  214 |      sprintf(buffer, "%d", temperature); //Temperature/100 demedik çünkü ilk 4 bitini de alıcıya göndermek istiyoruz.100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:221:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  221 |     sprintf(buffer2, "%d", humidity);
+      |                       ~^   ~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:311:18: warning: pointer targets in passing argument 1 of 'bSendMessage' differ in signedness [-Wpointer-sign]
+  311 |     bSendMessage(buffer, strlen(buffer));
+      |                  ^~~~~~
+      |                  |
+      |                  char *
+In file included from ../Core/Src/main.c:25:
+../Core/Inc/RFM300_Driver.h:396:24: note: expected 'byte *' {aka 'unsigned char *'} but argument is of type 'char *'
+  396 | byte bSendMessage(byte msg[], byte length);
+      |                   ~~~~~^~~~~
+../Core/Src/main.c:350:2: warning: implicit declaration of function 'GPIO_ALL_DisEnable' [-Wimplicit-function-declaration]
+  350 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:635:6: warning: conflicting types for 'GPIO_ALL_DisEnable'
+  635 | void GPIO_ALL_DisEnable(void) {
+      |      ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:350:2: note: previous implicit declaration of 'GPIO_ALL_DisEnable' was here
+  350 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:290:5: warning: 'strncat' specified bound 12 equals source length [-Wstringop-overflow=]
+  290 |     strncat(buffer, "A0000000001B", 12); //seri numarası 10 haneli A ve B arasında
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "VERICI-DEVRE.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Enelsis\Desktop\enelsis\kendi github\kendi-kodlarim\Embedded systems\VERICI-DEVRE3\STM32L010C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="VERICI-DEVRE.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: VERICI-DEVRE.elf
+ 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+arm-none-eabi-objdump -h -S  VERICI-DEVRE.elf  > "VERICI-DEVRE.list"
+arm-none-eabi-objcopy  -O binary  VERICI-DEVRE.elf  "VERICI-DEVRE.bin"
+   text	   data	    bss	    dec	    hex	filename
+  29228	    508	   2276	  32012	   7d0c	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+Finished building: VERICI-DEVRE.bin
+ 
+Finished building: VERICI-DEVRE.list
+ 
+13:56:05 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29228	    508	   2276	  32012	   7d0c	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+14:27:28 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L010x6 -c -I../Core/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:197:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  197 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:203:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  203 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:211:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  211 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:214:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  214 |      sprintf(buffer, "%d", temperature); //Temperature/100 demedik çünkü ilk 4 bitini de alıcıya göndermek istiyoruz.100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:221:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  221 |     sprintf(buffer2, "%d", humidity);
+      |                       ~^   ~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:311:18: warning: pointer targets in passing argument 1 of 'bSendMessage' differ in signedness [-Wpointer-sign]
+  311 |     bSendMessage(buffer, strlen(buffer));
+      |                  ^~~~~~
+      |                  |
+      |                  char *
+In file included from ../Core/Src/main.c:25:
+../Core/Inc/RFM300_Driver.h:396:24: note: expected 'byte *' {aka 'unsigned char *'} but argument is of type 'char *'
+  396 | byte bSendMessage(byte msg[], byte length);
+      |                   ~~~~~^~~~~
+../Core/Src/main.c:350:2: warning: implicit declaration of function 'GPIO_ALL_DisEnable' [-Wimplicit-function-declaration]
+  350 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:635:6: warning: conflicting types for 'GPIO_ALL_DisEnable'
+  635 | void GPIO_ALL_DisEnable(void) {
+      |      ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:350:2: note: previous implicit declaration of 'GPIO_ALL_DisEnable' was here
+  350 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:271:6: warning: 'strncat' specified bound 1 equals source length [-Wstringop-overflow=]
+  271 |      strncat(buffer, "-", 1); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:275:6: warning: 'strncat' specified bound 2 equals source length [-Wstringop-overflow=]
+  275 |      strncat(buffer, "e-", 2); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:279:6: warning: 'strncat' specified bound 2 equals source length [-Wstringop-overflow=]
+  279 |      strncat(buffer, "e+", 2);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:283:6: warning: 'strncat' specified bound 1 equals source length [-Wstringop-overflow=]
+  283 |      strncat(buffer, "+", 1); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:290:5: warning: 'strncat' specified bound 12 equals source length [-Wstringop-overflow=]
+  290 |     strncat(buffer, "A0000000001B", 12); //seri numarası 10 haneli A ve B arasında
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "VERICI-DEVRE.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Enelsis\Desktop\enelsis\kendi github\kendi-kodlarim\Embedded systems\VERICI-DEVRE3\STM32L010C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="VERICI-DEVRE.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: VERICI-DEVRE.elf
+ 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+arm-none-eabi-objdump -h -S  VERICI-DEVRE.elf  > "VERICI-DEVRE.list"
+arm-none-eabi-objcopy  -O binary  VERICI-DEVRE.elf  "VERICI-DEVRE.bin"
+   text	   data	    bss	    dec	    hex	filename
+  29388	    508	   2276	  32172	   7dac	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+Finished building: VERICI-DEVRE.bin
+ 
+ 
+Finished building: VERICI-DEVRE.list
+ 
+14:27:49 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29388	    508	   2276	  32172	   7dac	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+14:28:00 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29388	    508	   2276	  32172	   7dac	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+14:28:08 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29388	    508	   2276	  32172	   7dac	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+14:28:19 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29388	    508	   2276	  32172	   7dac	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+14:32:28 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L010x6 -c -I../Core/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:197:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  197 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:203:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  203 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:211:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  211 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:214:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  214 |      sprintf(buffer, "%d", temperature); //Temperature/100 demedik çünkü ilk 4 bitini de alıcıya göndermek istiyoruz.100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:221:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  221 |     sprintf(buffer2, "%d", humidity);
+      |                       ~^   ~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:311:18: warning: pointer targets in passing argument 1 of 'bSendMessage' differ in signedness [-Wpointer-sign]
+  311 |     bSendMessage(buffer, strlen(buffer));
+      |                  ^~~~~~
+      |                  |
+      |                  char *
+In file included from ../Core/Src/main.c:25:
+../Core/Inc/RFM300_Driver.h:396:24: note: expected 'byte *' {aka 'unsigned char *'} but argument is of type 'char *'
+  396 | byte bSendMessage(byte msg[], byte length);
+      |                   ~~~~~^~~~~
+../Core/Src/main.c:358:2: warning: implicit declaration of function 'GPIO_ALL_DisEnable' [-Wimplicit-function-declaration]
+  358 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:643:6: warning: conflicting types for 'GPIO_ALL_DisEnable'
+  643 | void GPIO_ALL_DisEnable(void) {
+      |      ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:358:2: note: previous implicit declaration of 'GPIO_ALL_DisEnable' was here
+  358 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:271:6: warning: 'strncat' specified bound 1 equals source length [-Wstringop-overflow=]
+  271 |      strncat(buffer, "-", 1); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:275:6: warning: 'strncat' specified bound 2 equals source length [-Wstringop-overflow=]
+  275 |      strncat(buffer, "e-", 2); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:279:6: warning: 'strncat' specified bound 2 equals source length [-Wstringop-overflow=]
+  279 |      strncat(buffer, "e+", 2);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:283:6: warning: 'strncat' specified bound 1 equals source length [-Wstringop-overflow=]
+  283 |      strncat(buffer, "+", 1); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:290:5: warning: 'strncat' specified bound 12 equals source length [-Wstringop-overflow=]
+  290 |     strncat(buffer, "A0000000001B", 12); //seri numarası 10 haneli A ve B arasında
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "VERICI-DEVRE.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Enelsis\Desktop\enelsis\kendi github\kendi-kodlarim\Embedded systems\VERICI-DEVRE3\STM32L010C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="VERICI-DEVRE.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: VERICI-DEVRE.elf
+ 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+arm-none-eabi-objdump -h -S  VERICI-DEVRE.elf  > "VERICI-DEVRE.list"
+arm-none-eabi-objcopy  -O binary  VERICI-DEVRE.elf  "VERICI-DEVRE.bin"
+   text	   data	    bss	    dec	    hex	filename
+  29460	    508	   2276	  32244	   7df4	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+Finished building: VERICI-DEVRE.bin
+ 
+Finished building: VERICI-DEVRE.list
+ 
+14:32:38 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29460	    508	   2276	  32244	   7df4	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+09:22:43 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L010x6 -c -I../Core/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:197:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  197 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:203:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  203 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:211:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  211 |      sprintf(buffer, "%d", temperature);
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:214:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  214 |      sprintf(buffer, "%d", temperature); //Temperature/100 demedik çünkü ilk 4 bitini de alıcıya göndermek istiyoruz.100e bölünmesi demek ,'den sonraki 2 sayının silinmesi demek örneğin sonuç 255 yani 25.5 derece eğer ,'den sorna 2 hanenin gözükmesini istersek 10 diyeceğiz yani sonu. 25.57
+      |                       ~^   ~~~~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:221:24: warning: format '%d' expects argument of type 'int', but argument 3 has type 'int32_t' {aka 'long int'} [-Wformat=]
+  221 |     sprintf(buffer2, "%d", humidity);
+      |                       ~^   ~~~~~~~~
+      |                        |   |
+      |                        int int32_t {aka long int}
+      |                       %ld
+../Core/Src/main.c:311:18: warning: pointer targets in passing argument 1 of 'bSendMessage' differ in signedness [-Wpointer-sign]
+  311 |     bSendMessage(buffer, strlen(buffer));
+      |                  ^~~~~~
+      |                  |
+      |                  char *
+In file included from ../Core/Src/main.c:25:
+../Core/Inc/RFM300_Driver.h:396:24: note: expected 'byte *' {aka 'unsigned char *'} but argument is of type 'char *'
+  396 | byte bSendMessage(byte msg[], byte length);
+      |                   ~~~~~^~~~~
+../Core/Src/main.c:358:2: warning: implicit declaration of function 'GPIO_ALL_DisEnable' [-Wimplicit-function-declaration]
+  358 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: At top level:
+../Core/Src/main.c:643:6: warning: conflicting types for 'GPIO_ALL_DisEnable'
+  643 | void GPIO_ALL_DisEnable(void) {
+      |      ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:358:2: note: previous implicit declaration of 'GPIO_ALL_DisEnable' was here
+  358 |  GPIO_ALL_DisEnable(); //Güç harcamaması için bütün çevre birimlerini kapatıyoruz
+      |  ^~~~~~~~~~~~~~~~~~
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:271:6: warning: 'strncat' specified bound 1 equals source length [-Wstringop-overflow=]
+  271 |      strncat(buffer, "-", 1); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:275:6: warning: 'strncat' specified bound 2 equals source length [-Wstringop-overflow=]
+  275 |      strncat(buffer, "e-", 2); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:279:6: warning: 'strncat' specified bound 2 equals source length [-Wstringop-overflow=]
+  279 |      strncat(buffer, "e+", 2);
+      |      ^~~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:283:6: warning: 'strncat' specified bound 1 equals source length [-Wstringop-overflow=]
+  283 |      strncat(buffer, "+", 1); //+ - durumu
+      |      ^~~~~~~~~~~~~~~~~~~~~~~
+../Core/Src/main.c:290:5: warning: 'strncat' specified bound 12 equals source length [-Wstringop-overflow=]
+  290 |     strncat(buffer, "A0000000002B", 12); //seri numarası 10 haneli A ve B arasında
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "VERICI-DEVRE.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Enelsis\Desktop\enelsis\kendi github\kendi-kodlarim\Embedded systems\VERICI-DEVRE3\STM32L010C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="VERICI-DEVRE.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: VERICI-DEVRE.elf
+ 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+arm-none-eabi-objdump -h -S  VERICI-DEVRE.elf  > "VERICI-DEVRE.list"
+arm-none-eabi-objcopy  -O binary  VERICI-DEVRE.elf  "VERICI-DEVRE.bin"
+   text	   data	    bss	    dec	    hex	filename
+  29460	    508	   2276	  32244	   7df4	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
+Finished building: VERICI-DEVRE.bin
+ 
+Finished building: VERICI-DEVRE.list
+ 
+09:22:53 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+make -j4 all 
+arm-none-eabi-size   VERICI-DEVRE.elf 
+   text	   data	    bss	    dec	    hex	filename
+  29460	    508	   2276	  32244	   7df4	VERICI-DEVRE.elf
+Finished building: default.size.stdout
+ 
