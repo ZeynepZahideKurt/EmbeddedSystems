@@ -872,16 +872,16 @@ void circle_location() {
       displayBattery(galeri[i].voltaj); // Eğer cihaz i'den bir veri geldiyse pil kısmını receive() kısmında galeri[i].voltaj'e atadım circle_sıra=i iken i. cihazın batarya durumunu gösterecek
 
       if (galeri[i].timeout == -1 || galeri[i].timeout == 0) {
+        displayBattery(1);
         displayBig(3, "  HATA  ", CENTER, 0); displayBig(5, "  HATA  ", CENTER, 0);//60 saniye boyunca veri geldi mi kontrol eder gelmediyse hata yazdırır
       } else {
         displayBig(3, sicaklik_cihaz, CENTER, 0); displayBig(5, nem_cihaz, CENTER, 0);//60 saniye boyunca veri geldi mi kontrol eder geldiyse sıcaklığı ve nemi yazdırır
-
+        displayBattery(galeri[i].voltaj);
       }
 
 
       if (circle_sira == eeprom_cihaz_sayisi + 1) //LCD Ekranda son cihazdan ana ekrana geçerken yuvarlaklar silinsin diye
         clclkontrol = 0;
-
 
 
     }
