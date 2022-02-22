@@ -37,11 +37,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_macro  00013ec9  00000000  00000000  0003aa88  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   00014669  00000000  00000000  0004e951  2**0
+ 17 .debug_line   0001466b  00000000  00000000  0004e951  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    00071934  00000000  00000000  00062fba  2**0
+ 18 .debug_str    00071934  00000000  00000000  00062fbc  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  000d48ee  2**0
+ 19 .comment      00000053  00000000  00000000  000d48f0  2**0
                   CONTENTS, READONLY
  20 .debug_frame  00003dfc  00000000  00000000  000d4944  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -4031,7 +4031,7 @@ int main(void)
 				//strncat(buffer, "s", 2);
 
 				//Buffer'a seri numarasını ekliyoruz
-				strncat(buffer, "A0000000002B", 12); //seri numarası 10 haneli A ve B arasında
+				strncat(buffer, "A0000000004B", 12); //seri numarası 10 haneli A ve B arasında
  8001bca:	24a4      	movs	r4, #164	; 0xa4
  8001bcc:	193b      	adds	r3, r7, r4
  8001bce:	0018      	movs	r0, r3

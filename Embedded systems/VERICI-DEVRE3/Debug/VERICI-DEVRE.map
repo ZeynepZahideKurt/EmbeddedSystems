@@ -5198,31 +5198,31 @@ LOAD c:/st/stm32cubeide_1.7.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.exte
  .debug_macro   0x0000000000013ae0      0x1e2 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rtc_ex.o
  .debug_macro   0x0000000000013cc2      0x207 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart.o
 
-.debug_line     0x0000000000000000    0x14669
+.debug_line     0x0000000000000000    0x1466b
  .debug_line    0x0000000000000000      0xa48 ./Core/Src/HopeDuino_SPI3.o
  .debug_line    0x0000000000000a48      0xc3c ./Core/Src/RFM300_Driver.o
- .debug_line    0x0000000000001684      0xd61 ./Core/Src/main.o
- .debug_line    0x00000000000023e5      0x8ab ./Core/Src/sensirion_common.o
- .debug_line    0x0000000000002c90      0x93e ./Core/Src/sensirion_hw_i2c_implementation.o
- .debug_line    0x00000000000035ce      0x792 ./Core/Src/sht3x.o
- .debug_line    0x0000000000003d60      0x83f ./Core/Src/stm32l0xx_hal_msp.o
- .debug_line    0x000000000000459f      0x79b ./Core/Src/stm32l0xx_it.o
- .debug_line    0x0000000000004d3a      0x4f8 ./Core/Src/sysmem.o
- .debug_line    0x0000000000005232      0x7cf ./Core/Src/system_stm32l0xx.o
- .debug_line    0x0000000000005a01       0x9b ./Core/Startup/startup_stm32l010c6tx.o
- .debug_line    0x0000000000005a9c      0xa72 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.o
- .debug_line    0x000000000000650e     0x114e ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_adc.o
- .debug_line    0x000000000000765c      0x8f4 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_adc_ex.o
- .debug_line    0x0000000000007f50      0xa49 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.o
- .debug_line    0x0000000000008999      0xaee ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_gpio.o
- .debug_line    0x0000000000009487     0x32e9 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_i2c.o
- .debug_line    0x000000000000c770      0x90a ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_i2c_ex.o
- .debug_line    0x000000000000d07a      0x8bd ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_pwr.o
- .debug_line    0x000000000000d937      0xea9 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rcc.o
- .debug_line    0x000000000000e7e0      0xa92 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rcc_ex.o
- .debug_line    0x000000000000f272     0x11a9 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rtc.o
- .debug_line    0x000000000001041b     0x14c1 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rtc_ex.o
- .debug_line    0x00000000000118dc     0x2d8d ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart.o
+ .debug_line    0x0000000000001684      0xd63 ./Core/Src/main.o
+ .debug_line    0x00000000000023e7      0x8ab ./Core/Src/sensirion_common.o
+ .debug_line    0x0000000000002c92      0x93e ./Core/Src/sensirion_hw_i2c_implementation.o
+ .debug_line    0x00000000000035d0      0x792 ./Core/Src/sht3x.o
+ .debug_line    0x0000000000003d62      0x83f ./Core/Src/stm32l0xx_hal_msp.o
+ .debug_line    0x00000000000045a1      0x79b ./Core/Src/stm32l0xx_it.o
+ .debug_line    0x0000000000004d3c      0x4f8 ./Core/Src/sysmem.o
+ .debug_line    0x0000000000005234      0x7cf ./Core/Src/system_stm32l0xx.o
+ .debug_line    0x0000000000005a03       0x9b ./Core/Startup/startup_stm32l010c6tx.o
+ .debug_line    0x0000000000005a9e      0xa72 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.o
+ .debug_line    0x0000000000006510     0x114e ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_adc.o
+ .debug_line    0x000000000000765e      0x8f4 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_adc_ex.o
+ .debug_line    0x0000000000007f52      0xa49 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_cortex.o
+ .debug_line    0x000000000000899b      0xaee ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_gpio.o
+ .debug_line    0x0000000000009489     0x32e9 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_i2c.o
+ .debug_line    0x000000000000c772      0x90a ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_i2c_ex.o
+ .debug_line    0x000000000000d07c      0x8bd ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_pwr.o
+ .debug_line    0x000000000000d939      0xea9 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rcc.o
+ .debug_line    0x000000000000e7e2      0xa92 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rcc_ex.o
+ .debug_line    0x000000000000f274     0x11a9 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rtc.o
+ .debug_line    0x000000000001041d     0x14c1 ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_rtc_ex.o
+ .debug_line    0x00000000000118de     0x2d8d ./Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart.o
 
 .debug_str      0x0000000000000000    0x71934
  .debug_str     0x0000000000000000    0x674eb ./Core/Src/HopeDuino_SPI3.o

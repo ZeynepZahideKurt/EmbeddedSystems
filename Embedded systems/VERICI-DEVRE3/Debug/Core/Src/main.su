@@ -1,9 +1,9 @@
 main.c:83:5:main	256	static
-main.c:379:6:SystemClock_Config	112	static
-main.c:430:13:MX_ADC_Init	16	static
-main.c:484:13:MX_I2C1_Init	8	static
-main.c:530:13:MX_LPUART1_UART_Init	8	static
-main.c:564:13:MX_RTC_Init	8	static
-main.c:605:13:MX_GPIO_Init	48	static
-main.c:643:6:GPIO_ALL_DisEnable	8	static
-main.c:682:6:Error_Handler	8	static,ignoring_inline_asm
+main.c:381:6:SystemClock_Config	112	static
+main.c:432:13:MX_ADC_Init	16	static
+main.c:486:13:MX_I2C1_Init	8	static
+main.c:532:13:MX_LPUART1_UART_Init	8	static
+main.c:566:13:MX_RTC_Init	8	static
+main.c:607:13:MX_GPIO_Init	48	static
+main.c:645:6:GPIO_ALL_DisEnable	8	static
+main.c:684:6:Error_Handler	8	static,ignoring_inline_asm

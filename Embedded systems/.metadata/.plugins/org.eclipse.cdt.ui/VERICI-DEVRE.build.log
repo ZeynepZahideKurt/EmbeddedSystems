@@ -1,4 +1,4 @@
-09:22:53 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
+17:26:31 **** Incremental Build of configuration Debug for project VERICI-DEVRE ****
 make -j4 all 
 arm-none-eabi-size   VERICI-DEVRE.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size   VERICI-DEVRE.elf
 Finished building: default.size.stdout
  
 
-09:22:54 Build Finished. 0 errors, 0 warnings. (took 375ms)
+17:26:32 Build Finished. 0 errors, 0 warnings. (took 404ms)
 

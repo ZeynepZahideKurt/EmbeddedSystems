@@ -182,6 +182,8 @@ int main(void)
 		temperature = temperature / 10;
 		humidity = humidity / 10;
 		if (ret == STATUS_OK) {
+			//temperature=-900;
+			//temperature = 1500;
 			/*Vericinin kaç kere gönderdiğinin alıcının kaç kere aldığını kontrol eden sayaç
 			 * c++;
 			 * printf("Sayaç: %d\r\n",c);
@@ -287,7 +289,7 @@ int main(void)
 				//strncat(buffer, "s", 2);
 
 				//Buffer'a seri numarasını ekliyoruz
-				strncat(buffer, "A0000000002B", 12); //seri numarası 10 haneli A ve B arasında
+				strncat(buffer, "A0000000004B", 12); //seri numarası 10 haneli A ve B arasında
 				//HAL_UART_Transmit(&hlpuart1, (uint8_t *)buffer, 22, 1000);
 				//HAL_UART_Transmit( &hlpuart1, (uint8_t *)"\r\n", 2, 100);
 				  //   strncat(buffer,"Asill000000B", 12);
