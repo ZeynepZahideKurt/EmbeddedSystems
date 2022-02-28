@@ -645,7 +645,7 @@ void circle_location() {
       }
       displayBig(3, stemp, CENTER, 0); displayBig(5, nem, CENTER, 0);
     }
-    eksikontrol = 0; //1. sıranın -'si veya S harfinin sürekli loop olarak dönmemesi için,
+    //eksikontrol = 0; //1. sıranın -'si veya S harfinin sürekli loop olarak dönmemesi için,
     clclkontrol = 0;
   }
 
@@ -687,7 +687,7 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg) {
   StaticJsonDocument<1024> doc1;
   DeserializationError error1 = deserializeJson(doc1, msg.data());
   int cihaz_sayisi, periyot_suresi;
-
+//mac adres-String / int periyot süresi / int cihaz sayısı / string cihaz adları 
   /* if (error1) {
      Serial.print(F("deserializeJson() failed: "));
      Serial.println(error1.f_str());
@@ -742,211 +742,6 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg) {
      if (k == 6)
        cihaz6 = cihaz_adlari.substring(13 * k - 11, 13 * k - 1);
     }
-    //Serial.print("cihaz1: "); Serial.println(cihaz1);
-    // Serial.print("cihaz2: "); Serial.println(cihaz2);
-    // Serial.print("cihaz3: "); Serial.println(cihaz3);
-    // Serial.print("cihaz4: "); Serial.println(cihaz4);
-    // Serial.print("cihaz5: "); Serial.println(cihaz5);
-    //  Serial.print("cihaz6: "); Serial.println(cihaz6);
-
-    //1.CİHAZ
-
-    int cihaz1_int = cihaz1.toInt();
-    int cihaz1_int1 = cihaz1_int >> 24; //cihaz biz 32 bitlik integer sayısının ilk 8 biti örneğin 100 0010 1110 0101 0111 0110 1000 0110 sayısının 24 bit sağa kaydırılmış hali yani 100 0010 66
-    int cihaz1_int2 = cihaz1_int >> 16; // 100 0010 1110 0101  17125
-    int cihaz1_int3 = cihaz1_int >> 8; // 4.384.118 100 0010 1110 0101 0111 0110
-    int cihaz1_int4 = cihaz1_int ; //100 0010 1110 0101 0111 0110 1000 0110
-
-    cihaz1_eeprom1 = EEPROM.read(0) << 24;
-    cihaz1_eeprom2 = EEPROM.read(1) << 16;
-    cihaz1_eeprom3 = EEPROM.read(2) << 8;
-    cihaz1_eeprom4 = EEPROM.read(3);
-    cihaz1_eeprom = cihaz1_eeprom1 | cihaz1_eeprom2 | cihaz1_eeprom3 | cihaz1_eeprom4;
-
-    if (cihaz1_eeprom != cihaz1_int) {
-     EEPROM.write(0, cihaz1_int1);
-     EEPROM.commit();
-     EEPROM.write(1, cihaz1_int2);
-     EEPROM.commit();
-     EEPROM.write(2, cihaz1_int3);
-     EEPROM.commit();
-     EEPROM.write(3, cihaz1_int4);
-     EEPROM.commit();
-
-     cihaz1_eeprom1 = EEPROM.read(0) << 24;
-     cihaz1_eeprom2 = EEPROM.read(1) << 16;
-     cihaz1_eeprom3 = EEPROM.read(2) << 8;
-     cihaz1_eeprom4 = EEPROM.read(3);
-     cihaz1_eeprom = cihaz1_eeprom1 | cihaz1_eeprom2 | cihaz1_eeprom3 | cihaz1_eeprom4;
-
-    }//else{
-    //  Serial.println("farklı değil");
-    // }Serial.print("cihaz1_eeprom: "); Serial.println(cihaz1_eeprom);
-
-    //2.CİHAZ
-    int cihaz2_int = cihaz2.toInt();
-    int cihaz2_int1 = cihaz2_int >> 24;
-    int cihaz2_int2 = cihaz2_int >> 16;
-    int cihaz2_int3 = cihaz2_int >> 8;
-    int cihaz2_int4 = cihaz2_int ;
-
-    cihaz2_eeprom1 = EEPROM.read(4) << 24;
-    cihaz2_eeprom2 = EEPROM.read(5) << 16;
-    cihaz2_eeprom3 = EEPROM.read(6) << 8;
-    cihaz2_eeprom4 = EEPROM.read(7);
-    cihaz2_eeprom = cihaz2_eeprom1 | cihaz2_eeprom2 | cihaz2_eeprom3 | cihaz2_eeprom4;
-
-
-    if (cihaz2_eeprom != cihaz2_int) {
-     EEPROM.write(4, cihaz2_int1);
-     EEPROM.commit();
-     EEPROM.write(5, cihaz2_int2);
-     EEPROM.commit();
-     EEPROM.write(6, cihaz2_int3);
-     EEPROM.commit();
-     EEPROM.write(7, cihaz2_int4);
-     EEPROM.commit();
-     cihaz2_eeprom1 = EEPROM.read(4) << 24;
-     cihaz2_eeprom2 = EEPROM.read(5) << 16;
-     cihaz2_eeprom3 = EEPROM.read(6) << 8;
-     cihaz2_eeprom4 = EEPROM.read(7);
-     cihaz2_eeprom = cihaz2_eeprom1 | cihaz2_eeprom2 | cihaz2_eeprom3 | cihaz2_eeprom4;
-    }//else{
-    // Serial.println("farklı değil");
-    //}Serial.print("cihaz2_eeprom: "); Serial.println(cihaz2_eeprom);
-
-    //3. CİHAZ
-    int cihaz3_int = cihaz3.toInt();
-    int cihaz3_int1 = cihaz3_int >> 24;
-    int cihaz3_int2 = cihaz3_int >> 16;
-    int cihaz3_int3 = cihaz3_int >> 8;
-    int cihaz3_int4 = cihaz3_int ;
-
-    cihaz3_eeprom1 = EEPROM.read(8) << 24;
-    cihaz3_eeprom2 = EEPROM.read(9) << 16;
-    cihaz3_eeprom3 = EEPROM.read(10) << 8;
-    cihaz3_eeprom4 = EEPROM.read(11);
-    cihaz3_eeprom = cihaz3_eeprom1 | cihaz3_eeprom2 | cihaz3_eeprom3 | cihaz3_eeprom4;
-
-
-    if (cihaz3_eeprom != cihaz3_int) {
-     EEPROM.write(8, cihaz3_int1);
-     EEPROM.commit();
-     EEPROM.write(9, cihaz3_int2);
-     EEPROM.commit();
-     EEPROM.write(10, cihaz3_int3);
-     EEPROM.commit();
-     EEPROM.write(11, cihaz3_int4);
-     EEPROM.commit();
-     cihaz3_eeprom1 = EEPROM.read(8) << 24;
-     cihaz3_eeprom2 = EEPROM.read(9) << 16;
-     cihaz3_eeprom3 = EEPROM.read(10) << 8;
-     cihaz3_eeprom4 = EEPROM.read(11);
-     cihaz3_eeprom = cihaz3_eeprom1 | cihaz3_eeprom2 | cihaz3_eeprom3 | cihaz3_eeprom4;
-    }//else{
-    // Serial.println("farklı değil");
-    //}Serial.print("cihaz3_eeprom: "); Serial.println(cihaz3_eeprom);
-
-    //4.CİHAZ
-    int cihaz4_int = cihaz4.toInt();
-    int cihaz4_int1 = cihaz4_int >> 24;
-    int cihaz4_int2 = cihaz4_int >> 16;
-    int cihaz4_int3 = cihaz4_int >> 8;
-    int cihaz4_int4 = cihaz4_int ;
-
-    cihaz4_eeprom1 = EEPROM.read(12) << 24;
-    cihaz4_eeprom2 = EEPROM.read(13) << 16;
-    cihaz4_eeprom3 = EEPROM.read(14) << 8;
-    cihaz4_eeprom4 = EEPROM.read(15);
-    cihaz4_eeprom = cihaz4_eeprom1 | cihaz4_eeprom2 | cihaz4_eeprom3 | cihaz4_eeprom4;
-
-
-    if (cihaz4_eeprom != cihaz4_int) {
-     EEPROM.write(12, cihaz4_int1);
-     EEPROM.commit();
-     EEPROM.write(13, cihaz4_int2);
-     EEPROM.commit();
-     EEPROM.write(14, cihaz4_int3);
-     EEPROM.commit();
-     EEPROM.write(15, cihaz4_int4);
-     EEPROM.commit();
-
-     cihaz4_eeprom1 = EEPROM.read(12) << 24;
-     cihaz4_eeprom2 = EEPROM.read(13) << 16;
-     cihaz4_eeprom3 = EEPROM.read(14) << 8;
-     cihaz4_eeprom4 = EEPROM.read(15);
-     cihaz4_eeprom = cihaz4_eeprom1 | cihaz4_eeprom2 | cihaz4_eeprom3 | cihaz4_eeprom4;
-    }//else{
-    // Serial.println("farklı değil");
-    // } Serial.print("cihaz4_eeprom: "); Serial.println(cihaz4_eeprom);
-
-    //5.CİHAZ
-    int cihaz5_int = cihaz5.toInt();
-    int cihaz5_int1 = cihaz5_int >> 24;
-    int cihaz5_int2 = cihaz5_int >> 16;
-    int cihaz5_int3 = cihaz5_int >> 8;
-    int cihaz5_int4 = cihaz5_int ;
-
-    cihaz5_eeprom1 = EEPROM.read(16) << 24;
-    cihaz5_eeprom2 = EEPROM.read(17) << 16;
-    cihaz5_eeprom3 = EEPROM.read(18) << 8;
-    cihaz5_eeprom4 = EEPROM.read(19);
-    cihaz5_eeprom = cihaz5_eeprom1 | cihaz5_eeprom2 | cihaz5_eeprom3 | cihaz5_eeprom4;
-
-
-    if (cihaz5_eeprom != cihaz5_int) {
-     EEPROM.write(16, cihaz5_int1);
-     EEPROM.commit();
-     EEPROM.write(17, cihaz5_int2);
-     EEPROM.commit();
-     EEPROM.write(18, cihaz5_int3);
-     EEPROM.commit();
-     EEPROM.write(19, cihaz5_int4);
-     EEPROM.commit();
-
-     cihaz5_eeprom1 = EEPROM.read(16) << 24;
-     cihaz5_eeprom2 = EEPROM.read(17) << 16;
-     cihaz5_eeprom3 = EEPROM.read(18) << 8;
-     cihaz5_eeprom4 = EEPROM.read(19);
-     cihaz5_eeprom = cihaz5_eeprom1 | cihaz5_eeprom2 | cihaz5_eeprom3 | cihaz5_eeprom4;
-    }//else{
-     //Serial.println("farklı değil");
-    //}Serial.print("cihaz5_eeprom: "); Serial.println(cihaz5_eeprom);
-
-    //6.CİHAZ
-    int cihaz6_int = cihaz6.toInt();
-    int cihaz6_int1 = cihaz6_int >> 24; //cihaz biz 32 bitlik integer sayısının ilk 8 biti örneğin 100 0010 1110 0101 0111 0110 1000 0110 sayısının 24 bit sağa kaydırılmış hali yani 100 0010 66
-    int cihaz6_int2 = cihaz6_int >> 16; // 100 0010 1110 0101  17125
-    int cihaz6_int3 = cihaz6_int >> 8; // 4.384.118 100 0010 1110 0101 0111 0110
-    int cihaz6_int4 = cihaz6_int ; //100 0010 1110 0101 0111 0110 1000 0110
-
-    cihaz6_eeprom1 = EEPROM.read(20) << 24;
-    cihaz6_eeprom2 = EEPROM.read(21) << 16;
-    cihaz6_eeprom3 = EEPROM.read(22) << 8;
-    cihaz6_eeprom4 = EEPROM.read(23);
-    cihaz6_eeprom = cihaz6_eeprom1 | cihaz6_eeprom2 | cihaz6_eeprom3 | cihaz6_eeprom4;
-
-
-    if (cihaz6_eeprom != cihaz6_int) {
-     EEPROM.write(20, cihaz6_int1);
-     EEPROM.commit();
-     EEPROM.write(21, cihaz6_int2);
-     EEPROM.commit();
-     EEPROM.write(22, cihaz6_int3);
-     EEPROM.commit();
-     EEPROM.write(23, cihaz6_int4);
-     EEPROM.commit();
-
-     cihaz6_eeprom1 = EEPROM.read(20) << 24;
-     cihaz6_eeprom2 = EEPROM.read(21) << 16;
-     cihaz6_eeprom3 = EEPROM.read(22) << 8;
-     cihaz6_eeprom4 = EEPROM.read(23);
-     cihaz6_eeprom = cihaz6_eeprom1 | cihaz6_eeprom2 | cihaz6_eeprom3 | cihaz6_eeprom4;
-    }//else{
-    // Serial.println("farklı değil");
-    //} Serial.print("cihaz6_eeprom: "); Serial.println(cihaz6_eeprom);
-
-
     EEPROM.write(24, cihaz_sayisi);
     EEPROM.commit();
   */
@@ -1012,6 +807,7 @@ void AnaCihazTempHum() {
 
 }
 void postData() {
+  //mac adres- sıcaklık - nem - pil durumu- seri numarası
   /* //client.onMessage(handle_message); // server dinleniyor
     String mac = WiFi.macAddress();
     Serial.print("mac: "); Serial.println(mac);
@@ -1125,29 +921,18 @@ void receive_() {
               }
             }
 
-            printf(" galeri[%d].eeprom_seri_numara: %.d \r\n", i, galeri[i].eeprom_seri_numara); //Serial.println(galeri[i].nem);
-
             if (galeri[i].eeprom_seri_numara == mystring_int ) {
-              if (rx_buf[11] != 'e') { //2555
+              galeri[i].sicaklik = mystring.substring(0, 4).toFloat() / 100 ; // string parçalama, string to float
+              galeri[i].nem = mystring.substring(4, 8).toFloat() / 100;
+              galeri[i].voltaj = mystring.substring(8, 12).toInt(); //string to int
 
-                galeri[i].sicaklik = mystring.substring(0, 4).toFloat() / 100 ; // string parçalama, string to float
-                galeri[i].nem = mystring.substring(4, 8).toFloat() / 100;
-                galeri[i].voltaj = mystring.substring(8, 12).toInt(); //string to int
-
-                if (rx_buf[12] == '+') galeri[i].eksimi = 0;
-                else if (rx_buf[12] == '-' ) galeri[i].eksimi = 1;
-
-              } if (rx_buf[11] == 'e') {
-                galeri[i].sicaklik = mystring.substring(0, 3).toFloat() / 100 ; // string parçalama, string to float
-                galeri[i].nem = mystring.substring(3, 7).toFloat() / 100;
-                galeri[i].voltaj = mystring.substring(7, 11).toInt(); //string to int
-
-                if (rx_buf[12] == '+') galeri[i].eksimi = 0;
-                else if (rx_buf[12] == '-' ) galeri[i].eksimi = 1;
-              }
+              if (rx_buf[12] == '+') galeri[i].eksimi = 0;
+              else if (rx_buf[12] == '-' ) galeri[i].eksimi = 1;
               printf(" galeri[%d].nem: %.2f \r\n", i, galeri[i].nem); //Serial.println(galeri[i].nem);
               printf(" galeri[%d].sicaklik: %.2f\r\n", i, galeri[i].sicaklik); //Serial.println(galeri[i].sicaklik);
               printf(" galeri[%d].voltaj: %d \r\n", i, galeri[i].voltaj); // Serial.println(galeri[i].voltaj);
+              printf(" galeri[%d].eeprom_seri_numara: %.d \r\n", i, galeri[i].eeprom_seri_numara); //Serial.println(galeri[i].nem);
+
               galeri[i].timeout = simdikizaman;
             }
 
@@ -1278,7 +1063,7 @@ void loop() {
 
 
     for (int i = 0; i < eeprom_cihaz_sayisi; i++) {
-      if (simdikizaman - galeri[i].timeout >= 90000 && galeri[i].timeout != -1) //cihazlardan veri x saniye boyunca gelmezse cihazda hata yazar
+      if (simdikizaman - galeri[i].timeout >= 900000 && galeri[i].timeout != -1) //cihazlardan veri x saniye boyunca gelmezse cihazda hata yazar
       {
         galeri[i].timeout = -1;
         printf("buyuktur hatalaıdır, %d\r\n", i);
@@ -1300,12 +1085,12 @@ void loop() {
       eskizaman2 = simdikizaman;
 
     }
-    if (simdikizaman - eskizaman3 >= 6000) { //Circle'ların LCD ekranda gözükme süresi x saniye
+    if (simdikizaman - eskizaman3 >= 3000) { //Circle'ların LCD ekranda gözükme süresi x saniye
       kontrolcircle = kontrolcircle + 1;
       eskizaman3 = simdikizaman; //Serial.print("kontrolcircle: "); Serial.println(kontrolcircle);
       if (eeprom_cihaz_sayisi != 0)
         kontrolsayi = kontrolcircle % (eeprom_cihaz_sayisi + 1); //Serial.print("kontrolsayi: "); Serial.println(kontrolsayi);
-
+      eksikontrol = 0;
 
     }
 

@@ -29,8 +29,8 @@ typedef unsigned int  word;
 
 #define FCSB      15
 #define SDIO      25 
-#define SCLK        27 // 18
-#define CSB         13// 5
+#define SCLK      27 
+#define CSB       13
 
 //#define NC0         9
 
