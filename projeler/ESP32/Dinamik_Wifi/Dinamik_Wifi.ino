@@ -1,3 +1,4 @@
+//dinamik wifii
 #include "EEPROM.h"
 #include "HTML.h"
 #include <WebServer.h>
