@@ -1,36 +1,10 @@
-16:56:22 **** Incremental Build of configuration Debug for project SHT30 ****
+11:45:07 **** Build of configuration Debug for project SHT30 ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L010x6 -c -I../Core/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:124:21: warning: format '%d' expects argument of type 'int', but argument 2 has type 'long int' [-Wformat=]
-  124 |         printf("t: %d\r\n",temperature/ 100);
-      |                    ~^      ~~~~~~~~~~~~~~~~
-      |                     |                 |
-      |                     int               long int
-      |                    %ld
-../Core/Src/main.c:126:21: warning: format '%d' expects argument of type 'int', but argument 2 has type 'long int' [-Wformat=]
-  126 |         printf("n: %d\r\n",humidity/ 100);
-      |                    ~^      ~~~~~~~~~~~~~
-      |                     |              |
-      |                     int            long int
-      |                    %ld
-../Core/Src/main.c:117:9: warning: unused variable 'buffer' [-Wunused-variable]
-  117 |    char buffer[100];
-      |         ^~~~~~
-arm-none-eabi-gcc -o "SHT30.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Enelsis\Desktop\enelsis\kendi github\kendi-kodlarim\Embedded systems\SHT30\STM32L010C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="SHT30.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: SHT30.elf
- 
 arm-none-eabi-size   SHT30.elf 
-arm-none-eabi-objdump -h -S  SHT30.elf  > "SHT30.list"
-arm-none-eabi-objcopy  -O binary  SHT30.elf  "SHT30.bin"
    text	   data	    bss	    dec	    hex	filename
-  20836	    124	   1884	  22844	   593c	SHT30.elf
+  17596	    124	   2140	  19860	   4d94	SHT30.elf
 Finished building: default.size.stdout
  
-Finished building: SHT30.bin
- 
-Finished building: SHT30.list
- 
 
-16:56:23 Build Finished. 0 errors, 3 warnings. (took 1s.250ms)
+11:45:07 Build Finished. 0 errors, 0 warnings. (took 360ms)
 

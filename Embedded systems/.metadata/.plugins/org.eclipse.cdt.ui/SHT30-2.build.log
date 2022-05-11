@@ -1,0 +1,10 @@
+16:43:43 **** Incremental Build of configuration Debug for project SHT30-2 ****
+make -j4 all 
+arm-none-eabi-size   SHT30-2.elf 
+   text	   data	    bss	    dec	    hex	filename
+  18528	    120	   2064	  20712	   50e8	SHT30-2.elf
+Finished building: default.size.stdout
+ 
+
+16:43:43 Build Finished. 0 errors, 0 warnings. (took 286ms)
+

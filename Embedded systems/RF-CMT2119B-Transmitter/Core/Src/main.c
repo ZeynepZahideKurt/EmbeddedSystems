@@ -91,8 +91,8 @@ int main(void)
   MX_LPUART1_UART_Init();
   /* USER CODE BEGIN 2 */
   #define TX_NUM  23
-  byte tx_buf[32] = {'H', 'o', 'p', 'e', 'R', 'F', ' ', 'R', 'F', 'M', ' ', 'C', 'O', 'B', 'R', 'F', 'M', '3', '0', '0', 'A','1','2'};
-  byte tx_buf2[32] = {'2', '4', '5', '6', '6', '5', '4', '3', '2', 'A', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', 'B', '2','4'};
+  byte tx_buf[23] = {'H', 'o', 'p', 'e', 'R', 'F', ' ', 'R', 'F', 'M', ' ', 'C', 'O', 'B', 'R', 'F', 'M', '3', '0', '0', 'A','1','2'};
+  byte tx_buf2[23] = {'2', '4', '5', '6', '6', '5', '4', '3', '2', 'A', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', 'B', '2','4'};
 
 
 
@@ -133,7 +133,7 @@ int main(void)
 	  vClearFIFO();
 	  bGoSleep();
 	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"gonderildi\r\n",12, 100);
-	  HAL_Delay(2000);
+	  HAL_Delay(5000);
 
 	  bSendMessage(tx_buf2, TX_NUM);
 	  	  while (GPO3_L());
@@ -141,7 +141,7 @@ int main(void)
 	  	  vClearFIFO();
 	  	  bGoSleep();
 	  	  HAL_UART_Transmit( &hlpuart1, (uint8_t *)"tx_buf2\r\n",12, 100);
-	  	  HAL_Delay(2000);
+	  	  HAL_Delay(5000);
   }
   /* USER CODE END 3 */
 }

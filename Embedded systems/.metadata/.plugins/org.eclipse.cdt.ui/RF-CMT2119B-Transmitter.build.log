@@ -1,10 +1,10 @@
-11:36:46 **** Build of configuration Debug for project RF-CMT2119B-Transmitter ****
+11:35:48 **** Incremental Build of configuration Debug for project RF-CMT2119B-Transmitter ****
 make -j4 all 
 arm-none-eabi-size   RF-CMT2119B-Transmitter.elf 
    text	   data	    bss	    dec	    hex	filename
-  13516	    404	   1716	  15636	   3d14	RF-CMT2119B-Transmitter.elf
+  13484	    404	   1716	  15604	   3cf4	RF-CMT2119B-Transmitter.elf
 Finished building: default.size.stdout
  
 
-11:36:46 Build Finished. 0 errors, 0 warnings. (took 362ms)
+11:35:48 Build Finished. 0 errors, 0 warnings. (took 293ms)
 

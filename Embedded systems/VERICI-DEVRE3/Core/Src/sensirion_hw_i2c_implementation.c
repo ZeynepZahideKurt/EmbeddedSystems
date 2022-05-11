@@ -107,8 +107,11 @@ int8_t sensirion_i2c_write(uint8_t address, const uint8_t* data,
  *
  * @param useconds the sleep time in microseconds
  */
+
+
 void sensirion_sleep_usec(uint32_t useconds) {
     uint32_t msec = useconds / 1000;
+
     if (useconds % 1000 > 0) {
         msec++;
     }

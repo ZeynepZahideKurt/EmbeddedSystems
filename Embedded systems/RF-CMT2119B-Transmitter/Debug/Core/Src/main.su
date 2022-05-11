@@ -1,4 +1,4 @@
-main.c:67:5:main	80	static
+main.c:67:5:main	64	static
 main.c:153:6:SystemClock_Config	112	static
 main.c:200:13:MX_LPUART1_UART_Init	8	static
 main.c:234:13:MX_GPIO_Init	56	static

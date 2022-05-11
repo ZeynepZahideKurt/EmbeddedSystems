@@ -97,8 +97,8 @@ float cTemp;
 float humidity;
 
 
-char stemp[6], nem[6]; //Ana cihazın sıcaklık ve nemi
-
+char stemp[6], nem[6], kontrol_stemp[6], kontrol_nem[6]; //Ana cihazın sıcaklık ve nemi
+float nemm,sicaklikk;
 
 int HATA_KONROL0 = 0;
 int clclkontrol = 0;
@@ -115,10 +115,8 @@ typedef struct cihaz_bilgileri {
   float sicaklik;
   float nem;
   int voltaj;
-  int seri_numara;
   int eeprom_seri_numara;
   int eksimi;
-  String sil;
   unsigned long timeout;
 } cihaz_t;
 
@@ -136,7 +134,7 @@ void printLocalTime() {
     Serial.println("Failed to obtain time");
     return;
   }
-  Krish_hour = timeinfo.tm_hour + 2;
+  Krish_hour = timeinfo.tm_hour + 1;
   Krish_min = timeinfo.tm_min;
   Krish_sec = timeinfo.tm_sec;
   Krish_day = timeinfo.tm_mday;
@@ -461,7 +459,7 @@ void displayLogo() {
 }
 void displayBattery(int int_pil_durumu) {
   //DEVICEbattery1 = '80';
-
+  //Pil durumu hesaplanır
   setPage(1);
   setColumn(95);
   //  sprintf(arr, "%02u", DEVICEbattery1);
@@ -503,7 +501,7 @@ void displayBattery(int int_pil_durumu) {
   trans(DATA, 0b01111111);
 }
 void printWifiStatus() {
-
+ //Wifii sinyal gücü hesaplanır ve LCD ekranda gösterilir
   // print the SSID of the network you're attached to:
   /*Serial.print("SSID: ");
     Serial.println(WiFi.SSID());
@@ -585,31 +583,28 @@ void printWifiStatus() {
 
 }
 void circle_location() {
-  //Serial.print("eeprom_cihaz_sayisi: "); Serial.println(eeprom_cihaz_sayisi);
-  //clearPage(2);
   setPage(2);
-  if (eeprom_cihaz_sayisi == 0) {
+  if (eeprom_cihaz_sayisi == 0) { // Eğer eepromda bir cihaz kayıtlı değilse LCD ekranda sadece ANA EKRAN yazısı görünür
     circle_sira = 0;
-    if (circle_kontrol == 0) {
-      clclearPage(2);
+    if (circle_kontrol == 0) { //Yuvarlaklardan ana ekran yazısına geçerken yuvarlakların silinmesi için
+      clclearPage(2); 
       circle_kontrol = 1;
     }
     display(2, "            ANA CIHAZ             ",  CENTER, 0);
 
-  } else {
+  } else { //Eğer eepromda cihaz kayıtlıysa buya girer. Kaç cihaz varsa ona göre yuvarlakların otomatik yeri hesaplanır
     circle_kontrol = 0;
-    //Serial.print("circleye girdi ");//Serial.print("c: ");Serial.println(c);
     int a = (65 - (8 * eeprom_cihaz_sayisi)); //LCD Ekranda yuvarlakların başlayacağı yer
     int b = (65 + (8 * eeprom_cihaz_sayisi)) ; //LCD Ekranda yuvarlakların biteceği yer
     int d = (b - a) / 16; //d=eeprom cihaz sayısı sonda sıfırlanacağı için farklı bir yere atadım
-    setColumn(a);
+    setColumn(a); 
     for (int j = 0; j <=cihazsayisi; j++) { //Toplamda maksimum 6 cihaz olabileceği için 6 
-      if (kontrolsayi == 0  ) {
+      if (kontrolsayi == 0  ) { //Sıra Ana Cihazdayken bu if'e girer
         display(2, "             ANA CIHAZ             ",  CENTER, 0);
         circle_sira = 0;
         circle_kontrol2 = 0;
 
-      } else if(kontrolsayi==j) {      
+      } else if(kontrolsayi==j) { //Sıra vericideki cihazlardayken bu satıra girer     
         circle_sira = kontrolsayi;
         if (circle_kontrol2 == 0) clclearPage(2); //ekrandaki ana ekran yazısından yuvarlaklara geçerken ana ekranın yazısının bir defalığına silinmmesi için               
         circle_kontrol2 = 1;
@@ -632,9 +627,9 @@ void circle_location() {
 
   if (circle_sira == 0) {
     displayBattery(3300); //içine şimdilik 3300 yazdım yani batarya dolu gözüküyor aslında ana cihazın  pili yok
-    AnaCihazTempHum();
+    AnaCihazTempHum(); //Ana cihazsaki sensörden sıcaklık ve nem belgesini alır
     if (HATA_KONROL0 == 1) {
-      circle_arti_derece_yuzde();
+      circle_arti_derece_yuzde(); //LCD ekrana S:, N:, C, % işaretlerini  koyar
       displayBig(3, "  HATA  ", CENTER, 0); displayBig(5, "  HATA  ", CENTER, 0);
     } else if (HATA_KONROL0 == 0) {
       if (cTemp < 0) { //-'li değer gelirse lcd ekrana - gönderecek
@@ -643,9 +638,8 @@ void circle_location() {
       } else {
         circle_arti_derece_yuzde();
       }
-      displayBig(3, stemp, CENTER, 0); displayBig(5, nem, CENTER, 0);
+      displayBig(3, kontrol_stemp, CENTER, 0); displayBig(5, kontrol_nem, CENTER, 0);
     }
-    //eksikontrol = 0; //1. sıranın -'si veya S harfinin sürekli loop olarak dönmemesi için,
     clclkontrol = 0;
   }
 
@@ -654,7 +648,7 @@ void circle_location() {
       if (clclkontrol == 0) clclearPage(2); // Cihazdaki ana ekran yazısından yuvarlaklara geçtiğinde ana ekran yazısının değişmesi için
       clclkontrol = 1;
 
-      if (eksikontrol == 0) {
+      if (eksikontrol == 0) { //gelen sıcaklığı kontrol eder ve negatif ise LCD ekrana - işareti koyar
         if (galeri[i].eksimi == 0) circle_arti_derece_yuzde();
         else if (galeri[i].eksimi == 1) circle_eksi_derece_yuzde(); //1'se eksi geliyor demektir
         eksikontrol = 1;
@@ -674,7 +668,7 @@ void circle_location() {
         displayBig(3, sicaklik_cihaz, CENTER, 0); displayBig(5, nem_cihaz, CENTER, 0);//60 saniye boyunca veri geldi mi kontrol eder geldiyse sıcaklığı ve nemi yazdırır
         displayBattery(galeri[i].voltaj);// Eğer cihaz i'den bir veri geldiyse pil kısmını receive() kısmında galeri[i].voltaj'e atadım circle_sıra=i iken i. cihazın batarya durumunu gösterecek
       }
-      if (circle_sira == eeprom_cihaz_sayisi + 1) clclkontrol = 0;//LCD Ekranda son cihazdan ana ekrana geçerken yuvarlaklar silinsin diye
+      if (circle_sira == eeprom_cihaz_sayisi + 1) clclkontrol = 0;//LCD Ekranda son cihazdan ana ekrana geçerken yuvarlaklar silinmesi için
     }
   }
 
@@ -749,6 +743,7 @@ void handle_message(WebsocketsClient &client, WebsocketsMessage msg) {
 
 }
 void AnaCihazTempHum() {
+  //Ana cihazdaki sıcaklık ve nem ölçülür
   unsigned int data[6];
   Wire.beginTransmission(Addr);
   // Send 16-bit command byte
@@ -756,15 +751,10 @@ void AnaCihazTempHum() {
   Wire.write(0x06);
   // Stop I2C transmission
   Wire.endTransmission();
-  delay(300);
-  // Start I2C Transmission
+  //delay(300);
   Wire.beginTransmission(Addr);
-  // Stop I2C Transmission
   Wire.endTransmission();
-  // Request 6 bytes of data
   Wire.requestFrom(Addr, 6);
-  // Read 6 bytes of data
-  // temp msb, temp lsb, temp crc, hum msb, hum lsb, hum crc
   if (Wire.available() == 6)
   {
     data[0] = Wire.read();
@@ -775,35 +765,43 @@ void AnaCihazTempHum() {
     data[5] = Wire.read();
   }
   int temp = (data[0] * 256) + data[1];
-  cTemp = -45.0 + (175.0 * temp / 65535.0); //65535.0 değil 6553500.0 a böldüm ki birgülden sonra 2 noktayı da alsın
+  cTemp = -45.0 + (175.0 * temp / 65535.0);  //float to int
+  
   String mytemp = String(cTemp);
   mytemp.toCharArray(stemp, 6); //string to char
-  //strcpy(kontrol_stemp, stemp); char to char
-  humidity = (100.0 * ((data[3] * 256.0) + data[4])) / 65535.0;
-  //Serial.print("humidity:"); Serial.println(humidity);
+  
+    if ((kontrol_stemp[0] != stemp[0]) || (kontrol_stemp[1] != stemp[1]) || (kontrol_stemp[3] != stemp[3])){//ana cihazdaki gelen sensör değerinin ilk 2 rakamı değişikse alır mesela 29.80 iken 29.98 geldi almaz fakat 30.80 geldi alır
+      if( ( (sicaklikk + 0.5) < cTemp ) || (cTemp < (sicaklikk - 0.5) ) ){ 
+      sicaklikk=cTemp;
+      strcpy(kontrol_stemp, stemp); // char to char 
+      }
+    }
+      
+  
+  humidity = (100.0 * ((data[3] * 256.0) + data[4])) / 65535.0;  
   String myhum = String(humidity);
   myhum.toCharArray(nem, 6);
-
-
-
+  
+  if ((kontrol_nem[0] != nem[0]) || (kontrol_nem[1] != nem[1]) || (kontrol_nem[3] != nem[3])){
+      if( ( (nemm + 0.5) < humidity ) || (humidity < (nemm - 0.5) ) ){ 
+      nemm=humidity;
+      strcpy(kontrol_nem, nem);
+    }
+  }
+      
+//Eğer ana cihazdan gelen sıcaklık -40 ve 100 arasındaysa ve nem 0 ile 100 arasındaysa hata yok demektir.
   if (-40 <= cTemp && cTemp <= 100 && 0 <= humidity && humidity <= 100) {
     HATA_KONROL0 = 0;
   } else { //hatalıysa
     HATA_KONROL0 = 1;
   }
-  /* Serial.print("cTemp: ");
-    Serial.println(cTemp);
-    Serial.print("humidity: ");
-    Serial.println(humidity);
-    int icTemp = (int) cTemp;
-    itoa (icTemp, stemp, 10);
-    int inem = (int) humidity;
+  /* 
+    int inem = (int) humidity;//float int
     char bufnem[3];
-    itoa (inem, nem, 10);
+    itoa (inem, nem, 10);// int to char
     const char *firstnem = "NEM:";
     strcpy(bufnem, firstnem);
-    float fTemp = -45.0 + (175.0 * temp / 65535.0);
-    displaycl();*/
+    */
 
 }
 void postData() {
@@ -851,18 +849,15 @@ void cihaz_sil() {
 void receive_() {
 
   /*Bu kodda alıcıya 25 bit String olarak alıyoruz. Ama sayarken ilk biti 0. diye sayıyoruz
-     örneğin: 247244023294+A0000000001B
-     ilk 4 biti sıcaklık yani, şu anda +24.72 derece
+     örneğin: +247244023294A0000000001B
+     ilk 5 biti sıcaklık yani, şu anda +24.72 derece
      sonraki 4 biti nem yani şu andan %44.02'lik bir nem var
      sonraki 4 biti vericiye gelen voltaj mili volt cinsinden 3294 milivolt
-     sonraki kod gelen sıcaklık + mı - mi
 
-     örneğin: 94744023294e-A0000000001B
-     11. bitinde e olması demek sıcaklığın tek haneli olması demek yani sadece 3bit dikkate alınır
-     ilk 3 biti sıcaklık yani, -9.47 derece
+     örneğin: -094744023294A0000000001B
+     ilk 5 biti sıcaklık yani, -09.47 derece
      sonraki 4 biti nem yani şu andan %44.02'lik bir nem var
      sonraki 4 biti vericiye gelen voltaj mili volt cinsinden 3294 milivolt
-     sonraki kod gelen sıcaklık + mı - mi
   */
 
   byte tmp;
@@ -892,7 +887,7 @@ void receive_() {
         int mystring_int = mystring.substring(14, 24).toInt(); //string parçalama, string to int
         String reset_eeprom = mystring.substring(12, 13);
 
-        if (reset_eeprom == "s") {
+        if (reset_eeprom == "s") { // Burası serverden silme işlemi yapıldıktan sonra silinecek
           Serial.println("reset_eeprom");
           cihaz_sil();
           eeprom_cihaz_sayisi = 0;
@@ -921,19 +916,21 @@ void receive_() {
               }
             }
 
-            if (galeri[i].eeprom_seri_numara == mystring_int ) {
-              galeri[i].sicaklik = mystring.substring(0, 4).toFloat() / 100 ; // string parçalama, string to float
-              galeri[i].nem = mystring.substring(4, 8).toFloat() / 100;
-              galeri[i].voltaj = mystring.substring(8, 12).toInt(); //string to int
+            if (galeri[i].eeprom_seri_numara == mystring_int ) {// vericiden gelen seri numarası galerideki seri numarasıyla uyuşursa bu ifin içine girer
+              //sıcaklık,nem,voltaj parçalanır 
+              if (rx_buf[0] == '+') galeri[i].eksimi = 0;
+              else if (rx_buf[0] == '-' ) galeri[i].eksimi = 1;
+              
+              galeri[i].sicaklik = mystring.substring(1, 5).toFloat() / 100 ; // string parçalama, string to float
+              galeri[i].nem = mystring.substring(5, 9).toFloat() / 100;
+              galeri[i].voltaj = mystring.substring(9, 13).toInt(); //string to int
 
-              if (rx_buf[12] == '+') galeri[i].eksimi = 0;
-              else if (rx_buf[12] == '-' ) galeri[i].eksimi = 1;
               printf(" galeri[%d].nem: %.2f \r\n", i, galeri[i].nem); //Serial.println(galeri[i].nem);
               printf(" galeri[%d].sicaklik: %.2f\r\n", i, galeri[i].sicaklik); //Serial.println(galeri[i].sicaklik);
               printf(" galeri[%d].voltaj: %d \r\n", i, galeri[i].voltaj); // Serial.println(galeri[i].voltaj);
               printf(" galeri[%d].eeprom_seri_numara: %.d \r\n", i, galeri[i].eeprom_seri_numara); //Serial.println(galeri[i].nem);
 
-              galeri[i].timeout = simdikizaman;
+              galeri[i].timeout = simdikizaman; // Galeri[i]'den gelen datanın zaman bilgi tutulur ve loop fonksiyonunda ne kadar süre arayla gelmiş kontrol edilir.
             }
 
           }//for(i++) döngüsü kapanış
@@ -944,7 +941,7 @@ void receive_() {
 
     }
   }
-  if (cihaz_sayisi_kontrol == true) {
+  if (cihaz_sayisi_kontrol == true) { //Eğer yeni bir cihaz gelirse cihaz sayısı arttırılır
     eeprom_cihaz_sayisi = 0;
     for (int i = 0; i < cihazsayisi; i++) {
       if (galeri[i].eeprom_seri_numara != 0) {
@@ -991,7 +988,7 @@ void setup() {
   delay(3000);
   displaycl();
 
-  Serial.println("connected...yeey :)");
+  Serial.println("connected...");
   ticker.detach();
 
   digitalWrite(LED, LOW);
@@ -1000,10 +997,10 @@ void setup() {
   eskizaman3 = millis();
   eskizaman4 = millis();
 
-  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer); //Tarih ve zaman alınabilmesi için gerekli ayarlar yapılır
 
 
-  FixedPktLength    = false;
+  FixedPktLength    = false; // RF ayarları yapılır.
   PayloadLength     = 21;
   vInit();
   vCfgBank(CMTBank, 12);
@@ -1046,28 +1043,24 @@ void setup() {
 
 void loop() {
   //eeprom_cihaz_sayisi = EEPROM.read(24);
-  //Serial.print("eeprom_cihaz_sayisi: "); Serial.println(eeprom_cihaz_sayisi);
 
   if (kontrol1 == 0) { // burası olmazsa lcd ekranı çok uzun süre sonra gelir
-    printLocalTime();
-    printWifiStatus();
-    circle_location();
-    receive_();
+    printLocalTime(); // Tarih ve zamanın LCD ekranda gösterilmesini sağlar
+    printWifiStatus(); // wifii çekim gücünün LCD ekranda gösterilmesini sağlar
+    circle_location(); // Eeprom'da kaç tane cihaz varsa LCD ekranda gösterilmesi sağlanır
+    receive_();// Etraftaki verici cihazlar dinlenir
     kontrol1 = 1;
   }
 
   if (!client.available()) {
-
+    //Eğer internet koparsa bu fonksiyonun içine girer
     simdikizaman = millis();
-    receive_();
+    receive_(); // Etraftaki verici cihazlar dinlenir
 
 
     for (int i = 0; i < eeprom_cihaz_sayisi; i++) {
-      if (simdikizaman - galeri[i].timeout >= 900000 && galeri[i].timeout != -1) //cihazlardan veri x saniye boyunca gelmezse cihazda hata yazar
-      {
+      if (simdikizaman - galeri[i].timeout >= 60000 && galeri[i].timeout != -1) //cihazlardan veri x saniye boyunca gelmezse cihazda hata yazar
         galeri[i].timeout = -1;
-        printf("buyuktur hatalaıdır, %d\r\n", i);
-      }
     }
 
 
@@ -1075,8 +1068,6 @@ void loop() {
     if (simdikizaman - eskizaman >= 60000) //60 saniyede bir wifii çekimi güncelenir
     {
       Serial.print("displaye girdi ");
-      // AnaCihazTempHum();
-      //displayBattery();
       printWifiStatus();
       eskizaman = simdikizaman;
     }
@@ -1087,14 +1078,15 @@ void loop() {
     }
     if (simdikizaman - eskizaman3 >= 3000) { //Circle'ların LCD ekranda gözükme süresi x saniye
       kontrolcircle = kontrolcircle + 1;
-      eskizaman3 = simdikizaman; //Serial.print("kontrolcircle: "); Serial.println(kontrolcircle);
-      if (eeprom_cihaz_sayisi != 0)
-        kontrolsayi = kontrolcircle % (eeprom_cihaz_sayisi + 1); //Serial.print("kontrolsayi: "); Serial.println(kontrolsayi);
-      eksikontrol = 0;
+      eskizaman3 = simdikizaman; 
+      if (eeprom_cihaz_sayisi != 0) //Eğer verici bir cihaz eeproma kayıtlıysa aşağıdaki işlemi yapar
+        kontrolsayi = kontrolcircle % (eeprom_cihaz_sayisi + 1); //Örneğin 2 tane kayıtlı cihaz var kontrol sayı sırayla 0,1,2 olur. Kontrol sayıya göre LCD Ekrandaki yuvarlağın sırası belirtilir
+      eksikontrol = 0; //Eğer bu satır olmazsa LCD Ekrandaki S:, N:, %.. Sürekli yanıp söner
+      
 
     }
 
-    circle_location();
+    circle_location(); //LCD Ekranda yuvarlaklar gösterilir
     /* kontrolsayi 0 iken 1.cihazdaki veriler
          kontrolsayi 1 iken 2.cihazdaki veriler
          kontrolsayi 2 iken 3.cihazdaki veriler

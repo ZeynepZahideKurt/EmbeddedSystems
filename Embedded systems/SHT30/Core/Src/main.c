@@ -25,6 +25,10 @@
 #include <string.h>
 #include <stdio.h>
 #include "sht3x.h"
+#include <stdlib.h>
+#define printf(...)  HAL_UART_Transmit((UART_HandleTypeDef *)&hlpuart1, (uint8_t *)u_buf,\
+		                                sprintf((char*)u_buf,__VA_ARGS__), 0xFFFF);
+uint8_t u_buf[256];
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -98,10 +102,10 @@ int main(void)
   printf("basladi\r\n");
   sensirion_i2c_init();
 
-  while (sht3x_probe(SHT3X_I2C_ADDR_DFLT) != STATUS_OK) {
+  /*while (sht3x_probe(SHT3X_I2C_ADDR_DFLT) != STATUS_OK) {
 	  printf("SHT sensor probing failed\n");
 
-  }
+  }*/
   printf("SHT sensor probing successful\n");
 
   /* USER CODE END 2 */

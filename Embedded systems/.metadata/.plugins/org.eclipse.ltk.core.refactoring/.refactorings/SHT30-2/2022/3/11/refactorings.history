@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;SHT30-2/Core/Src/iic.c&apos; to &apos;sht30_i2c_drv.h&apos;" description="Rename resource &apos;iic.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Core/Src/iic.c" name="sht30_i2c_drv.h" stamp="1646816034168" updateReferences="true"/>
+</session>
