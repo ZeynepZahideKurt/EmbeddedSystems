@@ -1,40 +1,10 @@
-10:47:51 **** Incremental Build of configuration Debug for project Verici-Devre-Test ****
+10:13:44 **** Build of configuration Debug for project Verici-Devre-Test ****
 make -j4 all 
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m0plus -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32L010x6 -c -I../Core/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc -I../Drivers/STM32L0xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32L0xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:264:11: warning: "/*" within comment [-Wcomment]
-  264 |           /* Measure temperature and relative humidity and store into variables
-      |            
-../Core/Src/main.c:124:25: warning: typedef 'u8' locally defined but not used [-Wunused-local-typedefs]
-  124 |   typedef unsigned char u8;
-      |                         ^~
-../Core/Src/main.c:125:25: warning: typedef 'u16' locally defined but not used [-Wunused-local-typedefs]
-  125 |    typedef unsigned int u16;
-      |                         ^~~
-../Core/Src/main.c:126:26: warning: typedef 'u32' locally defined but not used [-Wunused-local-typedefs]
-  126 |    typedef unsigned long u32;
-      |                          ^~~
-At top level:
-../Core/Src/main.c:145:8: warning: 'OutputSDIO' defined but not used [-Wunused-function]
-  145 |   void OutputSDIO(){
-      |        ^~~~~~~~~~
-../Core/Src/main.c:129:8: warning: 'InputSDIO' defined but not used [-Wunused-function]
-  129 |   void InputSDIO()
-      |        ^~~~~~~~~
-arm-none-eabi-gcc -o "Verici-Devre-Test.elf" @"objects.list"   -mcpu=cortex-m0plus -T"C:\Users\Enelsis\Desktop\enelsis\kendi github\kendi-kodlarim\Embedded systems\deneme3\STM32L010C6TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Verici-Devre-Test.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: Verici-Devre-Test.elf
- 
 arm-none-eabi-size   Verici-Devre-Test.elf 
-arm-none-eabi-objdump -h -S  Verici-Devre-Test.elf  > "Verici-Devre-Test.list"
-arm-none-eabi-objcopy  -O binary  Verici-Devre-Test.elf  "Verici-Devre-Test.bin"
    text	   data	    bss	    dec	    hex	filename
-  13068	     20	   1804	  14892	   3a2c	Verici-Devre-Test.elf
+  10808	     20	   1780	  12608	   3140	Verici-Devre-Test.elf
 Finished building: default.size.stdout
  
-Finished building: Verici-Devre-Test.bin
- 
-Finished building: Verici-Devre-Test.list
- 
 
-10:47:52 Build Finished. 0 errors, 6 warnings. (took 1s.187ms)
+10:13:44 Build Finished. 0 errors, 0 warnings. (took 385ms)
 

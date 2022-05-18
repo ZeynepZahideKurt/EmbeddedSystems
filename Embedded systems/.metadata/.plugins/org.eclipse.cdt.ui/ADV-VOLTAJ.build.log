@@ -1,4 +1,4 @@
-17:19:06 **** Incremental Build of configuration Debug for project ADV-VOLTAJ ****
+10:13:38 **** Build of configuration Debug for project ADV-VOLTAJ ****
 make -j4 all 
 arm-none-eabi-size   ADV-VOLTAJ.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size   ADV-VOLTAJ.elf
 Finished building: default.size.stdout
  
 
-17:19:07 Build Finished. 0 errors, 0 warnings. (took 296ms)
+10:13:38 Build Finished. 0 errors, 0 warnings. (took 437ms)
 

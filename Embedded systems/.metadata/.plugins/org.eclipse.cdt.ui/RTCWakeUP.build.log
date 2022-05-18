@@ -1,4 +1,4 @@
-09:26:36 **** Incremental Build of configuration Debug for project RTCWakeUP ****
+10:13:41 **** Build of configuration Debug for project RTCWakeUP ****
 make -j4 all 
 arm-none-eabi-size   RTCWakeUP.elf 
    text	   data	    bss	    dec	    hex	filename
@@ -6,5 +6,5 @@ arm-none-eabi-size   RTCWakeUP.elf
 Finished building: default.size.stdout
  
 
-09:26:37 Build Finished. 0 errors, 0 warnings. (took 375ms)
+10:13:41 Build Finished. 0 errors, 0 warnings. (took 359ms)
 
