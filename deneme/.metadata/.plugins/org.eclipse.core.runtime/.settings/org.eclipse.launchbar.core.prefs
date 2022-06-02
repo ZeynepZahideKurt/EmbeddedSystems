@@ -1,0 +1,9 @@
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86_64
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
+LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
+configDescList=org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Led-Yakma-7 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:STM32CubeIDE Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:STM32L496AGI6 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:led-yakma Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:led-yakma2 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:led-yakma-4 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:led-yakma-5 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:led-yakma-6 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:led-yakma-9 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:led-yakma3 Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:stm32f103rb Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:stm32f303-UART HABERLESME Debug,org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:stmf303-1 Debug
+eclipse.preferences.version=1
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Led-Yakma-7\ Debug/activeLaunchMode=run
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:Led-Yakma-7\ Debug/activeLaunchTarget=null\:---
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:stm32f303-UART\ HABERLESME\ Debug/activeLaunchMode=debug
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:stmf303-1\ Debug/activeLaunchMode=run

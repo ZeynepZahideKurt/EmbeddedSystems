@@ -1,0 +1,31 @@
+11:44:24 **** Incremental Build of configuration Debug for project stm32f303-UART HABERLESME ****
+make -j4 all 
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DUSE_HAL_DRIVER -DSTM32F303xE -DDEBUG -c -I../Drivers/CMSIS/Include -I../Drivers/STM32F3xx_HAL_Driver/Inc -I../Core/Inc -I../Drivers/STM32F3xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F3xx/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/main.o"
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:106:31: warning: pointer targets in passing argument 2 of 'HAL_UART_Transmit' differ in signedness [-Wpointer-sign]
+    HAL_UART_Transmit(&huart4, "alive", 10, 1000);
+                               ^~~~~~~
+In file included from ../Core/Inc/stm32f3xx_hal_conf.h:326:0,
+                 from ../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal.h:30,
+                 from ../Core/Inc/main.h:31,
+                 from ../Core/Src/main.c:22:
+../Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_uart.h:1462:19: note: expected 'uint8_t * {aka unsigned char *}' but argument is of type 'char *'
+ HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+                   ^~~~~~~~~~~~~~~~~
+arm-none-eabi-gcc -o "stm32f303-UART HABERLESME.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\Enelsis\Desktop\enelsis\deneme\stm32f303-UART HABERLESME\STM32F303RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="stm32f303-UART HABERLESME.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: stm32f303-UART HABERLESME.elf
+ 
+arm-none-eabi-objdump -h -S  stm32f303-UART\ HABERLESME.elf  > "stm32f303-UART HABERLESME.list"
+arm-none-eabi-objcopy  -O binary  stm32f303-UART\ HABERLESME.elf  "stm32f303-UART HABERLESME.bin"
+arm-none-eabi-size   stm32f303-UART\ HABERLESME.elf 
+   text	   data	    bss	    dec	    hex	filename
+  11316	     32	   1712	  13060	   3304	stm32f303-UART HABERLESME.elf
+Finished building: default.size.stdout
+ 
+Finished building: stm32f303-UART HABERLESME.bin
+Finished building: stm32f303-UART HABERLESME.list
+ 
+ 
+
+11:44:27 Build Finished. 0 errors, 1 warnings. (took 2s.594ms)
+

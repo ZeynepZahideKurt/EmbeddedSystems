@@ -1,0 +1,10 @@
+13:16:59 **** Incremental Build of configuration Debug for project led-yakma-6 ****
+make -j4 all 
+arm-none-eabi-size   led-yakma-6.elf 
+   text	   data	    bss	    dec	    hex	filename
+  53264	    404	  10396	  64064	   fa40	led-yakma-6.elf
+Finished building: default.size.stdout
+ 
+
+13:17:01 Build Finished. 0 errors, 0 warnings. (took 2s.586ms)
+
